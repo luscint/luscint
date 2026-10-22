@@ -33,6 +33,9 @@ concurrency:
 
 jobs:
   build:
+    # A cancelled or failed sync run must not start a deploy (it has nothing to build and
+    # would cancel a real deploy via the concurrency group).
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout (push)
