@@ -1,260 +1,393 @@
 import Link from 'next/link'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import fs from 'fs'
 import path from 'path'
-import { readSnapshot, getAvailablePeriods } from '@/lib/forecasts'
-import RawCsvDownloader from '@/components/RawCsvDownloader'
 import MultiFileDownloader from '@/components/MultiFileDownloader'
+import ArchiveTable from '@/components/ArchiveTable'
+import TabbedCodeExamples from '@/components/TabbedCodeExamples'
 
-function formatDMY(iso: string): string {
-  const dt = new Date(iso)
-  const dd = String(dt.getDate()).padStart(2, '0')
-  const mm = String(dt.getMonth() + 1).padStart(2, '0')
-  const yyyy = dt.getFullYear()
-  return `${dd}/${mm}/${yyyy}`
+// Public base URL for code examples; switch to https://luscint.com once the domain points at this site
+const SITE_BASE = 'https://luscint.github.io/luscint'
+const GITHUB_BASE = 'https://raw.githubusercontent.com/conflictlab/Pace-map-risk/main'
+
+function latestPeriod(): string | null {
+  try {
+    const p = path.join(process.cwd(), 'public', 'data', 'forecasts', 'latest', 'metadata.json')
+    const j = JSON.parse(fs.readFileSync(p, 'utf-8'))
+    return j?.forecast_start_date || j?.data_end_date || null
+  } catch { return null }
 }
 
-export default async function DataPage() {
-  const snapshot = readSnapshot('latest')
-  const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '' // e.g., https://luscint.com
-
-  // Country-level: list recent raw CSVs (if present in content/forecasts/csv)
-  const allPeriods = getAvailablePeriods()
-  const recent = allPeriods.slice(-12).reverse()
-  const rawDir = path.join(process.cwd(), 'content', 'forecasts', 'csv')
-  const countryDownloads = recent.map((p) => ({
-    period: p,
-    hasRaw: fs.existsSync(path.join(rawDir, `${p}.csv`)),
-  }))
-
-  // Grid-level: detect latest grid period available in public/data/grid
-  let gridPeriod = snapshot.period
+function listArchive(): string[] {
   try {
-    const gridDir = path.join(process.cwd(), 'public', 'data', 'grid')
-    const files = fs.readdirSync(gridDir)
-    const periods = files
-      .map((f) => {
-        const m = f.match(/(\d{4}-\d{2})(?:\.geo\.json|\-m1\.json|\.csv)$/)
-        return m ? m[1] : null
-      })
-      .filter((p): p is string => !!p)
+    const dir = path.join(process.cwd(), 'public', 'data', 'forecasts', 'archive')
+    return fs.readdirSync(dir, { withFileTypes: true })
+      .filter(d => d.isDirectory() && /^\d{4}-\d{2}$/.test(d.name))
+      .map(d => d.name)
       .sort()
-    if (periods.length) gridPeriod = periods[periods.length - 1]
-  } catch {}
+      .reverse()
+  } catch { return [] }
+}
 
-  const gridCsvLinks = [
-    { path: `/data/grid/${gridPeriod}-m1.csv`, label: `${gridPeriod}-m1.csv (month 1 points)` },
-    { path: `/data/grid/${gridPeriod}-m2.csv`, label: `${gridPeriod}-m2.csv (month 2 points)` },
-    { path: `/data/grid/${gridPeriod}-m3.csv`, label: `${gridPeriod}-m3.csv (month 3 points)` },
-    { path: `/data/grid/${gridPeriod}-m4.csv`, label: `${gridPeriod}-m4.csv (month 4 points)` },
-    { path: `/data/grid/${gridPeriod}-m5.csv`, label: `${gridPeriod}-m5.csv (month 5 points)` },
-    { path: `/data/grid/${gridPeriod}-m6.csv`, label: `${gridPeriod}-m6.csv (month 6 points)` },
-  ]
-  const gridCombinedCsv = { path: `/data/grid/${gridPeriod}.csv`, label: `${gridPeriod}.csv (all months as columns)` }
-  const gridGeoJsonLinks = [
-    { path: `/data/grid/${gridPeriod}.geo.json`, label: `${gridPeriod}.geo.json (polygons)` },
-    { path: `/data/grid/${gridPeriod}-m1.json`, label: `${gridPeriod}-m1.json (month 1 points)` },
-    { path: `/data/grid/${gridPeriod}-m2.json`, label: `${gridPeriod}-m2.json (month 2 points)` },
-    { path: `/data/grid/${gridPeriod}-m3.json`, label: `${gridPeriod}-m3.json (month 3 points)` },
-    { path: `/data/grid/${gridPeriod}-m4.json`, label: `${gridPeriod}-m4.json (month 4 points)` },
-    { path: `/data/grid/${gridPeriod}-m5.json`, label: `${gridPeriod}-m5.json (month 5 points)` },
-    { path: `/data/grid/${gridPeriod}-m6.json`, label: `${gridPeriod}-m6.json (month 6 points)` },
-    { path: `/data/grid/centroids.csv`, label: `centroids.csv (grid cell centers)` },
-  ]
+function listGridPeriods(): string[] {
+  try {
+    const dir = path.join(process.cwd(), 'public', 'data', 'grid')
+    const files = fs.readdirSync(dir)
+    const periods = Array.from(new Set(
+      files
+        .map(f => { const m = f.match(/^(\d{4}-\d{2})[-.]/) ; return m ? m[1] : null })
+        .filter((p): p is string => !!p)
+    )).sort()
+    return periods
+  } catch { return [] }
+}
 
-  // Inline previews (first ~5 rows) for each dataset
-  // Simple CSV splitter handling quotes (for preview rendering)
-  function splitCsvLine(line: string): string[] {
-    const out: string[] = []
-    let cur = ''
-    let inQuotes = false
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i]
-      if (inQuotes) {
-        if (ch === '"') {
-          if (line[i + 1] === '"') { cur += '"'; i++ } else { inQuotes = false }
-        } else {
-          cur += ch
-        }
-      } else {
-        if (ch === ',') { out.push(cur); cur = '' }
-        else if (ch === '"') { inQuotes = true }
-        else { cur += ch }
+
+
+export default function DataApiPage() {
+  const latest = latestPeriod()
+  const periods = listArchive()
+  const gridPeriods = listGridPeriods()
+
+  // Pre-compute all file availability
+  const archiveData = periods.map(period => {
+    const hasFile = (file: string) => {
+      try {
+        return fs.existsSync(path.join(process.cwd(), 'public', 'data', 'forecasts', 'archive', period, file))
+      } catch {
+        return false
       }
     }
-    out.push(cur)
-    return out
-  }
 
-  let countryPreview: string | null = null
-  try {
-    const latestWithRaw = countryDownloads.find(d => d.hasRaw)
-    if (latestWithRaw) {
-      const p = path.join(rawDir, `${latestWithRaw.period}.csv`)
-      if (fs.existsSync(p)) {
-        const text = fs.readFileSync(p, 'utf-8')
-        const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0)
-        const meta = lines[0]?.startsWith('#') ? [lines[0]] : []
-        const headerIdx = meta.length
-        const header = lines[headerIdx] || ''
-        const headerCols = splitCsvLine(header)
-        const limitedHeader = headerCols.slice(0, 5).join(',')
-        const dataLines = lines.slice(headerIdx + 1, headerIdx + 1 + 5)
-        const limitedRows = dataLines.map(l => splitCsvLine(l).slice(0, 5).join(','))
-        countryPreview = [...meta, limitedHeader, ...limitedRows].join('\n')
+    return {
+      period,
+      files: {
+        bundle: true,
+        hist: hasFile('Hist.csv'),
+        metadata: hasFile('metadata.json'),
+        h6_mean: hasFile('forecasts_h6.csv'),
+        h6_min: hasFile('forecasts_h6_min.csv'),
+        h6_max: hasFile('forecasts_h6_max.csv'),
+        h12_mean: hasFile('forecasts_h12.csv'),
+        h12_min: hasFile('forecasts_h12_min.csv'),
+        h12_max: hasFile('forecasts_h12_max.csv'),
       }
     }
-  } catch {}
+  })
 
-  let gridPreview: string | null = null
-  try {
-    const monthlyCsv = path.join(process.cwd(), 'public', 'data', 'grid', `${gridPeriod}-m1.csv`)
-    const combinedCsv = path.join(process.cwd(), 'public', 'data', 'grid', `${gridPeriod}.csv`)
-    const src = fs.existsSync(monthlyCsv) ? monthlyCsv : (fs.existsSync(combinedCsv) ? combinedCsv : null)
-    if (src) {
-      const text = fs.readFileSync(src, 'utf-8')
-      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0)
-      const header = lines[0] || ''
-      const headerCols = splitCsvLine(header)
-      const limitedHeader = headerCols.slice(0, 5).join(',')
-      const rows = lines.slice(1, 1 + 5)
-      const limitedRows = rows.map(l => splitCsvLine(l).slice(0, 5).join(','))
-      gridPreview = [limitedHeader, ...limitedRows].join('\n')
+  // Code examples for tabbed interface
+  const quickStartExamples = [
+    {
+      label: 'Python',
+      language: 'python',
+      code: `import pandas as pd
+import requests
+
+# Fetch latest forecasts and historical data
+forecasts = pd.read_csv("${SITE_BASE}/data/forecasts/latest/forecasts_h12.csv")
+historical = pd.read_csv("${SITE_BASE}/data/forecasts/latest/Hist.csv")
+metadata = requests.get("${SITE_BASE}/data/forecasts/latest/metadata.json").json()
+
+print(f"Forecast period: {metadata['forecast_start_date']}")
+print(forecasts["Ukraine"].head())  # First 5 months for Ukraine`
+    },
+    {
+      label: 'R',
+      language: 'r',
+      code: `library(readr)
+library(httr)
+library(jsonlite)
+library(magrittr)
+
+# Fetch latest forecasts and historical data
+forecasts <- read_csv("${SITE_BASE}/data/forecasts/latest/forecasts_h12.csv")
+historical <- read_csv("${SITE_BASE}/data/forecasts/latest/Hist.csv")
+metadata <- GET("${SITE_BASE}/data/forecasts/latest/metadata.json") %>%
+  content("text") %>% fromJSON()
+
+cat("Forecast period:", metadata$forecast_start_date, "\\n")
+head(forecasts$Ukraine)  # First 6 rows for Ukraine`
+    },
+    {
+      label: 'JavaScript',
+      language: 'javascript',
+      code: `// Fetch latest forecasts and historical data
+const forecasts = await fetch(
+  '${SITE_BASE}/data/forecasts/latest/forecasts_h12.csv'
+).then(r => r.text());
+const historical = await fetch(
+  '${SITE_BASE}/data/forecasts/latest/Hist.csv'
+).then(r => r.text());
+
+// Fetch metadata
+const meta = await fetch(
+  '${SITE_BASE}/data/forecasts/latest/metadata.json'
+).then(r => r.json());
+
+console.log('Forecast period:', meta.forecast_start_date);`
+    },
+    {
+      label: 'curl',
+      language: 'bash',
+      code: `# Download latest forecasts
+curl -O ${SITE_BASE}/data/forecasts/latest/forecasts_h12.csv
+curl -O ${SITE_BASE}/data/forecasts/latest/Hist.csv
+curl -O ${SITE_BASE}/data/forecasts/latest/metadata.json
+
+# Download complete archive bundle
+curl -O ${SITE_BASE}/data/forecasts/archive/2026-03/forecasts-2026-03.zip`
     }
-  } catch {}
+  ]
 
   return (
-    <div>
-      <section className="py-0 hero-background-network-image" />
-
-      <section className="py-10 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-2">Data Downloads</h1>
-          <p className="text-gray-700 font-light mb-6">
-            Latest update: {formatDMY(snapshot.generatedAt)}
+    <>
+      {/* Hero Section */}
+      <section className="py-24 hero-background-network-image">
+        <div className="absolute top-2 left-2 md:top-3 md:left-3 z-[1000]">
+          <Breadcrumbs />
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 leading-tight">
+            Data Downloads &amp; API
+          </h1>
+          <p className="text-xl text-gray-600 font-light leading-relaxed">
+            Programmatic access to <span className="word-emphasis">Luscint forecast data</span>.
+            Updated automatically on the 1st of each month.
           </p>
-          <div className="text-sm text-gray-600 mb-6">
-            <Link href="/forecasts" className="text-link">Visualize these forecasts on the dashboard</Link>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Contents Navigation */}
+          <div className="mb-10 text-sm text-gray-700">
+            <div className="font-medium text-gray-900 mb-2">Contents</div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <a href="#country-forecasts" className="text-link">Country Forecasts</a>
+              <a href="#prio-grid" className="text-link">PRIO-GRID Forecasts</a>
+              <a href="#usage" className="text-link">Usage</a>
+            </div>
           </div>
 
+          {/* Quick Start with Tabbed Examples */}
+          {/* Country Forecasts */}
+          <div id="country-forecasts" className="mb-12 border border-gray-200 rounded-lg p-6 bg-blue-50">
+            <h2 className="text-2xl font-light text-gray-900 mb-4">Country Forecasts</h2>
 
-          {/* Country-level and Grid-level (equal width) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            <div className="space-y-6">
-              <div className="border border-gray-200 rounded-lg p-4 bg-white h-full min-h-[420px] flex flex-col">
-                <h2 className="text-xl font-light text-gray-900 mb-1">Country-level Forecasts (CSV)</h2>
-                <p className="text-xs text-gray-500 mb-3">Six‑month‑ahead predictions made in each month.</p>
-                {countryDownloads.some(d => d.hasRaw) && (
-                  <div>
-                    <div className="text-sm text-gray-700 mb-1">Bulk download (recent periods)</div>
-                    <RawCsvDownloader items={countryDownloads.filter(d => d.hasRaw).map(d => ({ period: d.period }))} />
-                  </div>
-                )}
-                {countryPreview && (
-                  <div className="mt-3">
-                    <div className="text-sm text-gray-700 mb-1">Preview (first 5 rows and columns)</div>
-                    <pre className="text-xs bg-gray-50 p-3 border border-gray-200 rounded overflow-auto max-h-48 whitespace-pre-wrap">{countryPreview}</pre>
-                  </div>
-                )}
-              </div>
+            {/* Quick Start */}
+            <div className="mb-6 pb-6 border-b border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Quick Start</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Fetch the latest forecasts in your preferred language. All endpoints are stable and updated monthly on the 1st.
+              </p>
+              <TabbedCodeExamples examples={quickStartExamples} />
             </div>
 
-            {/* Grid-level */}
-            <div className="space-y-6">
-              <div className="border border-gray-200 rounded-lg p-4 bg-white h-full min-h-[420px] flex flex-col">
-                <h2 className="text-xl font-light text-gray-900 mb-1">Grid-level Forecasts</h2>
-                <p className="text-xs text-gray-500 mb-3">Pre‑computed monthly centroid points and GeoJSON polygons for PRIO‑GRID 0.5° cells.</p>
-                <div className="mb-4">
-                  <div className="text-sm text-gray-700 mb-1">Bulk download (latest period assets)</div>
-                  <MultiFileDownloader
-                    zipName={`Luscint-grid-${gridPeriod}`}
-                    items={[
-                      ...gridCsvLinks.map(l => ({ path: l.path, label: l.label })),
-                      gridCombinedCsv,
-                      ...gridGeoJsonLinks,
-                    ]}
-                  />
-                </div>
-                {/* Format description */}
-                <div className="text-xs text-gray-600 space-y-1">
-                  <div className="font-medium text-gray-700">Format</div>
-                  <div>
-                    - Monthly points CSVs: <span className="font-mono">lat,lon,v</span>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Latest Forecasts */}
+                <div className="border border-gray-200 rounded p-4">
+                  <h3 className="font-medium text-gray-900 mb-2">Latest Forecasts</h3>
+                  <div className="text-xs space-y-1 font-mono text-gray-700">
+                    <div>/data/forecasts/latest/forecasts_h6.csv</div>
+                    <div>/data/forecasts/latest/forecasts_h12.csv</div>
+                    <div>/data/forecasts/latest/metadata.json</div>
                   </div>
-                  <div>
-                    - Combined CSV: <span className="font-mono">lat,lon,m1,m2,m3,m4,m5,m6</span>
-                  </div>
-                  <div>
-                    - GeoJSON features with <span className="font-mono">properties.m1..m6</span>
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <h4 className="text-xs font-medium text-gray-900 mb-1">Historical Data</h4>
+                    <p className="text-xs text-gray-600 mb-1">
+                      Download the historical training data used to generate the predictions:
+                    </p>
+                    <div className="text-xs space-y-1 font-mono text-gray-700">
+                      <div>/data/forecasts/latest/Hist.csv</div>
+                    </div>
                   </div>
                 </div>
-                {gridPreview && (
-                  <div className="mt-3">
-                    <div className="text-sm text-gray-700 mb-1">Preview (first 5 rows and columns)</div>
-                    <pre className="text-xs bg-gray-50 p-3 border border-gray-200 rounded overflow-auto max-h-48 whitespace-pre-wrap">{gridPreview}</pre>
+
+                {/* Archive */}
+                <div className="border border-gray-200 rounded p-4">
+                  <h3 className="font-medium text-gray-900 mb-2">Historical Archive</h3>
+                  <div className="text-xs space-y-1 font-mono text-gray-700">
+                    <div>/data/forecasts/archive/<span className="text-blue-600">YYYY-MM</span>/forecasts_h6.csv</div>
+                    <div>/data/forecasts/archive/<span className="text-blue-600">YYYY-MM</span>/forecasts_h12.csv</div>
+                    <div>/data/forecasts/archive/<span className="text-blue-600">YYYY-MM</span>/Hist.csv</div>
+                    <div>/data/forecasts/archive/<span className="text-blue-600">YYYY-MM</span>/metadata.json</div>
                   </div>
-                )}
+                  {periods.length > 0 && (
+                    <p className="text-xs text-gray-600 mt-2">
+                      Available from <span className="font-medium">{periods[periods.length - 1]}</span> to <span className="font-medium">{periods[0]}</span>.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Prediction Bounds */}
+              <p className="text-sm text-gray-700">
+                <span className="font-medium">Prediction Bounds:</span> Add <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">_min</code> or <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">_max</code> to forecast filenames: <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">forecasts_h12_min.csv</code>, <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">forecasts_h12_max.csv</code>. <span className="font-medium">What they represent:</span> Empirical bounds derived from historical analogues. The model identifies past conflict trajectories similar to the present situation, then uses the range of those outcomes to estimate lower and upper prediction bounds. Not statistical confidence intervals, but scenario-based uncertainty estimates.
+              </p>
+
+              {/* Historical Archive Table */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Archive Downloads</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Access any historical forecast period{periods.length > 0 ? ` from ${periods[periods.length - 1]} to ${periods[0]}` : ' from 1989-01 to present'}.
+                </p>
+                <div className="bg-white border border-gray-200 rounded p-4">
+                  <ArchiveTable archiveData={archiveData} />
+                </div>
               </div>
             </div>
           </div>
 
-          
-          {/* API Documentation */}
-          <div className="mt-12 border border-gray-200 rounded-lg p-4 bg-white">
-            <h2 className="text-lg font-light text-gray-900 mb-2">API (Beta)</h2>
-            <p className="text-sm text-gray-700 mb-4">
-              Programmatic JSON access to forecasts. Base URL:
-              <code className="ml-1 font-mono">{siteUrl ? `${siteUrl}${base}` : `https://<your-domain>${base}`}</code>
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-              <div>
-                <div className="font-medium text-gray-900 mb-1">Country time series</div>
-                <pre className="text-xs bg-gray-50 p-3 border border-gray-200 rounded overflow-auto whitespace-pre-wrap">{
-`GET ${siteUrl ? siteUrl : 'https://<your-domain>'}${base}/api/v1/forecasts/series?entity=USA
+          {/* Sub-national Forecasts (PRIO-GRID) */}
+          {(() => {
+            let gridPeriod: string | null = null
+            try {
+              const gridDir = path.join(process.cwd(), 'public', 'data', 'grid')
+              const files = fs.readdirSync(gridDir)
+              const periods = files
+                .map((f) => {
+                  const m = f.match(/(\d{4}-\d{2})(?:\.geo\.json|\-m[1-6]\.json|\-m[1-6]\.csv|\.csv)$/)
+                  return m ? m[1] : null
+                })
+                .filter((p): p is string => !!p)
+                .sort()
+              if (periods.length) gridPeriod = periods[periods.length - 1]
+            } catch {}
 
-Response 200
-{
-  "entity": "USA",
-  "series": [ { "period": "2025-06", "index": 23.1, "forecast": [/* ... */] }, ... ]
-}`}
-                </pre>
-                <div className="text-xs text-gray-600 mt-2">Query params: <code className="font-mono">entity</code> (ISO‑3 or name token)</div>
+            if (!gridPeriod) return null
+
+            const gridCsvItems = [
+              { path: `/data/grid/${gridPeriod}-m1.csv`, label: `${gridPeriod}-m1.csv` },
+              { path: `/data/grid/${gridPeriod}-m2.csv`, label: `${gridPeriod}-m2.csv` },
+              { path: `/data/grid/${gridPeriod}-m3.csv`, label: `${gridPeriod}-m3.csv` },
+              { path: `/data/grid/${gridPeriod}-m4.csv`, label: `${gridPeriod}-m4.csv` },
+              { path: `/data/grid/${gridPeriod}-m5.csv`, label: `${gridPeriod}-m5.csv` },
+              { path: `/data/grid/${gridPeriod}-m6.csv`, label: `${gridPeriod}-m6.csv` },
+              { path: `/data/grid/${gridPeriod}.csv`, label: `${gridPeriod}.csv (all months)` },
+            ]
+            const gridGeoJsonItems = [
+              { path: `/data/grid/${gridPeriod}.geo.json`, label: `${gridPeriod}.geo.json (polygons)` },
+              { path: `/data/grid/${gridPeriod}-m1.json`, label: `${gridPeriod}-m1.json` },
+              { path: `/data/grid/${gridPeriod}-m2.json`, label: `${gridPeriod}-m2.json` },
+              { path: `/data/grid/${gridPeriod}-m3.json`, label: `${gridPeriod}-m3.json` },
+              { path: `/data/grid/${gridPeriod}-m4.json`, label: `${gridPeriod}-m4.json` },
+              { path: `/data/grid/${gridPeriod}-m5.json`, label: `${gridPeriod}-m5.json` },
+              { path: `/data/grid/${gridPeriod}-m6.json`, label: `${gridPeriod}-m6.json` },
+              { path: `/data/grid/centroids.csv`, label: `centroids.csv` },
+            ]
+
+            const gridExamples = [
+              {
+                label: 'Python',
+                language: 'python',
+                code: `import pandas as pd
+import requests
+
+# Download grid forecasts
+grid = pd.read_csv("${SITE_BASE}/data/grid/${gridPeriod}.csv")
+geojson = requests.get("${SITE_BASE}/data/grid/${gridPeriod}.geo.json").json()
+
+print(f"Grid cells: {len(grid)}")
+print(grid.head())`
+              },
+              {
+                label: 'R',
+                language: 'r',
+                code: `library(readr)
+library(httr)
+library(jsonlite)
+library(magrittr)
+
+# Download grid forecasts
+grid <- read_csv("${SITE_BASE}/data/grid/${gridPeriod}.csv")
+geojson <- GET("${SITE_BASE}/data/grid/${gridPeriod}.geo.json") %>%
+  content("text") %>% fromJSON()
+
+cat("Grid cells:", length(geojson$features), "\\n")
+head(grid)`
+              },
+              {
+                label: 'JavaScript',
+                language: 'javascript',
+                code: `// Download grid forecasts
+const grid = await fetch(
+  '${SITE_BASE}/data/grid/${gridPeriod}.csv'
+).then(r => r.text());
+const geojson = await fetch(
+  '${SITE_BASE}/data/grid/${gridPeriod}.geo.json'
+).then(r => r.json());
+
+console.log('Grid cells:', geojson.features.length);`
+              },
+              {
+                label: 'curl',
+                language: 'bash',
+                code: `# Download grid forecasts (CSV and GeoJSON)
+curl -O ${SITE_BASE}/data/grid/${gridPeriod}.csv
+curl -O ${SITE_BASE}/data/grid/${gridPeriod}.geo.json
+curl -O ${SITE_BASE}/data/grid/centroids.csv
+
+# Or download monthly files
+curl -O ${SITE_BASE}/data/grid/${gridPeriod}-m1.csv
+curl -O ${SITE_BASE}/data/grid/${gridPeriod}-m1.json`
+              }
+            ]
+
+            return (
+              <div id="prio-grid" className="mb-12 border border-gray-200 rounded-lg p-6 bg-green-50">
+                <h2 className="text-2xl font-light text-gray-900 mb-4">Sub-national Forecasts (PRIO-GRID)</h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  High-resolution spatial forecasts on a 0.5° grid (~55 km cells). Download forecasts for period <span className="font-mono font-medium">{gridPeriod}</span> in CSV or GeoJSON format.
+                </p>
+
+                {/* Quick Start Examples for PRIO-GRID */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-900 mb-3">Quick Start</h3>
+                  <TabbedCodeExamples examples={gridExamples} />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border border-gray-200 rounded p-4">
+                    <h4 className="font-medium text-gray-900 mb-3">CSV Files</h4>
+                    <MultiFileDownloader items={gridCsvItems} zipName={`Luscint-grid-${gridPeriod}-csv`} />
+                  </div>
+                  <div className="border border-gray-200 rounded p-4">
+                    <h4 className="font-medium text-gray-900 mb-3">GeoJSON Files</h4>
+                    <MultiFileDownloader items={gridGeoJsonItems} zipName={`Luscint-grid-${gridPeriod}-json`} />
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className="font-medium text-gray-900 mb-1">Grid points by month</div>
-                <pre className="text-xs bg-gray-50 p-3 border border-gray-200 rounded overflow-auto whitespace-pre-wrap">{
-`GET ${siteUrl ? siteUrl : 'https://<your-domain>'}${base}/api/v1/grid/${gridPeriod}/points?month=1
+            )
+          })()}
 
-Response 200
-{
-  "period": "${gridPeriod}",
-  "points": [ { "lat": 0.25, "lon": 32.75, "m": [10,8,5,2,1,0] }, ... ]
-}`}
-                </pre>
-                <div className="text-xs text-gray-600 mt-2">Query params: <code className="font-mono">month</code> (1–6, optional)</div>
+          {/* License and Citation */}
+          <div id="usage" className="mb-12 border border-gray-200 rounded-lg p-6 bg-white">
+            <h2 className="text-2xl font-light text-gray-900 mb-4">License and Citation</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2">License</h3>
+                <p className="text-sm text-gray-700">
+                  <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer" className="text-link">CC BY-NC 4.0</a>. For commercial use, <Link href="/contact" className="text-link">contact us</Link>.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2">Update Schedule</h3>
+                <p className="text-sm text-gray-700">
+                  Forecasts generated on the 1st at 01:00 UTC. Data available by 03:00 UTC.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 mb-2">Citation</h3>
+                <p className="text-sm text-gray-700">
+                  Schincariol, T., Frank, H., & Chadefaux, T. (2025). JPR. <a href="https://doi.org/10.1177/00223433251330790" target="_blank" rel="noopener noreferrer" className="text-link">DOI</a>
+                </p>
               </div>
             </div>
-            <div className="mt-4 text-sm text-gray-700">
-              <a className="text-link" href={`${base}/docs/api/`} target="_blank" rel="noopener noreferrer">Full API docs (Swagger)</a>
-              <span className="mx-2">·</span>
-              <span className="text-gray-600">Serverful only: Next.js API routes run on a server (e.g., Vercel). On GitHub Pages (static), use these static endpoints instead:</span>
-              <div className="mt-2 text-xs text-gray-600">
-                <div>• Grid points (static API-style): <code className="font-mono">{siteUrl ? siteUrl : 'https://&lt;user&gt;.github.io'}{base}/api/v1/grid/{gridPeriod}/points-m1.json</code></div>
-                <div>• Grid points (raw monthly): <code className="font-mono">{siteUrl ? siteUrl : 'https://&lt;user&gt;.github.io'}{base}/data/grid/{gridPeriod}-m1.json</code></div>
-                <div>• Grid polygons (raw): <code className="font-mono">{siteUrl ? siteUrl : 'https://&lt;user&gt;.github.io'}{base}/data/grid/{gridPeriod}.geo.json</code></div>
-                <div>• Country CSVs: download from the Country-level section above.</div>
-              </div>
-            </div>
-          </div>
 
-          {/* Data Rights & Use (CC BY-NC 4.0) */}
-          <div className="mt-8 border border-gray-200 rounded-lg p-4 bg-white">
-            <h2 className="text-lg font-light text-gray-900 mb-1">Data Rights &amp; Use</h2>
-            <p className="text-sm text-gray-700 mb-2">
-              Unless stated otherwise, datasets on this page are licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer" className="text-link">CC BY‑NC 4.0</a> (Attribution‑NonCommercial).
-              You may share and adapt for non‑commercial use with attribution. For commercial use, please <Link href="/contact" className="text-link">contact us</Link>.
-            </p>
-            <div className="text-xs text-gray-600 space-y-1">
+            <div className="mt-6 text-xs text-gray-600 space-y-1">
               <div>
                 <span className="font-medium">Attribution example:</span>
                 <code className="ml-2 px-1 py-0.5 bg-gray-50 border border-gray-200 rounded">Luscint (2025). Monthly Conflict Forecasts. https://luscint.com/data</code>
@@ -262,17 +395,18 @@ Response 200
               <div><span className="font-medium">Disclaimer:</span> Provided “as is”, without warranty; not for safety‑critical decisions.</div>
               <div><span className="font-medium">Acceptable use:</span> Do not use to target, harass, or cause harm; comply with applicable laws.</div>
             </div>
-          </div>
 
-          {/* Quick links to forecast pages */}
-          <div className="mt-10 text-sm text-gray-600">
-            <span className="mr-2">See also:</span>
-            <Link href="/forecasts" className="text-link">Country-level forecasts</Link>
-            <span className="mx-2">·</span>
-            <Link href="/forecasts-grid" className="text-link">Grid-level forecasts</Link>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <Link
+                href="/contact"
+                className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
+              >
+                Contact Us
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+    </>
   )
 }
