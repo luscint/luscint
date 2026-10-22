@@ -34,8 +34,8 @@ export default function About() {
           <div className="md:col-span-3 space-y-4 text-lg text-slate-600">
             <p>{companyData.mission}</p>
             <p>
-              Luscint was founded by a researcher in conflict forecasting. The methods behind our forecasts are published in
-              peer-reviewed literature, and we continue to extend them — including to new signals.
+              Luscint was founded by Thomas Chadefaux, a researcher in conflict forecasting. The methods behind our forecasts are
+              published in peer-reviewed literature, and we continue to extend them — including to new signals.
             </p>
             <p>
               The name comes from <em>lux</em> (light) and <em>intuitus</em> (insight): bringing weak signals into view.
@@ -55,6 +55,25 @@ export default function About() {
                 <p className="text-slate-600 text-[15px] leading-relaxed">{p.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-5 gap-10">
+          <div className="md:col-span-2">
+            <p className="eyebrow mb-3">Founder</p>
+            <h2 className="text-3xl">Thomas Chadefaux</h2>
+          </div>
+          <div className="md:col-span-3 space-y-4 text-lg text-slate-600">
+            <p>
+              Thomas holds a PhD in Political Science from the University of Michigan. His research focuses on the causes of war,
+              conflict forecasting and political methodology, and he is a co-author of the peer-reviewed work on which
+              Luscint&rsquo;s forecasting approach is built.
+            </p>
+            <p>
+              <Link href="/contact" className="text-link">Get in touch</Link> to discuss how the forecasts could work for your organisation.
+            </p>
           </div>
         </div>
       </section>
