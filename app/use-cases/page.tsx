@@ -1,14 +1,4 @@
-import Link from 'next/link'
-import { Download } from 'lucide-react'
 import useCasesData from '@/content/use-cases.json'
-
-// PDF mappings for each use case
-const pdfMappings = {
-  "Asset Managers": "/pdfs/AICAP_Asset_Managers_Case_Study.html",
-  "Insurers": "/pdfs/AICAP_Insurance_SRCC_Guide.html", 
-  "ESG Funds": "/pdfs/AICAP_ESG_Conflict_Screening_Guide.html",
-  "Governments": "/pdfs/AICAP_Government_Strategic_Intelligence.html"
-}
 
 export default function UseCases() {
   return (
@@ -33,18 +23,6 @@ export default function UseCases() {
               <div key={index} className="pb-8 border-b border-gray-200 last:border-b-0">
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-2xl font-light text-gray-900">{sector.name}</h3>
-                  {pdfMappings[sector.name as keyof typeof pdfMappings] && (
-                    <a 
-                      href={pdfMappings[sector.name as keyof typeof pdfMappings]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-sm text-clairient-blue hover:text-clairient-dark border border-clairient-blue hover:border-clairient-dark px-3 py-1 rounded transition-colors duration-200"
-                      title="Download detailed case study"
-                    >
-                      <Download size={14} className="mr-1" />
-                      Case Study
-                    </a>
-                  )}
                 </div>
                 <p className="text-gray-600 mb-4 leading-relaxed">{sector.useCase}</p>
                 <p className="text-gray-500 text-sm leading-relaxed">{sector.description}</p>
@@ -65,7 +43,7 @@ export default function UseCases() {
               { value: 'Open', label: 'Data and methods' },
             ].map((f) => (
               <div key={f.label} className="text-center">
-                <div className="text-3xl font-light text-clairient-blue mb-2">{f.value}</div>
+                <div className="text-3xl font-light text-brand-blue mb-2">{f.value}</div>
                 <div className="text-gray-600 text-sm">{f.label}</div>
               </div>
             ))}
