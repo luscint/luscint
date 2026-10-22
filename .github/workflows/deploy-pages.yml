@@ -27,9 +27,10 @@ permissions:
   pages: write
   id-token: write
 
+# Queue rather than cancel: a skipped run (e.g. from a cancelled sync) must not cancel a real deploy.
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
