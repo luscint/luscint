@@ -28,4 +28,3 @@ export default function Collapsible({ title, initiallyCollapsed = true, children
     </div>
   )
 }
-

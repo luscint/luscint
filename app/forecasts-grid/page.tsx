@@ -1,7 +1,15 @@
 import dynamic from 'next/dynamic'
+import type { Metadata } from 'next'
 const PrioGridMap = dynamic(() => import('@/components/PrioGridMap'), { ssr: false })
-import { readSnapshot, getAvailablePeriods } from '@/lib/forecasts'
+import { getForecastsPageData } from '@/lib/forecasts'
+import PageHero from '@/components/PageHero'
+import Link from 'next/link'
 // Inline download cards removed; use /data page via map button
+
+export const metadata: Metadata = {
+  title: 'Sub-national grid forecasts',
+  description: 'Six‑month, sub‑national forecasts of conflict fatalities with month‑over‑month changes and hotspots.',
+}
 
 function endPeriodFrom(start: string): string | null {
   const parts = start.split('-')
@@ -25,23 +33,20 @@ function formatDMY(iso: string): string {
 }
 
 export default async function ForecastsGridPage() {
-  const snap = readSnapshot('latest')
+  const { snapshot: snap, summaryStats, keyTakeaways } = await getForecastsPageData()
   const end = endPeriodFrom(snap.period) || snap.period
-  // Compute totals like the country page
-  const periods = getAvailablePeriods()
-  const currentIdx = periods.indexOf(snap.period)
-  const prevPeriod = currentIdx > 0 ? periods[currentIdx - 1] : undefined
-  const prevSnap = prevPeriod ? readSnapshot(prevPeriod) : undefined
-  const total1mCurrent = snap.entities.reduce((s, e) => s + (e.horizons?.['1m']?.index ?? e.index), 0)
-  const total1mPrev = prevSnap ? prevSnap.entities.reduce((s, e) => s + (e.horizons?.['1m']?.index ?? e.index), 0) : undefined
-  const deltaTotal = total1mPrev !== undefined ? Number((total1mCurrent - total1mPrev).toFixed(1)) : undefined
-  const countriesCovered = snap.entities.filter((e) => (e.entityType || 'country') === 'country').length
+  const { total1mCurrent, deltaTotal } = summaryStats
   // Total number of PRIO‑GRID 0.5° cells (pre‑computed): 720 x 360 = 259,200
   const GRID_TOTAL_CELLS = 259200
   // Removed inline grid download list in favor of centralized data page
   return (
     <div>
-      <section className="py-0 hero-background-network-image" />
+      {/* Hero */}
+      <PageHero
+        eyebrow="Product · Sub-national grid"
+        title="Sub-national forecasts"
+        lead="Forecasts of conflict fatalities for each 0.5° cell (about 55 km) of the world, 1–6 months ahead, updated monthly."
+      />
 
       <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
         <PrioGridMap period={snap.period} />
@@ -56,7 +61,8 @@ export default async function ForecastsGridPage() {
             Updated: {formatDMY(snap.generatedAt)}
           </p>
           {/* Removed secondary view toggle below the map */}
-          <p className="text-gray-600 text-sm mb-4">All values represent predicted fatalities over the next 6 months. The table shows 1‑month predictions and the change from the previous forecast.</p>
+          <p className="text-gray-600 text-sm mb-1">All values represent predicted conflict fatalities (deaths from state‑based, non‑state, and one‑sided violence) over the next 6 months. The table shows 1‑month predictions and the change from the previous forecast.</p>
+          <p className="text-xs text-gray-500 mb-4">Forecasts are statistical estimates, not advice — <Link href="/legal/disclaimer" className="text-link">see disclaimer</Link>.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-500">Total predicted fatalities (1‑month)</div>
@@ -71,7 +77,7 @@ export default async function ForecastsGridPage() {
               <div className="text-xs text-gray-500 mt-1">Change in total 1‑month predicted fatalities</div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <div className="text-sm text-gray-500">Grid covered</div>
+              <div className="text-sm text-gray-500"><span title="0.5° map squares (~55 km)">Sub‑national Areas</span> covered</div>
               <div className="text-3xl font-normal text-gray-900">{GRID_TOTAL_CELLS.toLocaleString()}</div>
             </div>
           </div>
@@ -79,6 +85,7 @@ export default async function ForecastsGridPage() {
       </section>
 
       {/* Inline download cards removed; use the centered Data button under the map */}
+
     </div>
   )
 }
