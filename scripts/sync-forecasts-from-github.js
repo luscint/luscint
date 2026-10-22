@@ -88,6 +88,49 @@ function parseCSV(text) {
 
 function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)) }
 
+function readLocalHistMinMax(trainMonths = 24) {
+  try {
+    const histPath = path.join(process.cwd(), 'public', 'data', 'hist.csv')
+    if (!fs.existsSync(histPath)) return null
+    const text = fs.readFileSync(histPath, 'utf-8')
+    const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0)
+    if (lines.length < 3) return null
+    const header = splitCSVLine(lines[0])
+    const rows = lines.slice(1).map(l => splitCSVLine(l))
+    const last = rows.slice(-trainMonths)
+    const result = {}
+    for (let ci = 1; ci < header.length; ci++) {
+      const name = header[ci]
+      const vals = last.map(r => Number(r[ci] || '0')).filter(v => Number.isFinite(v))
+      if (!vals.length) continue
+      let min = Math.min(...vals), max = Math.max(...vals)
+      if (max === min) max = min + 1e-6
+      result[name] = { min, max }
+    }
+    return result
+  } catch { return null }
+}
+
+function denormalizeMatrix(header, rows, minmax) {
+  if (!header || header.length < 2 || !Array.isArray(rows) || !rows.length) return { header, rows }
+  const dateKey = header[0]
+  const names = header.slice(1)
+  const mm = minmax || {}
+  const newRows = rows.map(obj => {
+    const out = { ...obj }
+    names.forEach(name => {
+      const v = Number(obj[name])
+      const mmc = mm[name]
+      if (mmc && Number.isFinite(v)) {
+        const den = mmc.min + v * (mmc.max - mmc.min)
+        out[name] = String(den)
+      }
+    })
+    return out
+  })
+  return { header, rows: newRows, dateKey }
+}
+
 function buildSnapshotFromSchema(rows, meta) {
   const entities = rows.map(r => ({
     id: r.id,
@@ -210,7 +253,7 @@ function normalizeRows(rows, opts, prevIndexMap) {
 }
 
 async function fetchJSON(url, token) {
-  const headers = { 'User-Agent': 'luscint-sync-script' }
+  const headers = { 'User-Agent': 'pace-sync-script' }
   if (token) headers['Authorization'] = `Bearer ${token}`
   const res = await fetch(url, { headers })
   if (!res.ok) throw new Error(`Fetch failed ${res.status} ${url}`)
@@ -218,7 +261,7 @@ async function fetchJSON(url, token) {
 }
 
 async function fetchText(url, token) {
-  const headers = { 'User-Agent': 'luscint-sync-script' }
+  const headers = { 'User-Agent': 'pace-sync-script' }
   if (token) headers['Authorization'] = `Bearer ${token}`
   const res = await fetch(url, { headers })
   if (!res.ok) throw new Error(`Fetch failed ${res.status} ${url}`)
@@ -238,18 +281,94 @@ async function main() {
     console.error('Missing --repo owner/repo (or env GITHUB_REPO)')
     process.exit(1)
   }
-  const apiUrl = `https://api.github.com/repos/${args.repo}/contents/${args.dir}?ref=${encodeURIComponent(args.branch || 'main')}`
+  const dirArg = (typeof args.dir === 'string') ? args.dir : ''
+  const apiUrl = `https://api.github.com/repos/${args.repo}/contents/${dirArg}?ref=${encodeURIComponent(args.branch || 'main')}`
   console.log(`Listing CSVs from ${apiUrl}`)
   const listing = await fetchJSON(apiUrl, args.token)
   if (!Array.isArray(listing)) {
     console.error('Unexpected listing response')
     process.exit(1)
   }
-  // Accept any CSV; derive period from first YYYY-MM in filename
-  const files = listing.filter(item => item.type === 'file' && /\.csv$/i.test(item.name))
+  // Accept only files with YYYY-MM.csv format (excludes h6/h12 variants, latest.csv, etc.)
+  const files = listing.filter(item => {
+    if (item.type !== 'file' || !/\.csv$/i.test(item.name)) return false
+    // Match exactly YYYY-MM.csv (not YYYY-MM_anything.csv)
+    return /^\d{4}-\d{2}\.csv$/i.test(item.name)
+  })
   if (!files.length) {
-    console.warn('No CSV files matching YYYY-MM.csv found')
-    process.exit(0)
+    console.warn('No CSV files matching YYYY-MM.csv found; attempting forecasts_h6.csv fallback')
+    try {
+      const rootUrl = `https://api.github.com/repos/${args.repo}/contents/?ref=${encodeURIComponent(args.branch || 'main')}`
+      const root = await fetchJSON(rootUrl, args.token)
+      const fh6 = Array.isArray(root) ? root.find(item => item.type === 'file' && /^forecasts_h6\.csv$/i.test(item.name)) : null
+      if (!fh6) {
+        console.warn('forecasts_h6.csv not found at repo root; attempting Pred_df.csv as last resort (may be normalized)')
+        const pred = Array.isArray(root) ? root.find(item => item.type === 'file' && /^Pred_df\.csv$/i.test(item.name)) : null
+        if (!pred) {
+          console.warn('Pred_df.csv not found at repo root; nothing to sync')
+          process.exit(0)
+        }
+        const csv = await fetchText(pred.download_url, args.token)
+        const parsed = parseCSV(csv)
+        const mm = readLocalHistMinMax(24) || readLocalHistMinMax(10) || {}
+        const dn = denormalizeMatrix(parsed.header, parsed.rows, mm)
+        const now = new Date()
+        const period = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}`
+        const snapshot = buildSnapshotFromMatrix(dn.header, dn.rows, { period, version: '1.0' }, null)
+        const outDir = path.join(process.cwd(), 'content', 'forecasts')
+        if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })
+        fs.writeFileSync(path.join(outDir, `${period}.json`), JSON.stringify(snapshot, null, 2))
+        fs.writeFileSync(path.join(outDir, 'latest.json'), JSON.stringify(snapshot, null, 2))
+        if (args.saveCsv) {
+          const rawDirAbs = path.join(process.cwd(), args.rawDir)
+          if (!fs.existsSync(rawDirAbs)) fs.mkdirSync(rawDirAbs, { recursive: true })
+          // Save denormalized CSV
+          const outLines = [parsed.header.join(','), ...dn.rows.map(r => dn.header.map(h => r[h] ?? '').join(','))].join('\n')
+          fs.writeFileSync(path.join(rawDirAbs, `${period}.csv`), outLines)
+          fs.writeFileSync(path.join(rawDirAbs, `latest.csv`), outLines)
+          const pubCsv = path.join(process.cwd(), 'public', 'data', 'csv')
+          if (!fs.existsSync(pubCsv)) fs.mkdirSync(pubCsv, { recursive: true })
+          fs.writeFileSync(path.join(pubCsv, `${period}.csv`), outLines)
+          fs.writeFileSync(path.join(pubCsv, `latest.csv`), outLines)
+        }
+        console.log(`Synced snapshot from Pred_df.csv (fallback, denormalized). Latest: ${period}`)
+        process.exit(0)
+      }
+      const csv = await fetchText(fh6.download_url, args.token)
+      const { header, rows } = parseCSV(csv)
+      // Try to read metadata for period
+      let period = null
+      try {
+        const meta = Array.isArray(root) ? root.find(item => item.type === 'file' && /^forecast_metadata\.json$/i.test(item.name)) : null
+        if (meta) {
+          const metaJson = await fetchJSON(meta.download_url, args.token)
+          period = metaJson?.forecast_start_date || metaJson?.data_end_date || null
+        }
+      } catch {}
+      if (!period) {
+        const now = new Date(); period = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}`
+      }
+      const snapshot = buildSnapshotFromMatrix(header, rows, { period, version: '1.0' }, null)
+      const outDir = path.join(process.cwd(), 'content', 'forecasts')
+      if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })
+      fs.writeFileSync(path.join(outDir, `${period}.json`), JSON.stringify(snapshot, null, 2))
+      fs.writeFileSync(path.join(outDir, 'latest.json'), JSON.stringify(snapshot, null, 2))
+      if (args.saveCsv) {
+        const rawDirAbs = path.join(process.cwd(), args.rawDir)
+        if (!fs.existsSync(rawDirAbs)) fs.mkdirSync(rawDirAbs, { recursive: true })
+        fs.writeFileSync(path.join(rawDirAbs, `${period}.csv`), csv)
+        fs.writeFileSync(path.join(rawDirAbs, `latest.csv`), csv)
+        const pubCsv = path.join(process.cwd(), 'public', 'data', 'csv')
+        if (!fs.existsSync(pubCsv)) fs.mkdirSync(pubCsv, { recursive: true })
+        fs.writeFileSync(path.join(pubCsv, `${period}.csv`), csv)
+        fs.writeFileSync(path.join(pubCsv, `latest.csv`), csv)
+      }
+      console.log(`Synced snapshot from forecasts_h6.csv. Latest: ${period}`)
+      process.exit(0)
+    } catch (e) {
+      console.error('Fallback sync failed:', e?.message || e)
+      process.exit(1)
+    }
   }
   // Sort by detected period ascending
   files.sort((a, b) => {
@@ -262,7 +381,7 @@ async function main() {
     return maNum - mbNum
   })
   const targets = args.latestOnly ? [files[files.length - 1]] : files
-  const latestCsv = listing.find(item => item.type === 'file' && /latest\.csv$/i.test(item.name))
+  const latestCsv = listing.find(item => item.type === 'file' && /^latest\.csv$/i.test(item.name))
 
   const outDir = path.join(process.cwd(), 'content', 'forecasts')
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })
@@ -317,8 +436,9 @@ async function main() {
       const csv = await fetchText(latestCsv.download_url, args.token)
       const { header, rows } = parseCSV(csv)
       const dateKey = header[0]
-      const lastRow = rows[rows.length - 1] || {}
-      const derived = parseYYYYMM(lastRow[dateKey])
+      // Use FIRST row (most recent date) not last row (oldest date from 1989)
+      const firstRow = rows[0] || {}
+      const derived = parseYYYYMM(firstRow[dateKey])
       if (derived) {
         const snapshot = buildSnapshotFromMatrix(header, rows, { period: derived, version: '1.0' }, prevIndexMap)
         const outFile = path.join(outDir, `${derived}.json`)

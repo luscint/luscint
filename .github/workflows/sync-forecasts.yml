@@ -44,12 +44,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run csv:sync:github -- \
-            --repo ThomasSchinca/Pace-map-risk \
-            --dir Historical_Predictions \
+            --repo conflictlab/Pace-map-risk \
+            --dir '' \
             --branch main \
             --latestOnly \
             --saveCsv \
             --token $GITHUB_TOKEN
+      - name: Mirror latest forecasts and archive for downloads
+        run: |
+          node scripts/mirror-forecasts-with-dates.js
+          node scripts/sync-historical-archive.js
+
       - name: Build PRIO-GRID centroids from shapefile
         run: npm run grid:centroids
       - name: Build PRIO-GRID GeoJSON from live CSV
@@ -69,7 +74,7 @@ jobs:
           set -e
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add content/forecasts public/data/csv public/data/grid || true
+          git add content/forecasts public/data/csv public/data/grid public/data/forecasts || true
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync forecasts + grid assets (centroids, geojson, monthly points)"
           fi

@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { RISK_THRESHOLDS } from './config'
 
 export type DriverCategory = 'election' | 'unrest' | 'macro' | 'security' | 'policy'
 
@@ -98,14 +99,211 @@ export function readAllSnapshots(): ForecastSnapshot[] {
   return periods.map((p) => readSnapshot(p))
 }
 
-export function getEntitySeries(entityId: string): Array<{ period: string; index: number; confidence: number }> {
+export function getEntitySeries(entityId: string): Array<{ period: string; index: number; confidence: number; p50?: number }> {
   const snaps = readAllSnapshots()
-  const series: Array<{ period: string; index: number; confidence: number }> = []
+  const series: Array<{ period: string; index: number; confidence: number; p50?: number }> = []
   for (const s of snaps) {
     const e = s.entities.find((x) => x.id === entityId || x.iso3 === entityId)
-    if (e) series.push({ period: s.period, index: e.index, confidence: e.confidence })
+    if (e) {
+      // Use p50 predicted fatalities if available (from horizons), fallback to index
+      const p50 = e.horizons?.['1m']?.p50 ?? e.index
+      series.push({ period: s.period, index: e.index, confidence: e.confidence, p50 })
+    }
   }
   return series
+}
+
+function analyzeHistoricalTrend(series: Array<{ period: string; index: number; confidence: number }>): string {
+  if (series.length < 3) return ''
+
+  const recent = series.slice(-6) // Last 6 months
+  const values = recent.map(s => s.index)
+
+  // Calculate trend
+  const firstHalf = values.slice(0, Math.ceil(values.length / 2))
+  const secondHalf = values.slice(Math.ceil(values.length / 2))
+  const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length
+  const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length
+  const trendChange = secondAvg - firstAvg
+
+  // Calculate volatility
+  const avg = values.reduce((a, b) => a + b, 0) / values.length
+  const variance = values.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / values.length
+  const stdDev = Math.sqrt(variance)
+  const volatility = stdDev / avg
+
+  // Find peaks
+  const maxValue = Math.max(...values)
+  const maxIndex = values.indexOf(maxValue)
+  const isPeakRecent = maxIndex >= values.length - 2
+
+  // Generate description
+  if (Math.abs(trendChange) < 5) {
+    if (volatility > 0.3) {
+      return 'Risk levels have been volatile but stable on average over recent months.'
+    }
+    return 'Risk has remained relatively stable over the past several months.'
+  } else if (trendChange > 15) {
+    return 'Risk has been on a sharp upward trajectory in recent months.'
+  } else if (trendChange > 5) {
+    if (isPeakRecent) {
+      return 'Risk has been gradually increasing and may be approaching a peak.'
+    }
+    return 'Risk has been trending upward over recent months.'
+  } else if (trendChange < -15) {
+    return 'Risk has declined significantly in recent months, showing substantial improvement.'
+  } else {
+    if (volatility > 0.3) {
+      return 'Risk has been declining but with notable volatility.'
+    }
+    return 'Risk has been on a downward trend recently.'
+  }
+}
+
+export function generateEntityNarrative(
+  entity: ForecastEntity,
+  historicalSeries: Array<{ period: string; index: number; confidence: number }>,
+  snapshot: ForecastSnapshot
+): string {
+  const paragraphs: string[] = []
+  const fmtInt = (v: number) => String(Math.round(Number(v)))
+
+  // 1. Current Status (use predicted fatalities, next month p50)
+  const currentP50 = entity.horizons?.['1m']?.p50 ?? entity.index
+  let statusLine = ''
+  if (entity.band === 'high') {
+    statusLine = `${entity.name} is currently in a **high-risk** state with predicted fatalities next month of **${fmtInt(currentP50)}**.`
+  } else if (entity.band === 'medium') {
+    statusLine = `${entity.name} shows **moderate** risk, with predicted fatalities next month of **${fmtInt(currentP50)}**.`
+  } else {
+    statusLine = `${entity.name} maintains **relatively low** risk, with predicted fatalities next month of **${fmtInt(currentP50)}**.`
+  }
+  paragraphs.push(statusLine)
+
+  // 2. Recent Change (compute MoM from previous snapshot's next‑month p50)
+  try {
+    const periods = getAvailablePeriods()
+    const currentIdx = periods.indexOf(snapshot.period)
+    const prevPeriod = currentIdx > 0 ? periods[currentIdx - 1] : undefined
+    if (prevPeriod) {
+      const prevSnap = readSnapshot(prevPeriod)
+      const prevMatch = prevSnap.entities.find(
+        (e) => e.id === entity.id || (entity.iso3 && e.iso3 === entity.iso3) || (e.name || '').toUpperCase() === (entity.name || '').toUpperCase()
+      )
+      const prevP50 = prevMatch ? (prevMatch.horizons?.['1m']?.p50 ?? prevMatch.index) : undefined
+      if (prevP50 !== undefined) {
+        const delta = currentP50 - prevP50
+        if (Math.abs(delta) > 0.5) {
+          let changeLine = ''
+          if (delta > 200) {
+            changeLine = `Predicted fatalities have **surged dramatically** by ${fmtInt(delta)} since last month.`
+          } else if (delta > 50) {
+            changeLine = `Predicted fatalities have **increased substantially** by ${fmtInt(delta)} since last month.`
+          } else if (delta > 10) {
+            changeLine = `Predicted fatalities have **risen moderately** by ${fmtInt(delta)} since last month.`
+          } else if (delta > 0) {
+            changeLine = `Predicted fatalities have **increased slightly** by ${fmtInt(delta)} since last month.`
+          } else if (delta < -200) {
+            changeLine = `Predicted fatalities have **dropped sharply** by ${fmtInt(Math.abs(delta))}, indicating a marked improvement.`
+          } else if (delta < -50) {
+            changeLine = `Predicted fatalities have **declined significantly** by ${fmtInt(Math.abs(delta))} since last month.`
+          } else if (delta < -10) {
+            changeLine = `Predicted fatalities have **decreased moderately** by ${fmtInt(Math.abs(delta))}.`
+          } else {
+            changeLine = `Predicted fatalities have **edged down** slightly by ${fmtInt(Math.abs(delta))}.`
+          }
+          paragraphs.push(changeLine)
+        }
+      }
+    }
+  } catch {}
+
+  // 3. Historical Trend Context
+  if (historicalSeries.length >= 3) {
+    const trendDescription = analyzeHistoricalTrend(historicalSeries)
+    if (trendDescription) {
+      paragraphs.push(trendDescription)
+    }
+  }
+
+  // 4. Drivers
+  if (entity.drivers && entity.drivers.length > 0) {
+    const sortedDrivers = [...entity.drivers].sort((a, b) => b.impact - a.impact)
+    const topDriver = sortedDrivers[0]
+
+    if (sortedDrivers.length === 1) {
+      paragraphs.push(`The primary risk driver is **${topDriver.category}**.`)
+    } else if (sortedDrivers.length === 2) {
+      paragraphs.push(`Key risk drivers include **${topDriver.category}** and **${sortedDrivers[1].category}**.`)
+    } else {
+      const top3 = sortedDrivers.slice(0, 3).map(d => d.category)
+      paragraphs.push(`Key risk drivers include **${top3[0]}**, **${top3[1]}**, and **${top3[2]}**.`)
+    }
+  }
+
+  // 5. Outlook (predicted fatalities trajectory)
+  const outlook1m = entity.horizons['1m'].p50
+  const outlook6m = entity.horizons['6m'].p50
+  const outlookChange = outlook6m - outlook1m
+
+  if (Math.abs(outlookChange) > 10) {
+    if (outlookChange > 20) {
+      paragraphs.push(`The 6‑month outlook suggests **sharply rising predicted fatalities**, reaching ${fmtInt(outlook6m)}.`)
+    } else if (outlookChange > 10) {
+      paragraphs.push(`The outlook indicates **moderately increasing predicted fatalities** over the next six months, forecasting ${fmtInt(outlook6m)}.`)
+    } else if (outlookChange < -20) {
+      paragraphs.push(`Forecasts indicate **substantially improving conditions** ahead, with predicted fatalities expected to decline to ${fmtInt(outlook6m)}.`)
+    } else {
+      paragraphs.push(`The outlook suggests **gradual improvement**, with predicted fatalities forecast to decrease to ${fmtInt(outlook6m)}.`)
+    }
+  } else if (Math.abs(outlookChange) > 5) {
+    if (outlookChange > 0) {
+      paragraphs.push(`Predicted fatalities are expected to **edge higher** over the next six months.`)
+    } else {
+      paragraphs.push(`Predicted fatalities are expected to **decline modestly** over the next six months.`)
+    }
+  } else {
+    paragraphs.push(`Predicted fatalities are forecast to **remain relatively stable** over the next six months.`)
+  }
+
+  // 6. Confidence note
+  if (entity.confidence < 0.5) {
+    paragraphs.push(`⚠️ Note: Forecast confidence is relatively low (${(entity.confidence * 100).toFixed(0)}%), suggesting higher uncertainty.`)
+  } else if (entity.confidence > 0.8) {
+    paragraphs.push(`Forecast confidence is high (${(entity.confidence * 100).toFixed(0)}%).`)
+  }
+
+  return paragraphs.join(' ')
+}
+
+export function getEntityComparativeStats(entity: ForecastEntity, snapshot: ForecastSnapshot) {
+  const allEntities = snapshot.entities
+  const sameTypeEntities = allEntities.filter(e => e.entityType === entity.entityType)
+
+  // Calculate percentile (what % of entities have lower risk)
+  const valueOf = (e: ForecastEntity) => (e.horizons?.['1m']?.p50 ?? e.index)
+  const entityVal = valueOf(entity)
+  const lowerRiskCount = sameTypeEntities.filter(e => valueOf(e) < entityVal).length
+  const percentile = Math.round((lowerRiskCount / sameTypeEntities.length) * 100)
+
+  // Calculate rank
+  const sorted = [...sameTypeEntities].sort((a, b) => valueOf(b) - valueOf(a))
+  const rank = sorted.findIndex(e => e.id === entity.id) + 1
+
+  // Global average
+  const globalAvg = allEntities.reduce((sum, e) => sum + valueOf(e), 0) / allEntities.length
+
+  // Type-specific average
+  const typeAvg = sameTypeEntities.reduce((sum, e) => sum + valueOf(e), 0) / sameTypeEntities.length
+
+  return {
+    percentile,
+    rank,
+    totalInType: sameTypeEntities.length,
+    globalAvg: Number(globalAvg.toFixed(1)),
+    typeAvg: Number(typeAvg.toFixed(1)),
+    aboveTypeAvg: entity.index > typeAvg,
+  }
 }
 
 export function getTopMovers(snapshot: ForecastSnapshot, limit = 5) {
@@ -154,6 +352,27 @@ export function getEntityHorizonMonths(period: string, entityName: string): numb
   }
 }
 
+// Calculate default 6-month horizon by interpolating between 1m, 3m, and 6m forecasts
+function calculateDefaultMonths(entity: ForecastEntity): number[] {
+  const h1m = entity.horizons['1m'].p50
+  const h3m = entity.horizons['3m'].p50
+  const h6m = entity.horizons['6m'].p50
+
+  return [
+    h1m,
+    Number(((h1m + h3m) / 2).toFixed(1)),
+    h3m,
+    Number((h3m + (h6m - h3m) / 3).toFixed(1)),
+    Number((h3m + (h6m - h3m) * 2 / 3).toFixed(1)),
+    h6m,
+  ]
+}
+
+// Get monthly forecast values, either from CSV data or by interpolating horizons
+export function getOrCalculateMonths(period: string, entity: ForecastEntity): number[] {
+  return getEntityHorizonMonths(period, entity.name) || calculateDefaultMonths(entity)
+}
+
 function splitCSVLine(line: string): string[] {
   const out: string[] = []
   let cur = ''
@@ -175,6 +394,116 @@ function splitCSVLine(line: string): string[] {
   out.push(cur)
   return out.map(s => s.trim())
 }
+
+// ADDED_CODE_START
+export async function getForecastsPageData() {
+  const snapshot = readSnapshot('latest')
+  const periods = getAvailablePeriods()
+  const currentIdx = periods.indexOf(snapshot.period)
+  const prevPeriod = currentIdx > 0 ? periods[currentIdx - 1] : undefined
+  const prevSnap = prevPeriod ? readSnapshot(prevPeriod) : undefined
+
+  const prevIndexMap = new Map<string, number>()
+  if (prevSnap) {
+    for (const e of prevSnap.entities) {
+      prevIndexMap.set(e.id, e.horizons?.['1m']?.index ?? e.index)
+      if (e.iso3) prevIndexMap.set(e.iso3, e.horizons?.['1m']?.index ?? e.index)
+      prevIndexMap.set((e.name || '').toUpperCase(), e.horizons?.['1m']?.index ?? e.index)
+    }
+  }
+
+  const total1mCurrent = snapshot.entities.reduce((s, e) => s + (e.horizons?.['1m']?.index ?? e.index), 0)
+  const total1mPrev = prevSnap ? prevSnap.entities.reduce((s, e) => s + (e.horizons?.['1m']?.index ?? e.index), 0) : undefined
+  const deltaTotal = total1mPrev !== undefined ? Number((total1mCurrent - total1mPrev).toFixed(1)) : undefined
+
+  const countriesCovered = snapshot.entities.filter((e) => (e.entityType || 'country') === 'country').length
+
+  const rows = snapshot.entities.map((e) => {
+    const prev = prevIndexMap.get(e.id) ?? prevIndexMap.get(e.iso3 || '') ?? prevIndexMap.get((e.name || '').toUpperCase())
+    const deltaMoM = prev !== undefined ? Number((e.horizons['1m'].index - prev).toFixed(1)) : 0
+    const months = getOrCalculateMonths(snapshot.period, e)
+    return {
+      id: e.id,
+      name: e.name,
+      entityType: e.entityType,
+      pred1m: Number(e.horizons['1m'].p50.toFixed(1)),
+      pred3m: Number(e.horizons['3m'].p50.toFixed(1)),
+      pred6m: Number(e.horizons['6m'].p50.toFixed(1)),
+      deltaMoM,
+      trend: months,
+    }
+  })
+
+  const countryMapItems = snapshot.entities
+    .filter((e) => (e.entityType || 'country') === 'country')
+    .map((e) => {
+      const months = getOrCalculateMonths(snapshot.period, e)
+      return { id: e.id, name: e.name, iso3: e.iso3, months }
+    })
+
+  const highlights = [...snapshot.entities]
+    .map((e) => {
+      const prev = prevIndexMap.get(e.id) ?? prevIndexMap.get(e.iso3 || '') ?? prevIndexMap.get((e.name || '').toUpperCase())
+      const deltaMoM = prev !== undefined ? Math.abs(Number((e.horizons['1m'].index - prev).toFixed(1))) : 0
+      return { e, deltaMoM }
+    })
+    .sort((a, b) => b.deltaMoM - a.deltaMoM)
+    .slice(0, 6)
+    .map(x => x.e)
+
+  const movers = [...snapshot.entities]
+    .map((e) => {
+      const prev = prevIndexMap.get(e.id) ?? prevIndexMap.get(e.iso3 || '') ?? prevIndexMap.get((e.name || '').toUpperCase())
+      const deltaMoM = prev !== undefined ? Number((e.horizons['1m'].index - prev).toFixed(1)) : 0
+      return { id: e.id, name: e.name, entityType: e.entityType, deltaMoM, band: e.band }
+    })
+    .sort((a, b) => Math.abs(b.deltaMoM) - Math.abs(a.deltaMoM))
+    .slice(0, 6)
+
+  const HIGH_THRESHOLD = RISK_THRESHOLDS.HIGH_RISK
+  const countryEntities = snapshot.entities.filter((e) => (e.entityType || 'country') === 'country')
+  const highByThresholdCount = countryEntities.filter((e) => Number(e.horizons['1m'].p50) > HIGH_THRESHOLD).length
+  const prevHighByThresholdCount = (() => {
+    if (!prevSnap) return undefined as number | undefined
+    const prevCountries = prevSnap.entities.filter((e) => (e.entityType || 'country') === 'country')
+    return prevCountries.filter((e) => Number(e.horizons['1m'].p50) > HIGH_THRESHOLD).length
+  })()
+  const deltaHigh = (prevHighByThresholdCount === undefined) ? undefined : (highByThresholdCount - prevHighByThresholdCount)
+
+  const topMover = movers.length > 0 ? movers[0] : null
+  const keyTakeaways: string[] = []
+
+  // First takeaway (global risk trend)
+  keyTakeaways.push(
+    `Global conflict risk ${deltaTotal && deltaTotal > 0 ? 'shows a slight increase' : 'remains stable or has decreased'} since last month.`
+  )
+
+  // Second takeaway (top mover, shortened)
+  if (topMover) {
+    keyTakeaways.push(
+      `Top mover: ${topMover.name} (${topMover.deltaMoM >= 0 ? '+' : ''}${topMover.deltaMoM.toFixed(1)} pts).`
+    )
+  }
+
+
+  return {
+    snapshot,
+    summaryStats: {
+      total1mCurrent,
+      deltaTotal,
+      countriesCovered,
+      highByThresholdCount,
+      deltaHigh,
+      HIGH_THRESHOLD,
+    },
+    rows,
+    countryMapItems,
+    highlights,
+    movers,
+    keyTakeaways,
+  }
+}
+// ADDED_CODE_END
 
 export function buildCSV(snapshot: ForecastSnapshot): string {
   const header = [

@@ -18,7 +18,7 @@ async function main() {
   }
 
   console.log('Prebuild: syncing forecasts from GitHub…')
-  run('node scripts/sync-forecasts-from-github.js --repo ThomasSchinca/Pace-map-risk --dir Historical_Predictions --branch main --latestOnly --saveCsv')
+  run('node scripts/sync-forecasts-from-github.js --repo conflictlab/Pace-map-risk --branch main --latestOnly --saveCsv')
 
   console.log('Prebuild: building PRIO-GRID GeoJSON from live CSV…')
   run('node scripts/prio-csv-to-geojson.js --csv https://raw.githubusercontent.com/ThomasSchinca/Live_3D_forecast/main/df_output.csv')
