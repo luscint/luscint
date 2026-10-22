@@ -238,6 +238,8 @@ Priority order (all already built in `websitePaCE`):
 
 ## 9. Phased plan
 
+**Status (2026-10-22 evening):** Phase 0 done except the form service key (form falls back to email until `NEXT_PUBLIC_FORM_ENDPOINT` is set). Phase 1 mostly done: new homepage, navigation, Platform, three Solutions pages, Open data vs. Luscint, About, FAQ, Methodology, legal pages, sitemap/robots/404, design foundation (serif headings, navy palette, calmer motion). Still open: luscint.com DNS, analytics, validation/`/performance`, sample report, designer pass, forecast-vs-observed chart.
+
 ### Phase 0 — Stop the bleeding (≈ 2–3 days)
 - [ ] Working contact/demo form + notification email
 - [ ] Remove or unlink `AICAP_*` case-study PDFs; remove "unprecedented accuracy" and competitor "Similar to" list from About
