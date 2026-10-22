@@ -373,7 +373,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
           <div className={`absolute z-[1000] pointer-events-auto ${mobileControlsButtonPosition === 'top-right' ? 'top-4 right-4' : 'bottom-20 right-2'}`}>
             <button
               onClick={() => setMapControlsEnabled(false)}
-              className="px-3 py-1.5 bg-clairient-blue/50 backdrop-blur border border-clairient-blue/60 rounded shadow-sm text-xs font-medium text-white hover:bg-clairient-blue/65 focus:outline-none opacity-65"
+              className="px-3 py-1.5 bg-brand-blue/50 backdrop-blur border border-brand-blue/60 rounded shadow-sm text-xs font-medium text-white hover:bg-brand-blue/65 focus:outline-none opacity-65"
               aria-label="Disable map controls"
             >
               Disable map controls
@@ -403,7 +403,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
                   }
                 }}
                 placeholder="Search country…"
-                className="w-64 px-3 py-2 rounded-md border border-gray-300 bg-white/95 backdrop-blur text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-clairient-blue"
+                className="w-64 px-3 py-2 rounded-md border border-gray-300 bg-white/95 backdrop-blur text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
                 aria-label="Search country"
               />
               {showSearch && query && searchMatches.length > 0 && (
@@ -411,7 +411,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
                   {searchMatches.map((m, idx) => (
                     <li
                       key={m.name}
-                      className={`px-3 py-2 text-sm cursor-pointer ${idx === focusedIndex ? 'bg-red-50 text-clairient-blue' : 'hover:bg-gray-50'}`}
+                      className={`px-3 py-2 text-sm cursor-pointer ${idx === focusedIndex ? 'bg-red-50 text-brand-blue' : 'hover:bg-gray-50'}`}
                       onMouseDown={(e) => { e.preventDefault(); goToEntity(m.name); setShowSearch(false) }}
                       role="option"
                       aria-selected={idx === focusedIndex}
@@ -427,16 +427,16 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
         {/* View toggle overlay (center-bottom, larger) */}
         {!hideControls && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform z-[1000] pointer-events-auto">
-            <div className="inline-flex rounded-xl border-2 border-clairient-blue overflow-hidden bg-white/95 backdrop-blur shadow-lg">
+            <div className="inline-flex rounded-xl border-2 border-brand-blue overflow-hidden bg-white/95 backdrop-blur shadow-lg">
               <Link
                 href="/forecasts"
-                className={`px-6 py-2 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-clairient-blue ${pathname?.startsWith('/forecasts-grid') ? 'text-clairient-blue hover:bg-gray-50' : 'bg-clairient-blue text-white'}`}
+                className={`px-6 py-2 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue ${pathname?.startsWith('/forecasts-grid') ? 'text-brand-blue hover:bg-gray-50' : 'bg-brand-blue text-white'}`}
               >
                 Country view
               </Link>
               <Link
                 href="/forecasts-grid"
-                className={`px-6 py-2 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-clairient-blue ${pathname?.startsWith('/forecasts-grid') ? 'bg-clairient-blue text-white' : 'text-clairient-blue hover:bg-gray-50'}`}
+                className={`px-6 py-2 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue ${pathname?.startsWith('/forecasts-grid') ? 'bg-brand-blue text-white' : 'text-brand-blue hover:bg-gray-50'}`}
               >
                 <span title="0.5° map squares (~55 km)">Sub‑national Areas</span>
               </Link>
@@ -726,7 +726,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
           {/* Legend moved onto the map (bottom-right overlay), slider moved onto map (bottom-left) */}
           {!hideDownloadButton && (
             <div className="mt-4 text-center">
-              <Link href="/downloads" className="bg-clairient-blue text-white px-8 py-3 hover:bg-clairient-dark transition-all duration-200 font-normal rounded-lg inline-flex items-center justify-center shadow-sm hover:shadow-md">
+              <Link href="/downloads" className="bg-brand-blue text-white px-8 py-3 hover:bg-brand-dark transition-all duration-200 font-normal rounded-lg inline-flex items-center justify-center shadow-sm hover:shadow-md">
                 Data downloads
               </Link>
             </div>

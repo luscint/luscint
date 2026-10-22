@@ -27,8 +27,8 @@ export default function About() {
               <p className="text-lg text-gray-600 mb-8">
                 {companyData.mission}
               </p>
-              <div className="bg-clairient-blue/10 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-clairient-blue mb-3">
+              <div className="bg-brand-blue/10 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-brand-blue mb-3">
                   Why {companyData.name}?
                 </h3>
                 <p className="text-gray-700">
@@ -40,7 +40,7 @@ export default function About() {
             
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-clairient-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="text-white" size={24} />
                 </div>
                 <h3 className="font-semibold mb-2">Lead Time</h3>
@@ -48,7 +48,7 @@ export default function About() {
               </div>
               
               <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-clairient-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
                   <Award className="text-white" size={24} />
                 </div>
                 <h3 className="font-semibold mb-2">Transparency</h3>
@@ -56,7 +56,7 @@ export default function About() {
               </div>
               
               <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-clairient-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
                   <TrendingUp className="text-white" size={24} />
                 </div>
                 <h3 className="font-semibold mb-2">Customizable</h3>
@@ -64,7 +64,7 @@ export default function About() {
               </div>
               
               <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-clairient-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
                   <Users className="text-white" size={24} />
                 </div>
                 <h3 className="font-semibold mb-2">Research-Backed</h3>
@@ -87,7 +87,7 @@ export default function About() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h3 className="text-xl font-semibold mb-4 text-clairient-blue">
+              <h3 className="text-xl font-semibold mb-4 text-brand-blue">
                 Quantitative Conflict Forecasting
               </h3>
               <p className="text-gray-600 mb-4">
@@ -100,7 +100,7 @@ export default function About() {
             </div>
             
             <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h3 className="text-xl font-semibold mb-4 text-clairient-blue">
+              <h3 className="text-xl font-semibold mb-4 text-brand-blue">
                 Operational Risk Monitoring
               </h3>
               <p className="text-gray-600 mb-4">
@@ -113,7 +113,7 @@ export default function About() {
             </div>
             
             <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h3 className="text-xl font-semibold mb-4 text-clairient-blue">
+              <h3 className="text-xl font-semibold mb-4 text-brand-blue">
                 Geopolitical ESG Intelligence
               </h3>
               <p className="text-gray-600 mb-4">
@@ -127,7 +127,7 @@ export default function About() {
           </div>
           
           <div className="mt-12 text-center">
-            <div className="bg-clairient-blue text-white p-8 rounded-lg max-w-4xl mx-auto">
+            <div className="bg-brand-blue text-white p-8 rounded-lg max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold mb-4">Our Differentiation</h3>
               <p className="text-blue-100">
                 <strong>Model-based foresight, client-specific exposure integration, and explainability</strong> — 
@@ -150,7 +150,7 @@ export default function About() {
           
           <div className="space-y-8">
             <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-clairient-blue rounded-full flex items-center justify-center text-white font-bold">
+              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
                 1
               </div>
               <div className="ml-6">
@@ -162,7 +162,7 @@ export default function About() {
             </div>
             
             <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-clairient-blue rounded-full flex items-center justify-center text-white font-bold">
+              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
                 2
               </div>
               <div className="ml-6">
@@ -174,7 +174,7 @@ export default function About() {
             </div>
             
             <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-clairient-blue rounded-full flex items-center justify-center text-white font-bold">
+              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
                 3
               </div>
               <div className="ml-6">
@@ -186,7 +186,7 @@ export default function About() {
             </div>
             
             <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-clairient-blue rounded-full flex items-center justify-center text-white font-bold">
+              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
                 4
               </div>
               <div className="ml-6">
@@ -201,7 +201,7 @@ export default function About() {
       </section>
 
       {/* Conclusion */}
-      <section className="py-20 bg-clairient-blue text-white">
+      <section className="py-20 bg-brand-blue text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             The Future of Risk Intelligence

@@ -29,7 +29,7 @@ export default function ApiLink({ path, label }: Props) {
       </a>
       <button
         type="button"
-        className="text-xs text-clairient-blue hover:text-clairient-dark"
+        className="text-xs text-brand-blue hover:text-brand-dark"
         onClick={copy}
         title="Copy absolute URL"
       >{copied ? 'Copied' : 'Copy URL'}</button>

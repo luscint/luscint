@@ -153,63 +153,63 @@ export default async function Technology() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><Activity size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><Activity size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Conflict history & contagion</h3>
               </div>
               <p className="text-sm text-gray-600">Lagged local fatalities; spatial lags from neighboring cells; distance to most recent events.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><Users size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><Users size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Demography & exposure</h3>
               </div>
               <p className="text-sm text-gray-600">Population density; urban–rural share; distance to capital or major city; settlement proximity.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><TrendingUp size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><TrendingUp size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Economy & prices</h3>
               </div>
               <p className="text-sm text-gray-600">Night‑time lights; food & commodity prices; inflation; GDP per capita; local market activity.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><Vote size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><Vote size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Governance & politics</h3>
               </div>
               <p className="text-sm text-gray-600">Election calendar; regime type & constraints; emergency measures; protest restrictions.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><CloudSun size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><CloudSun size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Climate & environment</h3>
               </div>
               <p className="text-sm text-gray-600">Rainfall anomalies; temperature anomalies; drought indices (e.g., SPEI); vegetation (NDVI).</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><Map size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><Map size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Infrastructure & access</h3>
               </div>
               <p className="text-sm text-gray-600">Road network & travel time; border proximity; remoteness; mobile & internet coverage.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><Move size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><Move size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Displacement & flows</h3>
               </div>
               <p className="text-sm text-gray-600">Refugee/IDP stocks & flows; cross‑border mobility; reception capacity and pressures.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><Shield size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><Shield size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Security & armed actors</h3>
               </div>
               <p className="text-sm text-gray-600">Presence of organized groups; known corridors & operating areas; arms trafficking routes.</p>
             </div>
             <div className="border border-gray-200 rounded-lg p-4 bg-white">
               <div className="flex items-center gap-3 mb-2">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-clairient-blue"><ShoppingBag size={30} /></span>
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded bg-blue-50 text-brand-blue"><ShoppingBag size={30} /></span>
                 <h3 className="text-lg font-light text-gray-900">Market & livelihoods</h3>
               </div>
               <p className="text-sm text-gray-600">Local food prices; crop/harvest proxies; shocks to household purchasing power.</p>
@@ -275,7 +275,7 @@ export default async function Technology() {
             {papers.map((p, i) => (
               <div key={i} className="border border-gray-200 rounded-lg p-4 bg-white flex flex-col justify-between">
                 <div className="flex items-start gap-3">
-                  <span className="inline-flex items-center justify-center w-12 h-12 rounded bg-blue-50 text-clairient-blue flex-shrink-0">
+                  <span className="inline-flex items-center justify-center w-12 h-12 rounded bg-blue-50 text-brand-blue flex-shrink-0">
                     <FileText size={24} />
                   </span>
                   <div>
@@ -291,7 +291,7 @@ export default async function Technology() {
                   </div>
                 </div>
                 <div className="mt-4 flex items-center gap-4">
-                  <a href={p.href} target="_blank" rel="noopener noreferrer" className="text-clairient-blue hover:text-clairient-dark inline-flex items-center gap-1">
+                  <a href={p.href} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-dark inline-flex items-center gap-1">
                     <ExternalLink size={16} /> View
                   </a>
                   <a href={p.href} download className="text-gray-600 hover:text-gray-800 inline-flex items-center gap-1">

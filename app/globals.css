@@ -27,13 +27,13 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-clairient-blue text-white px-8 py-3 hover:bg-clairient-dark transition-colors duration-200 font-normal;
+    @apply bg-brand-blue text-white px-8 py-3 hover:bg-brand-dark transition-colors duration-200 font-normal;
     border: none;
     box-shadow: none;
   }
   
   .btn-secondary {
-    @apply bg-transparent text-clairient-blue px-8 py-3 hover:bg-gray-50 transition-colors duration-200 font-normal border border-clairient-blue;
+    @apply bg-transparent text-brand-blue px-8 py-3 hover:bg-gray-50 transition-colors duration-200 font-normal border border-brand-blue;
   }
   
   .section-heading {
@@ -46,7 +46,7 @@
   }
 
   .text-link {
-    @apply text-clairient-blue hover:text-clairient-dark border-b border-clairient-blue hover:border-clairient-dark transition-colors duration-200;
+    @apply text-brand-blue hover:text-brand-dark border-b border-brand-blue hover:border-brand-dark transition-colors duration-200;
   }
 
   /* Prominent range slider styling (used on maps) */
@@ -673,7 +673,7 @@
 
   /* Word Animation Effects - Palantir Style Reserved Space */
   .word-highlight {
-    @apply text-clairient-blue font-medium;
+    @apply text-brand-blue font-medium;
     position: relative;
     display: inline-block;
     white-space: nowrap;
@@ -734,7 +734,7 @@
   }
 
   .word-emphasis {
-    @apply text-clairient-blue font-semibold;
+    @apply text-brand-blue font-semibold;
     animation: pulse-subtle 4s ease-in-out infinite;
     animation-delay: 1.5s;
     display: inline-block;
@@ -753,7 +753,7 @@
   }
 
   .word-typewriter {
-    @apply text-clairient-blue font-medium;
+    @apply text-brand-blue font-medium;
     border-right: 2px solid rgba(30, 64, 175, 0.7);
     animation: typing 3s steps(20) forwards, blink 0.8s infinite;
     animation-delay: 0.5s;

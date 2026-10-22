@@ -86,7 +86,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {applications.map(({ icon: Icon, title, text }) => (
               <div key={title} className="bg-white border border-gray-200 rounded-lg p-6">
-                <Icon className="text-clairient-blue mb-4" size={24} />
+                <Icon className="text-brand-blue mb-4" size={24} />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
               </div>
@@ -96,7 +96,7 @@ export default function Home() {
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {facts.map((f) => (
               <div key={f.label}>
-                <div className="text-3xl font-light text-clairient-blue mb-2">{f.value}</div>
+                <div className="text-3xl font-light text-brand-blue mb-2">{f.value}</div>
                 <div className="text-gray-600 text-sm">{f.label}</div>
               </div>
             ))}

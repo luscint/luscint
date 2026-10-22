@@ -23,7 +23,7 @@ export default function Breadcrumbs() {
         <span key={c.href}>
           {i > 0 && <span className="mx-1">/</span>}
           {i < crumbs.length - 1 ? (
-            <Link href={c.href} className="text-clairient-blue hover:text-clairient-dark">{c.label}</Link>
+            <Link href={c.href} className="text-brand-blue hover:text-brand-dark">{c.label}</Link>
           ) : (
             <span className="text-gray-700">{c.label}</span>
           )}

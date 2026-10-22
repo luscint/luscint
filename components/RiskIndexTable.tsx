@@ -48,7 +48,7 @@ export default function RiskIndexTable({ rows }: Props) {
   }
 
   const headerClass = (key: SortKey) =>
-    `cursor-pointer select-none ${sortKey === key ? 'text-clairient-blue' : 'text-gray-700'}`
+    `cursor-pointer select-none ${sortKey === key ? 'text-brand-blue' : 'text-gray-700'}`
 
   return (
     <div className="overflow-x-auto border border-gray-200 rounded-lg">

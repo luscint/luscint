@@ -433,16 +433,16 @@ export default function PrioGridMap({ period, activeView, countryName, hideViewT
         {/* View toggle overlay (hidden on entity page) */}
         {!(hideViewToggle || countryName) && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform z-[1000]">
-            <div className="inline-flex rounded-xl border-2 border-clairient-blue overflow-hidden bg-white/95 backdrop-blur shadow-lg">
+            <div className="inline-flex rounded-xl border-2 border-brand-blue overflow-hidden bg-white/95 backdrop-blur shadow-lg">
               <Link
                 href="/forecasts"
-                className={`px-6 py-2 text-lg ${pathname?.startsWith('/forecasts-grid') ? 'text-clairient-blue hover:bg-gray-50' : 'bg-clairient-blue text-white'}`}
+                className={`px-6 py-2 text-lg ${pathname?.startsWith('/forecasts-grid') ? 'text-brand-blue hover:bg-gray-50' : 'bg-brand-blue text-white'}`}
               >
                 Country view
               </Link>
               <Link
                 href="/forecasts-grid"
-                className={`px-6 py-2 text-lg ${pathname?.startsWith('/forecasts-grid') ? 'bg-clairient-blue text-white' : 'text-clairient-blue hover:bg-gray-50'}`}
+                className={`px-6 py-2 text-lg ${pathname?.startsWith('/forecasts-grid') ? 'bg-brand-blue text-white' : 'text-brand-blue hover:bg-gray-50'}`}
               >
                 <span title="0.5° map squares (~55 km)">Sub‑national Areas</span>
               </Link>
@@ -457,7 +457,7 @@ export default function PrioGridMap({ period, activeView, countryName, hideViewT
               onClick={() => setMapInteractive(v => !v)}
               className={`px-3 py-1.5 rounded shadow-sm text-xs font-medium backdrop-blur border focus:outline-none ${
                 mapInteractive
-                  ? 'bg-clairient-blue/50 border-clairient-blue/60 text-white hover:bg-clairient-blue/65 opacity-65'
+                  ? 'bg-brand-blue/50 border-brand-blue/60 text-white hover:bg-brand-blue/65 opacity-65'
                   : 'bg-white/50 border-gray-300/60 text-gray-600 hover:bg-white/65 opacity-65'
               }`}
               aria-pressed={mapInteractive}

@@ -24,7 +24,7 @@ export default function Navigation() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <img src={`${base}/logo.png`} alt="Luscint" className="h-8 w-8 mr-3" />
-              <span className="text-2xl font-light text-clairient-blue">Luscint</span>
+              <span className="text-2xl font-light text-brand-blue">Luscint</span>
             </Link>
           </div>
           
@@ -34,8 +34,8 @@ export default function Navigation() {
               href="/technology" 
               className={`transition-colors font-light ${
                 isActive('/technology') 
-                  ? 'text-clairient-blue border-b-2 border-clairient-blue pb-1' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue border-b-2 border-brand-blue pb-1' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Technology
@@ -44,8 +44,8 @@ export default function Navigation() {
               href="/forecasts" 
               className={`transition-colors font-light ${
                 isActive('/forecasts') 
-                  ? 'text-clairient-blue border-b-2 border-clairient-blue pb-1' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue border-b-2 border-brand-blue pb-1' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Dashboard
@@ -54,8 +54,8 @@ export default function Navigation() {
               href="/data" 
               className={`transition-colors font-light ${
                 isActive('/data') 
-                  ? 'text-clairient-blue border-b-2 border-clairient-blue pb-1' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue border-b-2 border-brand-blue pb-1' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Data
@@ -64,8 +64,8 @@ export default function Navigation() {
               href="/use-cases" 
               className={`transition-colors font-light ${
                 isActive('/use-cases') 
-                  ? 'text-clairient-blue border-b-2 border-clairient-blue pb-1' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue border-b-2 border-brand-blue pb-1' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Use Cases
@@ -76,8 +76,8 @@ export default function Navigation() {
               href="/contact" 
               className={`transition-colors font-light ${
                 isActive('/contact') 
-                  ? 'text-clairient-blue border-b-2 border-clairient-blue pb-1' 
-                  : 'text-clairient-blue hover:text-clairient-dark'
+                  ? 'text-brand-blue border-b-2 border-brand-blue pb-1' 
+                  : 'text-brand-blue hover:text-brand-dark'
               }`}
             >
               Contact
@@ -88,7 +88,7 @@ export default function Navigation() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-clairient-blue"
+              className="text-gray-700 hover:text-brand-blue"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -104,8 +104,8 @@ export default function Navigation() {
               href="/technology" 
               className={`block px-3 py-2 font-light ${
                 isActive('/technology') 
-                  ? 'text-clairient-blue bg-blue-50' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue bg-blue-50' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Technology
@@ -114,8 +114,8 @@ export default function Navigation() {
               href="/forecasts" 
               className={`block px-3 py-2 font-light ${
                 isActive('/forecasts') 
-                  ? 'text-clairient-blue bg-blue-50' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue bg-blue-50' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Dashboard
@@ -124,8 +124,8 @@ export default function Navigation() {
               href="/data" 
               className={`block px-3 py-2 font-light ${
                 isActive('/data') 
-                  ? 'text-clairient-blue bg-blue-50' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue bg-blue-50' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Data
@@ -134,8 +134,8 @@ export default function Navigation() {
               href="/use-cases" 
               className={`block px-3 py-2 font-light ${
                 isActive('/use-cases') 
-                  ? 'text-clairient-blue bg-blue-50' 
-                  : 'text-gray-600 hover:text-clairient-blue'
+                  ? 'text-brand-blue bg-blue-50' 
+                  : 'text-gray-600 hover:text-brand-blue'
               }`}
             >
               Use Cases
@@ -146,8 +146,8 @@ export default function Navigation() {
               href="/contact" 
               className={`block px-3 py-2 font-light ${
                 isActive('/contact') 
-                  ? 'text-clairient-blue bg-blue-50' 
-                  : 'text-clairient-blue hover:text-clairient-dark'
+                  ? 'text-brand-blue bg-blue-50' 
+                  : 'text-brand-blue hover:text-brand-dark'
               }`}
             >
               Contact

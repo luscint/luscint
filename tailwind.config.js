@@ -8,9 +8,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'clairient-blue': '#1e40af',
-        'clairient-light': '#3b82f6',
-        'clairient-dark': '#1e3a8a',
+        'brand-blue': '#1e40af',
+        'brand-light': '#3b82f6',
+        'brand-dark': '#1e3a8a',
       },
     },
   },
