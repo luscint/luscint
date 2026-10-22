@@ -23,7 +23,7 @@ export default function SolutionPage({
     <>
       <PageHero eyebrow={eyebrow} title={title} lead={lead}>
         <div className="flex flex-col sm:flex-row gap-3">
-          <Link href="/contact" className="btn-primary !bg-white !text-navy hover:!bg-blue-50">Request a demo</Link>
+          <Link href="/contact" className="btn-primary !bg-white !text-navy hover:!bg-blue-50">Get in touch</Link>
           {relatedHref && (
             <Link href={relatedHref} className="inline-flex items-center justify-center rounded-md border border-white/40 px-6 py-3 text-[15px] font-medium text-white hover:bg-white/10 transition-colors">
               {relatedLabel}

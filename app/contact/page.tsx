@@ -66,7 +66,7 @@ export default function Contact() {
 
   return (
     <>
-      <PageHero eyebrow="Contact" title="Request a demo" lead="Tell us what you need to monitor and we will show you the forecasts, data and delivery options that fit. We reply personally, usually within one working day." />
+      <PageHero eyebrow="Contact" title="Get in touch" lead="Tell us what you need to monitor and we will tell you what we can offer — forecasts, data licensing, or signals built for your portfolio. We reply personally, usually within one working day." />
 
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -140,7 +140,7 @@ export default function Contact() {
                 )}
 
                 <button type="submit" disabled={status === 'sending'} className="btn-primary flex items-center disabled:opacity-60">
-                  {status === 'sending' ? 'Sending…' : 'Send request'}
+                  {status === 'sending' ? 'Sending…' : 'Send message'}
                   <Send className="ml-2" size={16} />
                 </button>
 
@@ -159,7 +159,7 @@ export default function Contact() {
             <div>
               <h2 className="text-base font-medium text-gray-900 mb-2">What we can cover</h2>
               <ul className="space-y-1">
-                <li>A walkthrough of the live forecasts</li>
+                <li>How the live forecasts work and what they show</li>
                 <li>Data licensing and delivery (API, CSV)</li>
                 <li>Mapping forecasts to your holdings or locations</li>
                 <li>Adding signals relevant to your portfolio</li>

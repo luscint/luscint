@@ -98,7 +98,7 @@ export default function Navigation() {
               </div>
             ))}
             <Link href="/contact" className="btn-primary !py-2 !px-4 text-sm">
-              Request a demo
+              Get in touch
             </Link>
           </div>
 
@@ -146,7 +146,7 @@ export default function Navigation() {
               </div>
             ))}
             <Link href="/contact" onClick={() => setIsOpen(false)} className="btn-primary block text-center">
-              Request a demo
+              Get in touch
             </Link>
           </div>
         </div>

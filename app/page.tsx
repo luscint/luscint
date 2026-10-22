@@ -98,7 +98,7 @@ export default async function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link href="/contact" className="btn-primary !bg-white !text-navy hover:!bg-blue-50">
-                  Request a demo
+                  Get in touch
                   <ArrowRight className="ml-2" size={16} />
                 </Link>
                 <Link href="/forecasts" className="inline-flex items-center justify-center rounded-md border border-white/40 px-6 py-3 text-[15px] font-medium text-white hover:bg-white/10 transition-colors">
@@ -244,9 +244,9 @@ export default async function Home() {
       <section className="py-20 bg-navy">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl text-white mb-4">See this month’s forecasts.</h2>
-          <p className="text-slate-300 mb-8 text-lg">A short walkthrough is the quickest way to judge whether it fits your workflow.</p>
+          <p className="text-slate-300 mb-8 text-lg">Tell us what you monitor and we will tell you what we can offer.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/contact" className="btn-primary !bg-white !text-navy hover:!bg-blue-50">Request a demo</Link>
+            <Link href="/contact" className="btn-primary !bg-white !text-navy hover:!bg-blue-50">Get in touch</Link>
             <Link href="/forecasts" className="inline-flex items-center justify-center rounded-md border border-white/40 px-6 py-3 text-[15px] font-medium text-white hover:bg-white/10 transition-colors">
               Open the dashboard
             </Link>
