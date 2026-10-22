@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Send, CheckCircle, AlertCircle } from 'lucide-react'
 import companyData from '@/content/company.json'
+import PageHero from '@/components/PageHero'
 
 // Set NEXT_PUBLIC_FORM_ENDPOINT to a Formspree/Web3Forms-style URL (accepts a JSON POST) to
 // deliver submissions by email. Without it the form opens the visitor's mail client instead,
@@ -65,15 +66,7 @@ export default function Contact() {
 
   return (
     <>
-      <section className="py-20 hero-background-network-image">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 leading-tight">Request a demo</h1>
-          <p className="text-xl text-gray-600 font-light leading-relaxed max-w-2xl">
-            Tell us what you need to monitor and we will show you the forecasts, data and delivery options that fit.
-            We reply personally, usually within one working day.
-          </p>
-        </div>
-      </section>
+      <PageHero eyebrow="Contact" title="Request a demo" lead="Tell us what you need to monitor and we will show you the forecasts, data and delivery options that fit. We reply personally, usually within one working day." />
 
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12">

@@ -1,218 +1,85 @@
-import { Target, Award, TrendingUp, Users } from 'lucide-react'
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import PageHero from '@/components/PageHero'
+import CtaBand from '@/components/CtaBand'
 import companyData from '@/content/company.json'
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Luscint produces forward-looking, transparent forecasts of political violence for investors, insurers and public-sector decision-makers.',
+}
+
+const principles = [
+  { title: 'Forecasts, not alerts', text: 'Forward-looking, time-stamped estimates with stated uncertainty, rather than a record of what has already happened.' },
+  { title: 'Transparent by default', text: 'Published methods, inspectable comparable episodes, and open monthly data. If we cannot explain a forecast, we should not sell it.' },
+  { title: 'Honest about limits', text: 'Conflict is hard to forecast. We state what the forecasts can and cannot tell you, and we encourage clients to test them on their own data.' },
+  { title: 'Built around your decisions', text: 'The same engine, delivered and tailored to the portfolios, locations and processes our clients actually have.' },
+]
 
 export default function About() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="bg-grid-pattern py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              About {companyData.name}
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              {companyData.description}
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="About"
+        title="Forecasting political violence, for people who have to act on it."
+        lead={companyData.description}
+      />
 
-      {/* Mission and Vision */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                {companyData.mission}
-              </p>
-              <div className="bg-brand-blue/10 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-brand-blue mb-3">
-                  Why {companyData.name}?
-                </h3>
-                <p className="text-gray-700">
-                  <strong>Luscint</strong> comes from <em>lux</em> (light) and <em>intuitus</em> (insight). 
-                  It represents our mission: to illuminate hidden signals in a noisy world and provide clarity in risk and uncertainty.
-                </p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Target className="text-white" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Lead Time</h3>
-                <p className="text-sm text-gray-600">Weeks to months of early warning</p>
-              </div>
-              
-              <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="text-white" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Transparency</h3>
-                <p className="text-sm text-gray-600">Explainable AI with confidence scores</p>
-              </div>
-              
-              <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="text-white" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Customizable</h3>
-                <p className="text-sm text-gray-600">Tailored by geography, event type, and horizon</p>
-              </div>
-              
-              <div className="text-center p-6 bg-white rounded-lg shadow-sm border">
-                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="text-white" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Research-Backed</h3>
-                <p className="text-sm text-gray-600">Academic rigor meets real-world focus</p>
-              </div>
-            </div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-5 gap-10">
+          <div className="md:col-span-2">
+            <p className="eyebrow mb-3">Mission</p>
+            <h2 className="text-3xl">Clear intelligence on instability.</h2>
           </div>
-        </div>
-      </section>
-
-      {/* Strategic Positioning */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="section-heading">Strategic Positioning</h2>
-            <p className="section-subheading mx-auto">
-              Luscint operates at the intersection of three fast-converging domains
+          <div className="md:col-span-3 space-y-4 text-lg text-slate-600">
+            <p>{companyData.mission}</p>
+            <p>
+              Luscint was founded by a researcher in conflict forecasting. The methods behind our forecasts are published in
+              peer-reviewed literature, and we continue to extend them — including to new signals.
+            </p>
+            <p>
+              The name comes from <em>lux</em> (light) and <em>intuitus</em> (insight): bringing weak signals into view.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h3 className="text-xl font-semibold mb-4 text-brand-blue">
-                Quantitative Conflict Forecasting
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Advanced predictive modeling using machine learning to forecast geopolitical events 
-                and civil unrest with unprecedented accuracy.
-              </p>
-              <p className="text-sm text-gray-500">
-                Similar to: ViEWS, ICEWS
-              </p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h3 className="text-xl font-semibold mb-4 text-brand-blue">
-                Operational Risk Monitoring
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Real-time threat detection and monitoring systems that provide actionable 
-                intelligence for operational decision-making.
-              </p>
-              <p className="text-sm text-gray-500">
-                Similar to: CORE by Control Risks, Dataminr
-              </p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h3 className="text-xl font-semibold mb-4 text-brand-blue">
-                Geopolitical ESG Intelligence
-              </h3>
-              <p className="text-gray-600 mb-4">
-                ESG-aligned screening and sustainability metrics that incorporate 
-                conflict-sensitive analysis for responsible investment.
-              </p>
-              <p className="text-sm text-gray-500">
-                Similar to: Verisk Maplecroft, S&P ESG
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-12 text-center">
-            <div className="bg-brand-blue text-white p-8 rounded-lg max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold mb-4">Our Differentiation</h3>
-              <p className="text-blue-100">
-                <strong>Model-based foresight, client-specific exposure integration, and explainability</strong> — 
-                positioning Luscint as a core infrastructure layer for global risk anticipation.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* Roadmap */}
-      <section className="py-20">
+      <section className="py-20 bg-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="section-heading">Our Roadmap</h2>
-            <p className="section-subheading mx-auto">
-              Building the forecasting layer for a more anticipatory world
-            </p>
-          </div>
-          
-          <div className="space-y-8">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
-                1
+          <p className="eyebrow mb-3">How we work</p>
+          <h2 className="text-3xl mb-10">Principles</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {principles.map((p) => (
+              <div key={p.title} className="bg-white border border-line rounded-lg p-7">
+                <h3 className="text-xl mb-2">{p.title}</h3>
+                <p className="text-slate-600 text-[15px] leading-relaxed">{p.text}</p>
               </div>
-              <div className="ml-6">
-                <h3 className="text-xl font-semibold mb-2">Launch Luscint Core</h3>
-                <p className="text-gray-600">
-                  Deploy our forecast dashboard and API MVP, providing foundational predictive intelligence capabilities.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
-                2
-              </div>
-              <div className="ml-6">
-                <h3 className="text-xl font-semibold mb-2">Develop Exposure Engine</h3>
-                <p className="text-gray-600">
-                  Build firm-level modeling capabilities linked to global forecasts, enabling precise risk assessment.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
-                3
-              </div>
-              <div className="ml-6">
-                <h3 className="text-xl font-semibold mb-2">Performance Benchmarking</h3>
-                <p className="text-gray-600">
-                  Conduct comprehensive performance tests against leading commercial providers to validate our models.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">
-                4
-              </div>
-              <div className="ml-6">
-                <h3 className="text-xl font-semibold mb-2">Early Client Pilots</h3>
-                <p className="text-gray-600">
-                  Launch pilot programs with asset managers, insurers, and NGOs to refine our offerings.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Conclusion */}
-      <section className="py-20 bg-brand-blue text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            The Future of Risk Intelligence
-          </h2>
-          <p className="text-xl text-blue-100 max-w-4xl mx-auto">
-            As volatility, climate stress, and political risk reshape global operating conditions, 
-            institutions need not just data—but foresight. Luscint delivers that foresight, 
-            transforming uncertainty into strategic advantage.
-          </p>
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10">
+          <div>
+            <h2 className="text-2xl mb-3">Open data and Luscint</h2>
+            <p className="text-slate-600 mb-3">
+              The monthly forecasts are free for non-commercial use. Luscint provides commercial licensing, tailoring to your
+              portfolio, additional signals, and support.
+            </p>
+            <Link href="/open-data" className="text-link">Open data vs. Luscint</Link>
+          </div>
+          <div>
+            <h2 className="text-2xl mb-3">Read the research</h2>
+            <p className="text-slate-600 mb-3">
+              See how the forecasts are produced and the papers behind them.
+            </p>
+            <Link href="/methodology" className="text-link">Methodology & papers</Link>
+          </div>
         </div>
       </section>
+
+      <CtaBand />
     </>
   )
 }

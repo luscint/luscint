@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import PageHero from '@/components/PageHero'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import fs from 'fs'
 import path from 'path'
@@ -142,20 +143,7 @@ curl -O ${SITE_BASE}/data/forecasts/archive/2026-03/forecasts-2026-03.zip`
   return (
     <>
       {/* Hero Section */}
-      <section className="py-24 hero-background-network-image">
-        <div className="absolute top-2 left-2 md:top-3 md:left-3 z-[1000]">
-          <Breadcrumbs />
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 leading-tight">
-            Data Downloads &amp; API
-          </h1>
-          <p className="text-xl text-gray-600 font-light leading-relaxed">
-            Programmatic access to <span className="word-emphasis">Luscint forecast data</span>.
-            Updated automatically on the 1st of each month.
-          </p>
-        </div>
-      </section>
+      <PageHero eyebrow="Data & API" title="Data downloads &amp; API" lead="Monthly country and grid forecasts for download, with code examples and a versioned archive. Free for non-commercial use under CC BY-NC 4.0." />
 
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -172,7 +160,7 @@ curl -O ${SITE_BASE}/data/forecasts/archive/2026-03/forecasts-2026-03.zip`
           {/* Quick Start with Tabbed Examples */}
           {/* Country Forecasts */}
           <div id="country-forecasts" className="mb-12 border border-gray-200 rounded-lg p-6 bg-blue-50">
-            <h2 className="text-2xl font-light text-gray-900 mb-4">Country Forecasts</h2>
+            <h2 className="text-2xl font-normal text-gray-900 mb-4">Country Forecasts</h2>
 
             {/* Quick Start */}
             <div className="mb-6 pb-6 border-b border-gray-200">
@@ -336,7 +324,7 @@ curl -O ${SITE_BASE}/data/grid/${gridPeriod}-m1.json`
 
             return (
               <div id="prio-grid" className="mb-12 border border-gray-200 rounded-lg p-6 bg-green-50">
-                <h2 className="text-2xl font-light text-gray-900 mb-4">Sub-national Forecasts (PRIO-GRID)</h2>
+                <h2 className="text-2xl font-normal text-gray-900 mb-4">Sub-national Forecasts (PRIO-GRID)</h2>
                 <p className="text-sm text-gray-600 mb-6">
                   High-resolution spatial forecasts on a 0.5° grid (~55 km cells). Download forecasts for period <span className="font-mono font-medium">{gridPeriod}</span> in CSV or GeoJSON format.
                 </p>
@@ -363,7 +351,7 @@ curl -O ${SITE_BASE}/data/grid/${gridPeriod}-m1.json`
 
           {/* License and Citation */}
           <div id="usage" className="mb-12 border border-gray-200 rounded-lg p-6 bg-white">
-            <h2 className="text-2xl font-light text-gray-900 mb-4">License and Citation</h2>
+            <h2 className="text-2xl font-normal text-gray-900 mb-4">License and Citation</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-sm font-medium text-gray-900 mb-2">License</h3>

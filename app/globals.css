@@ -9,15 +9,15 @@
   }
   
   body {
-    @apply text-gray-900 font-light;
-    /* Subtle site-wide background to match hero's light gray tone */
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    @apply text-slate-700 font-normal bg-white;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-light;
-    line-height: 1.2;
+    @apply font-serif font-medium text-ink;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
   }
 
   p {
@@ -27,21 +27,23 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-brand-blue text-white px-8 py-3 hover:bg-brand-dark transition-colors duration-200 font-normal;
-    border: none;
-    box-shadow: none;
+    @apply inline-flex items-center justify-center rounded-md bg-brand-blue text-white px-6 py-3 text-[15px] font-medium shadow-sm hover:bg-brand-dark transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-blue;
   }
-  
+
   .btn-secondary {
-    @apply bg-transparent text-brand-blue px-8 py-3 hover:bg-gray-50 transition-colors duration-200 font-normal border border-brand-blue;
+    @apply inline-flex items-center justify-center rounded-md bg-white text-brand-blue px-6 py-3 text-[15px] font-medium border border-brand-blue/40 hover:border-brand-blue hover:bg-blue-50 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-blue;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-brand-blue;
   }
   
   .section-heading {
-    @apply text-3xl md:text-4xl font-light text-gray-900 mb-12;
+    @apply text-3xl md:text-4xl text-ink mb-6;
   }
-  
+
   .section-subheading {
-    @apply text-xl text-gray-600 mb-12 max-w-3xl font-light;
+    @apply text-lg md:text-xl text-slate-600 mb-12 max-w-3xl;
     line-height: 1.6;
   }
 
@@ -672,84 +674,20 @@
   }
 
   /* Word Animation Effects - Palantir Style Reserved Space */
-  .word-highlight {
-    @apply text-brand-blue font-medium;
-    position: relative;
-    display: inline-block;
-    white-space: nowrap;
-    /* Reserve space for the full text */
-    width: auto;
-    min-width: fit-content;
-    /* Preserve a gap after the animated text so the following word never collides */
-    padding-right: 0.25em;
-  }
-
-  .word-highlight::before {
-    /* Reserve the final width + a trailing non‑breaking space */
-    content: attr(data-text) '\00a0';
-    visibility: hidden;
-    display: inline-block;
-    line-height: inherit;
-    /* This reserves the space */
+  /* Inline emphasis: static (no typing / pulsing) so copy reads steadily and spacing stays correct */
+  .word-highlight,
+  .word-emphasis {
+    @apply text-brand-blue font-semibold;
   }
 
   .word-highlight .typing-text {
-    position: absolute;
-    left: 0;
-    top: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 0;
-    animation: typeWriter 2s steps(20) 1s forwards;
+    position: static;
+    width: auto;
+    animation: none;
   }
 
   .word-highlight .typing-text::after {
-    content: '|';
-    color: rgba(30, 64, 175, 0.7);
-    animation: blink 1s infinite, hideCursor 0.1s 3s forwards;
-  }
-
-  @keyframes typeWriter {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-
-  @keyframes blink {
-    0%, 50% {
-      opacity: 1;
-    }
-    51%, 100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes hideCursor {
-    to {
-      opacity: 0;
-    }
-  }
-
-  .word-emphasis {
-    @apply text-brand-blue font-semibold;
-    animation: pulse-subtle 4s ease-in-out infinite;
-    animation-delay: 1.5s;
-    display: inline-block;
-    position: relative;
-  }
-
-  @keyframes pulse-subtle {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.85;
-      transform: scale(1.05);
-    }
+    content: none;
   }
 
   .word-typewriter {

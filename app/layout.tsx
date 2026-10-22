@@ -1,23 +1,26 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
+import { Inter, Source_Serif_4 } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
+const serif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif', weight: ['400', '500', '600'] })
+
+export const viewport: Viewport = { width: 'device-width', initialScale: 1 }
 
 export const metadata: Metadata = {
-  title: 'Luscint - Forecasting the Future of Conflict and Risk',
-  description: 'Intelligence technology company focused on forecasting geopolitical conflict, civil unrest, and political instability using machine learning and dynamic exposure modeling.',
-  keywords: 'geopolitical risk, conflict forecasting, political instability, machine learning, ESG, portfolio risk',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://luscint.com'),
+  title: { default: 'Luscint — Conflict risk forecasts, months ahead', template: '%s — Luscint' },
+  description: 'Monthly forecasts of political violence at country and sub-national level, 1–6 months ahead, with quantified uncertainty. For investors, insurers and public-sector decision-makers.',
+  keywords: 'conflict forecasting, political violence, geopolitical risk, SRCC, country risk, early warning',
   authors: [{ name: 'Luscint' }],
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
-    title: 'Luscint - Forecasting the Future of Conflict and Risk',
-    description: 'Intelligence technology company focused on forecasting geopolitical conflict, civil unrest, and political instability.',
+    title: 'Luscint — Conflict risk forecasts, months ahead',
+    description: 'Monthly forecasts of political violence at country and sub-national level, with quantified uncertainty.',
     type: 'website',
-    locale: 'en_US',
+    locale: 'en_GB',
   },
 }
 
@@ -29,7 +32,7 @@ export default function RootLayout({
   const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${serif.variable}`}>
         {base && (
           <style
             // Override image URLs to respect basePath on GitHub Pages
@@ -51,8 +54,9 @@ export default function RootLayout({
             ` }}
           />
         )}
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[3000] focus:bg-white focus:px-3 focus:py-2 focus:rounded">Skip to content</a>
         <Navigation />
-        <main className="min-h-screen">
+        <main id="main" className="min-h-screen">
           {children}
         </main>
         <Footer />

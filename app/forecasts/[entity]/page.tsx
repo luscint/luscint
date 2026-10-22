@@ -30,7 +30,7 @@ export default async function ForecastEntityPage({ params }: Params) {
   return (
     <div className="py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl md:text-4xl font-light text-gray-900 mb-2">{e.name}</h1>
+        <h1 className="text-3xl md:text-4xl font-normal text-gray-900 mb-2">{e.name}</h1>
         <p className="text-gray-600 mb-6">Period: {snap.period} · Confidence: {(e.confidence * 100).toFixed(0)}%</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

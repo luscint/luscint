@@ -49,8 +49,8 @@ export default async function ForecastsGridPage() {
 
       <section className="py-8 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-2">Monthly Conflict Forecasts</h1>
-          <p className="text-gray-700 font-light mb-4">
+          <h1 className="text-4xl md:text-5xl font-normal text-gray-900 mb-2">Monthly Conflict Forecasts</h1>
+          <p className="text-gray-700 font-normal mb-4">
             Forecasts for the period {snap.period} to {end}
             <span className="text-gray-400"> · </span>
             Updated: {formatDMY(snap.generatedAt)}
@@ -60,19 +60,19 @@ export default async function ForecastsGridPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-500">Total predicted fatalities (1‑month)</div>
-              <div className="text-3xl font-light text-gray-900">{Math.round(total1mCurrent)}</div>
+              <div className="text-3xl font-normal text-gray-900">{Math.round(total1mCurrent)}</div>
               <div className="text-xs text-gray-500 mt-1">Sum of next‑month predictions across all countries</div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-500">Δ total vs previous month</div>
-              <div className={`text-3xl font-light ${deltaTotal !== undefined ? (deltaTotal >= 0 ? 'text-emerald-700' : 'text-rose-700') : 'text-gray-900'}`}>
+              <div className={`text-3xl font-normal ${deltaTotal !== undefined ? (deltaTotal >= 0 ? 'text-emerald-700' : 'text-rose-700') : 'text-gray-900'}`}>
                 {deltaTotal !== undefined ? (deltaTotal >= 0 ? `+${Math.round(deltaTotal)}` : `${Math.round(deltaTotal)}`) : '—'}
               </div>
               <div className="text-xs text-gray-500 mt-1">Change in total 1‑month predicted fatalities</div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-sm text-gray-500">Grid covered</div>
-              <div className="text-3xl font-light text-gray-900">{GRID_TOTAL_CELLS.toLocaleString()}</div>
+              <div className="text-3xl font-normal text-gray-900">{GRID_TOTAL_CELLS.toLocaleString()}</div>
             </div>
           </div>
         </div>

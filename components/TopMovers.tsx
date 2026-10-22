@@ -13,7 +13,7 @@ interface Props { movers: Mover[]; height?: number }
 export default function TopMovers({ movers, height = 240 }: Props) {
   return (
     <div className="border border-gray-200 rounded-lg p-4 bg-white flex flex-col" style={{ height }}>
-      <h3 className="text-lg font-light text-gray-900 mb-3">Top Movers (MoM)</h3>
+      <h3 className="text-lg font-normal text-gray-900 mb-3">Top Movers (MoM)</h3>
       <ul className="space-y-2 flex-1 overflow-auto">
         {movers.map((m) => (
           <li key={m.id} className="flex items-center justify-between text-sm">

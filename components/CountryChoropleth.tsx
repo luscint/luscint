@@ -358,7 +358,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
         aria-label="World choropleth of predicted fatalities"
       >
         {/* Enable/Disable map controls button - only show on mobile, dimmed */}
-        {isMobile && !mapControlsEnabled && (
+        {isMobile && !hideControls && !mapControlsEnabled && (
           <div className={`absolute z-[1000] pointer-events-auto ${mobileControlsButtonPosition === 'top-right' ? 'top-4 right-4' : 'bottom-20 right-2'}`}>
             <button
               onClick={() => setMapControlsEnabled(true)}
@@ -369,7 +369,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
             </button>
           </div>
         )}
-        {isMobile && mapControlsEnabled && (
+        {isMobile && !hideControls && mapControlsEnabled && (
           <div className={`absolute z-[1000] pointer-events-auto ${mobileControlsButtonPosition === 'top-right' ? 'top-4 right-4' : 'bottom-20 right-2'}`}>
             <button
               onClick={() => setMapControlsEnabled(false)}
