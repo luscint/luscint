@@ -20,7 +20,7 @@ export default function UseCases() {
             Use Cases
           </h1>
           <p className="text-xl text-gray-600 font-light leading-relaxed">
-            Organizations across finance, insurance, and humanitarian sectors use our <span className="word-highlight">predictive intelligence</span> to anticipate geopolitical risks and make informed decisions.
+            Built for organizations across finance, insurance, and humanitarian sectors, our <span className="word-highlight">predictive intelligence</span> helps anticipate geopolitical risks and make informed decisions.
           </p>
         </div>
       </section>
@@ -54,26 +54,21 @@ export default function UseCases() {
         </div>
       </section>
 
-      {/* Key Metrics */}
+      {/* Key Facts */}
       <section className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-light text-clairient-blue mb-2">2-6</div>
-              <div className="text-gray-600 text-sm">Months early warning</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-light text-clairient-blue mb-2">25%</div>
-              <div className="text-gray-600 text-sm">Pricing improvement</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-light text-clairient-blue mb-2">15%</div>
-              <div className="text-gray-600 text-sm">Risk reduction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-light text-clairient-blue mb-2">100%</div>
-              <div className="text-gray-600 text-sm">ESG compliance</div>
-            </div>
+            {[
+              { value: '1–6', label: 'Months ahead' },
+              { value: 'Monthly', label: 'Forecast updates' },
+              { value: '0.5°', label: 'Sub-national grid' },
+              { value: 'Open', label: 'Data and methods' },
+            ].map((f) => (
+              <div key={f.label} className="text-center">
+                <div className="text-3xl font-light text-clairient-blue mb-2">{f.value}</div>
+                <div className="text-gray-600 text-sm">{f.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

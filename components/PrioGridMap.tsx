@@ -6,13 +6,16 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { RISK_THRESHOLDS, getGridRiskColor } from '@/lib/config'
 
 interface Props {
   period: string
   activeView?: 'grid' | 'country'
+  countryName?: string
+  hideViewToggle?: boolean
 }
 
-export default function PrioGridMap({ period, activeView }: Props) {
+export default function PrioGridMap({ period, activeView, countryName, hideViewToggle = false }: Props) {
   const pathname = usePathname()
   const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
   const [data, setData] = useState<any | null>(null) // GeoJSON polygons (optional)
@@ -21,6 +24,76 @@ export default function PrioGridMap({ period, activeView }: Props) {
   const [pointsFromStatic, setPointsFromStatic] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [month, setMonth] = useState<number>(1)
+  const [countryMulti, setCountryMulti] = useState<Array<Array<Array<[number, number]>>> | null>(null)
+
+  // Normalize name helper
+  const norm = (s: string) => String(s || '').toLowerCase().normalize('NFKD').replace(/[^a-z\s\-']/g,'').trim()
+
+  // Point in polygon (ray casting) for lon/lat vs polygon ring
+  function pointInRing(lon: number, lat: number, ring: Array<[number, number]>): boolean {
+    let inside = false
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const xi = ring[i][0], yi = ring[i][1]
+      const xj = ring[j][0], yj = ring[j][1]
+      const intersect = ((yi > lat) !== (yj > lat)) && (lon < ((xj - xi) * (lat - yi)) / (yj - yi + 1e-12) + xi)
+      if (intersect) inside = !inside
+    }
+    return inside
+  }
+  function pointInPoly(lon: number, lat: number, poly: Array<Array<[number, number]>>): boolean {
+    // poly is array of rings; first is outer, rest holes; we only test outer ring for simplicity
+    if (!poly.length) return false
+    return pointInRing(lon, lat, poly[0])
+  }
+  function pointInMultiPoly(lon: number, lat: number, multiPoly: Array<Array<Array<[number, number]>>>): boolean {
+    for (const poly of multiPoly) {
+      if (pointInPoly(lon, lat, poly)) return true
+    }
+    return false
+  }
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadCountryMask() {
+      if (!countryName) { setCountryMulti(null); return }
+      try {
+        const res = await fetch(`${base}/data/world.geojson`)
+        if (!res.ok) return
+        const gj = await res.json()
+        const target = norm(countryName)
+        let found: any = null
+        for (const f of (gj?.features || [])) {
+          const nm = norm(f?.properties?.name || '')
+          if (nm === target) { found = f; break }
+        }
+        if (found) {
+          const geom = found.geometry || {}
+          let multi: Array<Array<Array<[number, number]>>> = []
+          if (geom.type === 'Polygon') multi = [ (geom.coordinates || []) as Array<Array<[number, number]>> ]
+          else if (geom.type === 'MultiPolygon') multi = (geom.coordinates || []) as Array<Array<Array<[number, number]>>>
+          if (!cancelled) setCountryMulti(multi)
+        }
+      } catch {}
+    }
+    loadCountryMask()
+    return () => { cancelled = true }
+  }, [countryName, base])
+
+  // Build a mask GeoJSON (world polygon with country hole) to hard-mask outside area
+  const maskGeoJson = useMemo(() => {
+    if (!countryMulti || !countryMulti.length) return null
+    const world: Array<[number, number]> = [
+      [-179.9999, -89.9999],
+      [179.9999, -89.9999],
+      [179.9999, 89.9999],
+      [-179.9999, 89.9999],
+      [-179.9999, -89.9999],
+    ]
+    const holes: Array<Array<[number, number]>> = []
+    for (const poly of countryMulti) { if (poly && poly.length) holes.push(poly[0]) }
+    const coords = [world, ...holes]
+    return { type: 'FeatureCollection', features: [ { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: coords } } ] } as any
+  }, [countryMulti])
 
   function preferRemoteSource() {
     if (typeof window === 'undefined') return false
@@ -79,12 +152,31 @@ export default function PrioGridMap({ period, activeView }: Props) {
         }
       }
       const tryLocal = async () => {
-        // 1) Try pre-generated monthly static points first
+        // 1) Try pre-generated per-country file first (if countryName is set)
+        if (countryName) {
+          try {
+            const countryId = countryName.toUpperCase().replace(/\s+/g, '_')
+            const res = await fetch(`${base}/data/grid/country/${countryId}-m${month}.json`)
+            if (res.ok) {
+              const json = await res.json()
+              const pts = (json?.points || []) as Array<{ lat: number; lon: number; v: number }>
+              if (pts && pts.length) {
+                if (!cancelled) { setPoints(pts); setPointsFromStatic(true); setPointsFromApi(false) }
+                return true
+              }
+            }
+          } catch {}
+        }
+        // 2) Try pre-generated monthly static points
         try {
           const res = await fetch(`${base}/data/grid/${period}-m${month}.json`)
           if (res.ok) {
             const json = await res.json()
-            const pts = (json?.points || []) as Array<{ lat: number; lon: number; v: number }>
+            let pts = (json?.points || []) as Array<{ lat: number; lon: number; v: number }>
+            if (pts && pts.length && countryMulti) {
+              // Filter to country polygons
+              pts = pts.filter(p => pointInMultiPoly(p.lon, p.lat, countryMulti))
+            }
             if (pts && pts.length) {
               if (!cancelled) { setPoints(pts); setPointsFromStatic(true); setPointsFromApi(false) }
               return true
@@ -97,7 +189,10 @@ export default function PrioGridMap({ period, activeView }: Props) {
           const res = await fetch(`${base}/api/v1/grid/${period}/points?month=${month}`)
           if (res.ok) {
             const json = await res.json()
-            const pts = json?.points as Array<{ lat: number; lon: number; m?: number[]; v?: number }>
+            let pts = json?.points as Array<{ lat: number; lon: number; m?: number[]; v?: number }>
+            if (pts && pts.length && countryMulti) {
+              pts = pts.filter(p => pointInMultiPoly(p.lon, p.lat, countryMulti))
+            }
             if (pts && pts.length) {
               if (!cancelled) { setPoints(pts); setPointsFromApi(true); setPointsFromStatic(false) }
               return true
@@ -109,6 +204,10 @@ export default function PrioGridMap({ period, activeView }: Props) {
           const res = await fetch(`${base}/data/grid/${period}.geo.json`)
           if (res.ok) {
             const json = await res.json()
+            if (countryMulti) {
+              // Optionally could clip polygons, but for performance, fallback to points methods above
+              // Just set data for full world if no points source available
+            }
             if (!cancelled) { setData(json); setPointsFromApi(false); setPointsFromStatic(false) }
             return true
           }
@@ -136,7 +235,7 @@ export default function PrioGridMap({ period, activeView }: Props) {
     }
     load()
     return () => { cancelled = true }
-  }, [period])
+  }, [period, base, month, countryMulti])
 
   // If we are using the API or static-month points source, refetch when month changes for a smaller payload
   useEffect(() => {
@@ -145,6 +244,16 @@ export default function PrioGridMap({ period, activeView }: Props) {
       if (!pointsFromApi && !pointsFromStatic) return
       try {
         if (pointsFromStatic) {
+          // Try country-specific file first
+          if (countryName) {
+            const countryId = countryName.toUpperCase().replace(/\s+/g, '_')
+            const cr = await fetch(`${base}/data/grid/country/${countryId}-m${month}.json`)
+            if (cr.ok) {
+              const cj = await cr.json()
+              const cpts = (cj?.points || []) as Array<{ lat: number; lon: number; v: number }>
+              if (!cancelled && cpts && cpts.length) { setPoints(cpts); return }
+            }
+          }
           const r = await fetch(`${base}/data/grid/${period}-m${month}.json`)
           if (r.ok) {
             const j = await r.json()
@@ -163,7 +272,7 @@ export default function PrioGridMap({ period, activeView }: Props) {
     }
     refetchForMonth()
     return () => { cancelled = true }
-  }, [month, period, pointsFromApi, pointsFromStatic])
+  }, [month, period, base, pointsFromApi, pointsFromStatic])
 
   // Compute dynamic color scale for current month
   const { thresholds, vmin, vmax } = useMemo(() => {
@@ -183,28 +292,21 @@ export default function PrioGridMap({ period, activeView }: Props) {
     const mn = sorted[0]
     const mx = sorted[sorted.length - 1]
     // Fixed bins for grid view
-    const t = [10, 50, 100, 1000]
+    const t = [...RISK_THRESHOLDS.GRID_LEVELS]
     return { thresholds: t, vmin: mn, vmax: mx }
   }, [data, points, month])
 
   const style = (f: any) => {
     const p = f.properties || {}
     const val = Number(p[`m${month}`] ?? 0)
-    const color = colorFor(val, thresholds)
+    const color = getGridRiskColor(val)
     return {
-      weight: val === 0 ? 0.3 : 0.5,
-      color: val === 0 ? '#dddddd' : '#ffffff',
+      // Thinner borders to avoid heavy/coarse country edge
+      weight: val === 0 ? 0.1 : 0.2,
+      color: val === 0 ? '#e5e5e5' : '#ffffff',
       fillColor: color,
       fillOpacity: val === 0 ? 0.35 : 0.75,
     }
-  }
-
-  function colorFor(v: number, th: number[]) {
-    if (!th || th.length === 0) return '#f5f5f5'
-    if (v <= th[0]) return '#fee8c8'
-    if (v <= th[1]) return '#fdbb84'
-    if (v <= th[2]) return '#ef6548'
-    return '#d7301f' // includes 100–1000 and any higher values
   }
 
   function shrinkBounds(b: any, factor = 0.35) {
@@ -219,6 +321,34 @@ export default function PrioGridMap({ period, activeView }: Props) {
   }
 
   const bounds = useMemo(() => {
+    // For country pages with points, compute exact bounding box from points
+    if (countryName && points && points.length) {
+      let minLat = 90, maxLat = -90, minLon = 180, maxLon = -180
+      for (const p of points) {
+        if (p.lat < minLat) minLat = p.lat
+        if (p.lat > maxLat) maxLat = p.lat
+        if (p.lon < minLon) minLon = p.lon
+        if (p.lon > maxLon) maxLon = p.lon
+      }
+      // Small padding for cell size (0.25° half-cell)
+      const pad = 0.3
+      return [[minLat - pad, minLon - pad], [maxLat + pad, maxLon + pad]] as any
+    }
+    if (countryMulti && countryMulti.length) {
+      // derive bounds from polygon
+      let minLat = 90, maxLat = -90, minLon = 180, maxLon = -180
+      for (const poly of countryMulti) {
+        for (const ring of poly) {
+          for (const [lon,lat] of ring) {
+            if (lat < minLat) minLat = lat
+            if (lat > maxLat) maxLat = lat
+            if (lon < minLon) minLon = lon
+            if (lon > maxLon) maxLon = lon
+          }
+        }
+      }
+      if (minLat < maxLat && minLon < maxLon) return shrinkBounds([[minLat, minLon], [maxLat, maxLon]], 1.15) as any
+    }
     if (points && points.length) {
       const nz = points.filter(p => ((p.m ? (p.m[month - 1] || 0) : (p.v || 0)) > 0))
       const src = nz.length ? nz : points
@@ -253,7 +383,7 @@ export default function PrioGridMap({ period, activeView }: Props) {
     }
     // fallback world view (noWrap prevents world duplication)
     return [[-60, -180], [80, 180]] as any
-  }, [points, data, month])
+  }, [points, data, month, countryMulti])
 
   // Derive a center from bounds and start at a fixed zoom to match country view feel
   const center: [number, number] = useMemo(() => {
@@ -266,14 +396,31 @@ export default function PrioGridMap({ period, activeView }: Props) {
     return [20, 0]
   }, [bounds])
 
-  // Bias the initial view slightly north
+  // Bias the initial view slightly north (only for world view, not country pages)
   const centerAdjusted: [number, number] = useMemo(() => {
+    if (countryName) return center // No bias for country pages
     const northBiasDeg = 7
     return [center[0] + northBiasDeg, center[1]]
-  }, [center])
+  }, [center, countryName])
 
   const loading = !error && !data && !points
   const [showZoomHint, setShowZoomHint] = useState(true)
+  const [mapInteractive, setMapInteractive] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect if device is mobile/tablet
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        || (window.innerWidth <= 768)
+      setIsMobile(mobile)
+      // On desktop, enable controls by default
+      if (!mobile) setMapInteractive(true)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     const t = setTimeout(() => setShowZoomHint(false), 7000)
@@ -281,39 +428,73 @@ export default function PrioGridMap({ period, activeView }: Props) {
   }, [])
 
   return (
-    <div className="border border-gray-200 rounded-lg p-0 bg-white">
-      <div className="h-[560px] md:h-[700px] rounded overflow-hidden relative">
-        {/* View toggle overlay (center-bottom, larger) */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform z-[1000]">
-          <div className="inline-flex rounded-xl border-2 border-clairient-blue overflow-hidden bg-white/95 backdrop-blur shadow-lg">
-            {(() => {
-              // Determine which toggle appears active.
-              // 1) Allow explicit override via prop.
-              // 2) If on technology page (with or without basePath), show Grid active.
-              // 3) Fall back to URL prefix for forecasts pages.
-              const endsWith = (p?: string, suffix?: string) => !!p && !!suffix && p.endsWith(suffix)
-              const gridActive = activeView === 'grid'
-                || endsWith(pathname, '/technology')
-                || (pathname?.startsWith('/forecasts-grid') ?? false)
-              return (
-                <>
-                  <Link
-                    href="/forecasts"
-                    className={`px-6 py-2 text-lg ${gridActive ? 'text-clairient-blue hover:bg-blue-50' : 'bg-clairient-blue text-white'}`}
-                  >
-                    Country view
-                  </Link>
-                  <Link
-                    href="/forecasts-grid"
-                    className={`px-6 py-2 text-lg ${gridActive ? 'bg-clairient-blue text-white' : 'text-clairient-blue hover:bg-blue-50'}`}
-                  >
-                    Grid view
-                  </Link>
-                </>
-              )
-            })()}
+    <div className="rounded-lg p-0 bg-gray-50">
+      <div className="h-[520px] rounded overflow-hidden relative">
+        {/* View toggle overlay (hidden on entity page) */}
+        {!(hideViewToggle || countryName) && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform z-[1000]">
+            <div className="inline-flex rounded-xl border-2 border-clairient-blue overflow-hidden bg-white/95 backdrop-blur shadow-lg">
+              <Link
+                href="/forecasts"
+                className={`px-6 py-2 text-lg ${pathname?.startsWith('/forecasts-grid') ? 'text-clairient-blue hover:bg-gray-50' : 'bg-clairient-blue text-white'}`}
+              >
+                Country view
+              </Link>
+              <Link
+                href="/forecasts-grid"
+                className={`px-6 py-2 text-lg ${pathname?.startsWith('/forecasts-grid') ? 'bg-clairient-blue text-white' : 'text-clairient-blue hover:bg-gray-50'}`}
+              >
+                <span title="0.5° map squares (~55 km)">Sub‑national Areas</span>
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
+        {/* Map controls toggle button - only show on mobile */}
+        {!error && !loading && isMobile && (
+          <div className="absolute top-2 right-2 z-[1000]">
+            <button
+              type="button"
+              onClick={() => setMapInteractive(v => !v)}
+              className={`px-3 py-1.5 rounded shadow-sm text-xs font-medium backdrop-blur border focus:outline-none ${
+                mapInteractive
+                  ? 'bg-clairient-blue/50 border-clairient-blue/60 text-white hover:bg-clairient-blue/65 opacity-65'
+                  : 'bg-white/50 border-gray-300/60 text-gray-600 hover:bg-white/65 opacity-65'
+              }`}
+              aria-pressed={mapInteractive}
+              aria-label={mapInteractive ? 'Disable map controls' : 'Enable map controls'}
+            >
+              {mapInteractive ? 'Disable map controls' : 'Enable map controls'}
+            </button>
+          </div>
+        )}
+        {!error && !loading && (
+          <div className="absolute bottom-4 left-4 z-[1000]">
+            <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-md px-2.5 py-1.5 shadow-sm flex items-center gap-3 text-sm text-gray-700">
+              <span className="whitespace-nowrap font-medium text-gray-900">Months ahead:</span>
+              <div className="w-48">
+                <input
+                  type="range"
+                  min={1}
+                  max={6}
+                  value={month}
+                  onChange={(e) => setMonth(Number(e.target.value))}
+                  className="range"
+                  style={{ accentColor: '#1e40af' }}
+                  aria-label="Months ahead"
+                  aria-valuemin={1}
+                  aria-valuemax={6}
+                  aria-valuenow={month}
+                />
+                <div className="flex justify-between text-[10px] text-gray-600 mt-1">
+                  {[1,2,3,4,5,6].map(n => (
+                    <span key={n}>{n}m</span>
+                  ))}
+                </div>
+              </div>
+              <span className="w-6 text-right font-medium">{month}</span>
+            </div>
+          </div>
+        )}
         {error && (
           <div className="h-full flex items-center justify-center text-sm text-gray-600">
             <div>
@@ -334,21 +515,38 @@ export default function PrioGridMap({ period, activeView }: Props) {
         {!error && !loading && (
           <MapContainer
             center={centerAdjusted as any}
-            zoom={2.7}
+            zoom={3.0}
             zoomSnap={0.5}
             zoomDelta={0.5}
             scrollWheelZoom={false}
+            dragging={false}
+            touchZoom={false}
             worldCopyJump={true}
             minZoom={1}
             wheelPxPerZoomLevel={40}
-            doubleClickZoom={true}
+            doubleClickZoom={false}
+            boxZoom={false}
+            keyboard={false}
             zoomAnimation={true}
             maxBounds={[[-85, -180], [85, 180]] as any}
             maxBoundsViscosity={1.0}
             preferCanvas={true}
             attributionControl={false}
-            style={{ height: '100%', width: '100%' }}
+            style={{ height: '100%', width: '100%', touchAction: (mapInteractive ? 'auto' : 'pan-y') as any, pointerEvents: mapInteractive ? 'auto' : 'none' }}
           >
+            {/* Fit view to computed bounds (country or data) */}
+            {(() => {
+              function FitToBounds({ b, isCountry }: { b: any; isCountry: boolean }) {
+                const map = useMap()
+                useEffect(() => {
+                  // More padding at bottom for controls on country pages
+                  const pad = isCountry ? { paddingTopLeft: [10, 10], paddingBottomRight: [10, 60] } : { padding: [24, 24] }
+                  try { if (b) (map as any).fitBounds(b, pad) } catch {}
+                }, [b, map, isCountry])
+                return null
+              }
+              return <FitToBounds b={bounds as any} isCountry={!!countryName} />
+            })()}
             {/* Require Cmd/Ctrl + scroll to zoom */}
             {(() => {
               function CtrlScrollZoom() {
@@ -377,12 +575,41 @@ export default function PrioGridMap({ period, activeView }: Props) {
               }
               return <CtrlScrollZoom />
             })()}
+            {(() => {
+              function InteractionToggle({ enabled }: { enabled: boolean }) {
+                const map = useMap()
+                useEffect(() => {
+                  const container = map.getContainer()
+                  try { container.style.touchAction = enabled ? 'auto' : 'pan-y' } catch {}
+                  if (enabled) {
+                    map.dragging.enable(); map.touchZoom.enable(); map.doubleClickZoom.enable(); map.boxZoom.enable(); map.keyboard.enable()
+                  } else {
+                    map.dragging.disable(); map.touchZoom.disable(); map.doubleClickZoom.disable(); map.boxZoom.disable(); map.keyboard.disable()
+                  }
+                }, [map, enabled])
+                return null
+              }
+              return <InteractionToggle enabled={mapInteractive} />
+            })()}
+            {/* Mobile gesture handling: require two fingers to pan/zoom, allow page scroll with one finger */}
+            {/* Mobile: keep map non-interactive to allow page scroll */}
             <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-              attribution="&copy; OpenStreetMap contributors &copy; CARTO"
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+              attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ"
               noWrap={true}
+              maxNativeZoom={16}
             />
-            {data && (
+            {/* Hard mask outside the selected country */}
+            {maskGeoJson && (
+              <GeoJSON
+                data={maskGeoJson as any}
+                // Disable stroke to avoid visible crude outline along mask edge
+                style={{ fillColor: '#f9fafb', fillOpacity: 1.0, stroke: false } as any}
+                interactive={false}
+              />
+            )}
+            {/* Avoid rendering full-world polygons when masking to a country */}
+            {data && !countryMulti && (
               <GeoJSON
                 key={`poly-${month}`}
                 data={filterGeojsonByMonth(data, month)}
@@ -391,6 +618,7 @@ export default function PrioGridMap({ period, activeView }: Props) {
                   const v = Number(feature?.properties?.[`m${month}`] ?? 0)
                   layer.bindTooltip(`m${month}: ${Number(v.toFixed(1))}` , { sticky: true })
                 }}
+                interactive={false}
               />
             )}
             {/* Render CSV/static points as square polygons aligned to PRIO‑GRID cells */}
@@ -409,16 +637,46 @@ export default function PrioGridMap({ period, activeView }: Props) {
                   })
                 } as any}
                 style={style as any}
-                onEachFeature={(feature, layer) => {
-                  const v = Number(feature?.properties?.[`m${month}`] ?? 0)
-                  layer.bindTooltip(`m${month}: ${Number(v.toFixed(1))}` , { sticky: true })
-                }}
+                interactive={false}
               />
             )}
           </MapContainer>
         )}
+                {/* Compact legend overlay (bottom-right) */}
+        {!error && !loading && (
+          <div className="absolute bottom-4 right-2 z-[1000]">
+            <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-md px-2.5 py-1.5 shadow-sm text-[11px] text-gray-800">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  <span className="inline-block w-4 h-3 rounded border border-gray-300" style={{ backgroundColor: '#f5f5f5' }} />
+                  <span>0</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="inline-block w-4 h-3 rounded border border-gray-300" style={{ backgroundColor: '#fee8c8' }} />
+                  <span>&lt;5</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="inline-block w-4 h-3 rounded border border-gray-300" style={{ backgroundColor: '#fdbb84' }} />
+                  <span>5–10</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="inline-block w-4 h-3 rounded border border-gray-300" style={{ backgroundColor: '#ef6548' }} />
+                  <span>10–50</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="inline-block w-4 h-3 rounded border border-gray-300" style={{ backgroundColor: '#d7301f' }} />
+                  <span>50–100</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="inline-block w-4 h-3 rounded border border-gray-300" style={{ backgroundColor: '#b30000' }} />
+                  <span>&gt;100</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {showZoomHint && (
-          <div className="absolute bottom-4 right-4 z-[1000]">
+          <div className="absolute top-4 right-4 z-[1000]">
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-md px-3 py-2 text-xs text-gray-700 shadow-sm flex items-center gap-2">
               <span>Zoom: Double-click or hold Cmd (⌘)/Ctrl + scroll</span>
               <button className="text-gray-400 hover:text-gray-600" onClick={() => setShowZoomHint(false)}>×</button>
@@ -426,39 +684,10 @@ export default function PrioGridMap({ period, activeView }: Props) {
           </div>
         )}
       </div>
-      {/* Controls moved below map */}
-      <div className="px-4 py-2">
-        <div className="flex items-center justify-between">
-          <div className="text-xs text-gray-500">min {isFinite(vmin) ? vmin.toFixed(1) : '—'} → max {isFinite(vmax) ? vmax.toFixed(1) : '—'}</div>
-          <div className="flex items-center gap-3 text-sm text-gray-700">
-            <span className="whitespace-nowrap">Months ahead:</span>
-            <div className="w-56 md:w-72">
-              <input
-                type="range"
-                min={1}
-                max={6}
-                value={month}
-                onChange={(e) => setMonth(Number(e.target.value))}
-                className="range"
-                style={{ accentColor: '#1e40af' }}
-              />
-              <div className="flex justify-between text-[10px] text-gray-500 mt-1">
-                {[1,2,3,4,5,6].map(n => (
-                  <span key={n}>{n}m</span>
-                ))}
-              </div>
-            </div>
-            <span className="w-6 text-right font-medium">{month}</span>
-          </div>
-        </div>
-      </div>
-      <Legend thresholds={thresholds} vmin={vmin} vmax={vmax} data={data} points={points} month={month} />
-      <div className="px-4 mt-4 text-center">
-        <Link href="/data" className="btn-primary inline-flex items-center justify-center">
-          Data downloads
-        </Link>
-      </div>
-      <div className="mt-1 text-[10px] text-gray-400">Map data © OpenStreetMap contributors, © CARTO</div>
+      {/* Map attribution below map */}
+      {!error && (
+        <p className="text-[10px] text-gray-500 text-right px-2 py-1">Basemap © Esri, DeLorme, NAVTEQ</p>
+      )}
     </div>
   )
 }
@@ -541,42 +770,6 @@ function parseCentroidsCsv(text: string): Record<string, { lat: number; lon: num
   return out
 }
 
-// -------- Legend component (stats + color scale) --------
-function Legend({ thresholds, vmin, vmax, data, points, month }: any) {
-  let total = 0, zeros = 0
-  if (data?.features?.length) {
-    total = data.features.length
-    for (const f of data.features) {
-      const v = Number(f?.properties?.[`m${month}`] ?? 0)
-      if (!v) zeros++
-    }
-  } else if (points?.length) {
-    total = points.length
-    for (const p of points) {
-      const v = Number(((p as any).m ? (p as any).m[month - 1] : (p as any).v) ?? 0)
-      if (!v) zeros++
-    }
-  }
-  const nz = total - zeros
-  return (
-    <div className="mt-4 text-sm text-gray-700">
-      <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {['#fee8c8','#fdbb84','#ef6548','#d7301f'].map((c,i) => (
-          <div key={i} className="flex items-center gap-3">
-            <div className="w-8 h-5 rounded" style={{backgroundColor: c}} />
-            <span className="text-gray-800">{['< 10','10–50','50–100','100–1000'][i]}</span>
-          </div>
-        ))}
-      </div>
-      {total > 0 && (
-        <div className="mt-2 text-gray-600">
-          Cells: {total} · Non‑zero: {nz} ({((nz/total)*100).toFixed(1)}%) · Zeros: {zeros}
-        </div>
-      )}
-    </div>
-  )
-}
-
 function splitCsv(line: string): string[] {
   const out: string[] = []
   let cur = ''
@@ -615,17 +808,6 @@ function filterGeojsonByMonth(data: any, month: number) {
   if (!data?.features?.length) return data
   const feats = data.features.filter((f: any) => Number(f?.properties?.[`m${month}`] ?? 0) > 0)
   return { type: 'FeatureCollection', features: feats }
-}
-
-function legendLabelForIndex(i: number, t: number[]) {
-  const fmt = (v: number) => Number.isFinite(v) ? (v >= 100 ? v.toFixed(0) : v.toFixed(1)) : '—'
-  if (!Array.isArray(t) || t.length < 5) return ''
-  if (i === 0) return `≤ ${fmt(t[0])}`
-  if (i === 1) return `${fmt(t[0])}–${fmt(t[1])}`
-  if (i === 2) return `${fmt(t[1])}–${fmt(t[2])}`
-  if (i === 3) return `${fmt(t[2])}–${fmt(t[3])}`
-  if (i === 4) return `${fmt(t[3])}–${fmt(t[4])}`
-  return `> ${fmt(t[4])}`
 }
 
 // Build a square polygon centered on (lon, lat) with given half-size in degrees
