@@ -55,6 +55,11 @@ jobs:
           node scripts/mirror-forecasts-with-dates.js
           node scripts/sync-historical-archive.js
 
+      - name: Build dashboard snapshots from the archive (real fatalities, no capping)
+        run: |
+          node scripts/build-snapshots-from-archive.js
+          cp public/data/forecasts/latest/Hist.csv public/data/hist.csv
+
       - name: Build PRIO-GRID centroids from shapefile
         run: npm run grid:centroids
       - name: Build PRIO-GRID GeoJSON from live CSV
@@ -74,7 +79,7 @@ jobs:
           set -e
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add content/forecasts public/data/csv public/data/grid public/data/forecasts || true
+          git add content/forecasts public/data/csv public/data/grid public/data/forecasts public/data/hist.csv || true
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync forecasts + grid assets (centroids, geojson, monthly points)"
           fi

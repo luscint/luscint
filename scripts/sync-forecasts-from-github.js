@@ -172,15 +172,15 @@ function buildSnapshotFromMatrix(header, rows, meta, prevIndexMap) {
     const v1 = toNumber(r1[name])
     const v3 = toNumber(r3[name])
     const v6 = toNumber(r6[name])
-    const scale = (v1 <= 1 && v3 <= 1 && v6 <= 1) ? 100 : 1
-    const idx1 = clamp(Number((v1 * scale).toFixed(1)), 0, 10000)
-    const idx3 = clamp(Number((v3 * scale).toFixed(1)), 0, 10000)
-    const idx6 = clamp(Number((v6 * scale).toFixed(1)), 0, 10000)
+    const scale = 1
+    const idx1 = clamp(Number((v1 * scale).toFixed(1)), 0, 1e9)
+    const idx3 = clamp(Number((v3 * scale).toFixed(1)), 0, 1e9)
+    const idx6 = clamp(Number((v6 * scale).toFixed(1)), 0, 1e9)
     const id = (name || '').toString().toUpperCase()
     const prev = prevIndexMap ? toNumber(prevIndexMap[id] ?? prevIndexMap[name]) : undefined
     const deltaMoM = prev !== undefined ? Number((idx1 - prev).toFixed(1)) : 0
     const base = idx1
-    const mkBand = (x) => (x >= 66 ? 'high' : x >= 33 ? 'medium' : 'low')
+    const mkBand = (x) => (x >= 200 ? 'high' : x >= 50 ? 'medium' : 'low')
     return {
       id,
       name,
@@ -191,9 +191,9 @@ function buildSnapshotFromMatrix(header, rows, meta, prevIndexMap) {
       deltaMoM,
       deltaYoY: 0,
       horizons: {
-        '1m': { index: idx1, p10: clamp(idx1 - 5, 0, 10000), p50: idx1, p90: idx1 + 5 },
-        '3m': { index: idx3, p10: clamp(idx3 - 7, 0, 10000), p50: idx3, p90: idx3 + 7 },
-        '6m': { index: idx6, p10: clamp(idx6 - 10, 0, 10000), p50: idx6, p90: idx6 + 10 },
+        '1m': { index: idx1, p10: clamp(idx1 - 5, 0, 1e9), p50: idx1, p90: idx1 + 5 },
+        '3m': { index: idx3, p10: clamp(idx3 - 7, 0, 1e9), p50: idx3, p90: idx3 + 7 },
+        '6m': { index: idx6, p10: clamp(idx6 - 10, 0, 1e9), p50: idx6, p90: idx6 + 10 },
       },
       drivers: []
     }
