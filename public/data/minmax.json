@@ -1,0 +1,542 @@
+{
+  "Afghanistan": {
+    "min": 7,
+    "max": 260
+  },
+  "Albania": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Algeria": {
+    "min": 0,
+    "max": 12
+  },
+  "Angola": {
+    "min": 0,
+    "max": 1
+  },
+  "Argentina": {
+    "min": 0,
+    "max": 14
+  },
+  "Armenia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Australia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Austria": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Azerbaijan": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Bahrain": {
+    "min": 0,
+    "max": 3
+  },
+  "Bangladesh": {
+    "min": 0,
+    "max": 15
+  },
+  "Belgium": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Benin": {
+    "min": 0,
+    "max": 20
+  },
+  "Bhutan": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Bolivia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Bosnia and Herz.": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Botswana": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Brazil": {
+    "min": 13,
+    "max": 34
+  },
+  "Burkina Faso": {
+    "min": 129,
+    "max": 453
+  },
+  "Burundi": {
+    "min": 1,
+    "max": 32
+  },
+  "Cambodia": {
+    "min": 0,
+    "max": 12
+  },
+  "Cameroon": {
+    "min": 31,
+    "max": 71
+  },
+  "Canada": {
+    "min": 0,
+    "max": 1
+  },
+  "Central African Rep.": {
+    "min": 6,
+    "max": 40
+  },
+  "Chad": {
+    "min": 0,
+    "max": 50
+  },
+  "China": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Colombia": {
+    "min": 46,
+    "max": 352
+  },
+  "Comoros": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Congo": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Croatia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Djibouti": {
+    "min": 0,
+    "max": 10
+  },
+  "Dem. Rep. Congo": {
+    "min": 88,
+    "max": 661
+  },
+  "Ecuador": {
+    "min": 0,
+    "max": 67
+  },
+  "Egypt": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "El Salvador": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Eritrea": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Ethiopia": {
+    "min": 187,
+    "max": 608
+  },
+  "France": {
+    "min": 0,
+    "max": 1
+  },
+  "Gambia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Georgia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Germany": {
+    "min": 0,
+    "max": 2
+  },
+  "Ghana": {
+    "min": 0,
+    "max": 13
+  },
+  "Guatemala": {
+    "min": 0,
+    "max": 14
+  },
+  "Guinea": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Guinea-Bissau": {
+    "min": 0,
+    "max": 1
+  },
+  "Guyana": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Haiti": {
+    "min": 3,
+    "max": 131
+  },
+  "Honduras": {
+    "min": 0,
+    "max": 20
+  },
+  "India": {
+    "min": 8,
+    "max": 58
+  },
+  "Indonesia": {
+    "min": 0,
+    "max": 34
+  },
+  "Iran": {
+    "min": 1,
+    "max": 19886
+  },
+  "Iraq": {
+    "min": 1,
+    "max": 105
+  },
+  "Israel": {
+    "min": 64,
+    "max": 176
+  },
+  "Italy": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Côte d'Ivoire": {
+    "min": 0,
+    "max": 7
+  },
+  "Jamaica": {
+    "min": 0,
+    "max": 4
+  },
+  "Jordan": {
+    "min": 0,
+    "max": 3
+  },
+  "Kenya": {
+    "min": 0,
+    "max": 18
+  },
+  "eSwatini": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Kuwait": {
+    "min": 0,
+    "max": 12
+  },
+  "Kyrgyzstan": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Laos": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Lebanon": {
+    "min": 15,
+    "max": 870
+  },
+  "Lesotho": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Liberia": {
+    "min": 0,
+    "max": 1
+  },
+  "Libya": {
+    "min": 0,
+    "max": 15
+  },
+  "Madagascar": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Malaysia": {
+    "min": 0,
+    "max": 3
+  },
+  "Mali": {
+    "min": 27,
+    "max": 438
+  },
+  "Malta": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Mauritania": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Mexico": {
+    "min": 149,
+    "max": 283
+  },
+  "Moldova": {
+    "min": 0,
+    "max": 1
+  },
+  "Morocco": {
+    "min": 0,
+    "max": 3
+  },
+  "Mozambique": {
+    "min": 5,
+    "max": 54
+  },
+  "Myanmar": {
+    "min": 81,
+    "max": 268
+  },
+  "Namibia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Nepal": {
+    "min": 0,
+    "max": 3
+  },
+  "Netherlands": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Nicaragua": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Niger": {
+    "min": 29,
+    "max": 250
+  },
+  "Nigeria": {
+    "min": 353,
+    "max": 1038
+  },
+  "Macedonia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Pakistan": {
+    "min": 193,
+    "max": 744
+  },
+  "Panama": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Papua New Guinea": {
+    "min": 0,
+    "max": 6
+  },
+  "Paraguay": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Peru": {
+    "min": 0,
+    "max": 6
+  },
+  "Philippines": {
+    "min": 1,
+    "max": 34
+  },
+  "Poland": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Qatar": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Romania": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Russia": {
+    "min": 2,
+    "max": 55
+  },
+  "Rwanda": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Saudi Arabia": {
+    "min": 0,
+    "max": 4
+  },
+  "Senegal": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Serbia": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Sierra Leone": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Solomon Islands": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Somalia": {
+    "min": 116,
+    "max": 964
+  },
+  "South Africa": {
+    "min": 1,
+    "max": 53
+  },
+  "S. Sudan": {
+    "min": 23,
+    "max": 128
+  },
+  "Spain": {
+    "min": 0,
+    "max": 3
+  },
+  "Sri Lanka": {
+    "min": 0,
+    "max": 104
+  },
+  "Sudan": {
+    "min": 242,
+    "max": 925
+  },
+  "Sweden": {
+    "min": 0,
+    "max": 2
+  },
+  "Syria": {
+    "min": 54,
+    "max": 121
+  },
+  "Tajikistan": {
+    "min": 0,
+    "max": 5
+  },
+  "Tanzania": {
+    "min": 0,
+    "max": 1
+  },
+  "Thailand": {
+    "min": 0,
+    "max": 89
+  },
+  "Togo": {
+    "min": 0,
+    "max": 1
+  },
+  "Trinidad and Tobago": {
+    "min": 0,
+    "max": 2
+  },
+  "Tunisia": {
+    "min": 0,
+    "max": 5
+  },
+  "Turkey": {
+    "min": 0,
+    "max": 9
+  },
+  "Uganda": {
+    "min": 0,
+    "max": 30
+  },
+  "Ukraine": {
+    "min": 4725,
+    "max": 10350
+  },
+  "United Arab Emirates": {
+    "min": 0,
+    "max": 5
+  },
+  "United Kingdom": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "United States of America": {
+    "min": 0,
+    "max": 3
+  },
+  "Uzbekistan": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Venezuela": {
+    "min": 0,
+    "max": 84
+  },
+  "Yemen": {
+    "min": 48,
+    "max": 643
+  },
+  "Zambia": {
+    "min": 0,
+    "max": 1
+  },
+  "Zimbabwe": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Dominica": {
+    "min": 0,
+    "max": 1
+  },
+  "Belize": {
+    "min": 0,
+    "max": 6
+  },
+  "Dominican Rep.": {
+    "min": 0,
+    "max": 3
+  },
+  "Oman": {
+    "min": 0,
+    "max": 3
+  },
+  "Chile": {
+    "min": 0,
+    "max": 2
+  },
+  "Antigua & Barbuda": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Barbados": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Costa Rica": {
+    "min": 0,
+    "max": 2
+  },
+  "Greece": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Malawi": {
+    "min": 0,
+    "max": 0.000001
+  },
+  "Unnamed: 135": {
+    "min": 0,
+    "max": 0.000001
+  }
+}

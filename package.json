@@ -16,7 +16,11 @@
     "grid:build": "node scripts/priogrid-shp-join-csv.js --csv https://raw.githubusercontent.com/ThomasSchinca/Live_3D_forecast/main/df_output.csv",
     "grid:csv": "node scripts/grid-geojson-to-csv.js",
     "grid:csv:months": "node scripts/grid-month-points-to-csv.js",
-    "api:export": "node scripts/export-static-api.js"
+    "api:export": "node scripts/export-static-api.js",
+    "matches:convert": "node scripts/convert-matches-pkl.js --src matches.pkl --out public/data/matches.json",
+    "data:minmax": "node scripts/update-minmax-from-hist.js",
+    "scenarios:denorm": "node scripts/denorm-scenarios.js",
+    "data:update": "npm run data:minmax && npm run scenarios:denorm"
   },
   "dependencies": {
     "@types/leaflet": "^1.9.20",

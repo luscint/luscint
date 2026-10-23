@@ -35,6 +35,58 @@ function main() {
   const outDir = path.dirname(outPath)
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })
 
+  // Prefer the Python installed by actions/setup-python (pythonLocation),
+  // then PYTHON env, then fall back to 'python3'. This avoids version
+  // mismatches (e.g., NumPy 2.x pickles) on runners with multiple pythons.
+  function resolvePython() {
+    const pLoc = process.env.pythonLocation
+    if (pLoc) {
+      const cand = path.join(pLoc, 'bin', 'python')
+      const cand3 = path.join(pLoc, 'bin', 'python3')
+      if (fs.existsSync(cand)) return cand
+      if (fs.existsSync(cand3)) return cand3
+    }
+    // Prefer local project venv if present
+    try {
+      const venvPy = path.join(process.cwd(), '.venv', 'bin', process.platform === 'win32' ? 'python.exe' : 'python')
+      if (fs.existsSync(venvPy)) return venvPy
+    } catch {}
+    if (process.env.PYTHON && fs.existsSync(process.env.PYTHON)) return process.env.PYTHON
+    return 'python3'
+  }
+
+  // Best-effort ensure required Python deps exist (numpy>=2, pandas>=2)
+  function ensurePythonDeps(pyBin) {
+    try {
+      const missing = execFileSync(pyBin, ['-c', `import json, importlib
+missing=[]
+try:
+    import numpy as np
+    import importlib as _il
+    try:
+        _il.import_module('numpy._core')
+    except Exception:
+        pass
+except Exception:
+    missing.append('numpy>=2.0.0')
+try:
+    import pandas as pd
+except Exception:
+    missing.append('pandas>=2.0.0')
+print(json.dumps(missing))
+`], { encoding: 'utf-8' })
+      const mods = JSON.parse(String(missing || '[]'))
+      if (Array.isArray(mods) && mods.length) {
+        try {
+          console.log('Installing missing Python packages:', mods.join(', '))
+          execFileSync(pyBin, ['-m', 'pip', 'install', ...mods], { stdio: 'inherit' })
+        } catch (e) {
+          console.warn('Warning: auto-install of Python deps failed; proceeding anyway')
+        }
+      }
+    } catch {}
+  }
+
   const py = `import pickle, json, sys
 from collections.abc import Mapping, Sequence
 
@@ -61,13 +113,54 @@ def sanitize(x):
         return [sanitize(v) for v in x]
     return str(x)
 
+# Provide compatibility shims for older pandas pickles that reference
+# removed modules/classes like pandas.core.indexes.numeric.*Index.
+try:
+    import types as _types
+    import sys as _sys
+    import pandas as _pd  # noqa: F401
+    try:
+        # If the legacy module is missing in current pandas, create a stub
+        if 'pandas.core.indexes.numeric' not in _sys.modules:
+            m = _types.ModuleType('pandas.core.indexes.numeric')
+            try:
+                from pandas import Index as _Index
+                # Map legacy numeric index classes to the modern Index type
+                m.Int64Index = _Index
+                m.UInt64Index = _Index
+                m.Float64Index = _Index
+            except Exception:
+                pass
+            _sys.modules['pandas.core.indexes.numeric'] = m
+    except Exception:
+        pass
+except Exception:
+    pass
+
+# Provide NumPy 2.x pickle compatibility on environments with NumPy 1.x
+try:
+    import sys as _sys, importlib as _il
+    import numpy as _np
+    try:
+        _il.import_module('numpy._core')
+    except Exception:
+        try:
+            import numpy.core as _np_core
+            _sys.modules['numpy._core'] = _np_core
+        except Exception:
+            pass
+except Exception:
+    pass
+
 with open(sys.argv[1], 'rb') as f:
     data = pickle.load(f)
 json.dump(sanitize(data), sys.stdout)
 `
 
   try {
-    const json = execFileSync('python3', ['-c', py, args.src], { encoding: 'utf-8' })
+    const pyBin = resolvePython()
+    ensurePythonDeps(pyBin)
+    const json = execFileSync(pyBin, ['-c', py, args.src], { encoding: 'utf-8' })
     fs.writeFileSync(outPath, json)
     console.log(`Wrote ${outPath}`)
   } catch (e) {
@@ -77,4 +170,3 @@ json.dump(sanitize(data), sys.stdout)
 }
 
 if (require.main === module) main()
-
