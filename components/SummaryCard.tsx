@@ -20,7 +20,7 @@ export default function SummaryCard({
   subtitle,
   delta,
   deltaLabel = 'Δ vs previous month',
-  deltaColors = { positive: 'text-emerald-500', negative: 'text-rose-500' }
+  deltaColors = { positive: 'text-rose-600', negative: 'text-emerald-600' }
 }: SummaryCardProps) {
   const deltaEl = (delta !== undefined && delta !== null) ? (
     <div className="mt-4 border-t border-gray-200 pt-3">

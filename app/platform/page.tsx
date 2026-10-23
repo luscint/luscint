@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 const standard = [
   'Country forecasts, 1–6 months ahead, updated monthly',
   'Global 0.5° (≈55 km) grid forecasts',
-  'Prediction intervals and month-on-month change',
+  'Source-provided bounds where available; release comparisons when verified',
   'Dashboard, CSV and JSON downloads',
-  'Versioned archive of past monthly releases',
+  'Archive by forecast period, with provenance notes',
 ]
 
 const builtForYou = [

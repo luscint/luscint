@@ -5,6 +5,8 @@ import { useState } from 'react'
 
 interface ArchiveEntry {
   period: string
+  boundsKind: string
+  underReview: boolean
   files: {
     bundle: boolean
     hist: boolean
@@ -35,7 +37,8 @@ export default function ArchiveTable({ archiveData }: ArchiveTableProps) {
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-gray-500">
-            <th className="py-2">Period</th>
+            <th className="py-2">Forecast start</th>
+            <th className="py-2">Bounds / status</th>
             <th className="py-2">Bundle</th>
             <th className="py-2">Hist.csv</th>
             <th className="py-2">metadata.json</th>
@@ -44,13 +47,14 @@ export default function ArchiveTable({ archiveData }: ArchiveTableProps) {
           </tr>
         </thead>
         <tbody>
-          {displayData.map(({ period, files }) => (
+          {displayData.map(({ period, files, boundsKind, underReview }) => (
             <tr key={period} className="border-t border-gray-100 align-top">
               <td className="py-2 font-mono">{period}</td>
+              <td className="py-2 text-xs"><div>{boundsKind === 'heuristic_30_percent' ? 'Heuristic ±30%' : boundsKind === 'source_provided' ? 'Source-provided; coverage unverified' : 'Unavailable'}</div><div>Publication date unverified</div>{underReview && <div className="text-amber-900 font-medium">Source values under review</div>}</td>
               <td className="py-2">
-                <Link href={`/data/forecasts/archive/${period}/forecasts-${period}.zip`} className="text-link">
+                {files.bundle && <Link href={`/data/forecasts/archive/${period}/forecasts-${period}.zip`} className="text-link">
                   forecasts-{period}.zip
-                </Link>
+                </Link>}
               </td>
               <td className="py-2">
                 {files.hist && (

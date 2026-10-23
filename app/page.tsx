@@ -16,7 +16,7 @@ const layers = [
     icon: Cpu,
     step: '02',
     title: 'Forecasting engine',
-    text: 'Pattern-based models match current trajectories to comparable past episodes and follow them forward, producing forecasts 1–6 months ahead with uncertainty bounds.',
+    text: 'Pattern-based models match current trajectories to comparable past episodes and follow them forward, producing forecasts 1–6 months ahead with historical scenarios.',
   },
   {
     icon: Send,
@@ -58,9 +58,9 @@ export default async function Home() {
 
   const proof = [
     { value: String(countryItems.length), label: 'countries forecast' },
-    { value: '1–6', label: 'months ahead' },
+    { value: '1–6', label: 'months from data cutoff' },
     { value: '0.5°', label: 'sub-national grid (≈55 km)' },
-    { value: periodLabel, label: 'latest monthly release' },
+    { value: periodLabel, label: 'latest forecast start month' },
   ]
 
   return (
@@ -93,7 +93,7 @@ export default async function Home() {
                 Early warning for political violence — months ahead, not days.
               </h1>
               <p className="text-lg md:text-xl text-slate-300 mb-9 max-w-xl">
-                Monthly forecasts at country and sub-national level, with quantified uncertainty, for investors, insurers and
+                Monthly forecasts at country and sub-national level, with historical scenarios, for investors, insurers and
                 public-sector decision-makers.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -102,7 +102,7 @@ export default async function Home() {
                   <ArrowRight className="ml-2" size={16} />
                 </Link>
                 <Link href="/forecasts" className="inline-flex items-center justify-center rounded-md border border-white/40 px-6 py-3 text-[15px] font-medium text-white hover:bg-white/10 transition-colors">
-                  Explore live forecasts
+                  Explore forecasts
                 </Link>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default async function Home() {
               exposure has been taken, premiums set, or resources committed.
             </p>
             <p>
-              Luscint publishes forward-looking, time-stamped forecasts with their uncertainty, so risk teams can see
+              Luscint publishes forecasts with source dates and uncertainty information where available, so risk teams can see
               escalation coming and decide with their eyes open — and check later how the forecasts performed.
             </p>
           </div>
@@ -207,7 +207,7 @@ export default async function Home() {
             </p>
             <ul className="space-y-2 text-[15px] text-slate-700 mb-6">
               {[
-                'Commercial licence and point-in-time history',
+                'Commercial licence and documented archive access',
                 'Custom horizons and delivery cadence',
                 'Forecasts mapped to your holdings or locations',
                 'Additional signals, API with SLA, and support',
@@ -243,7 +243,7 @@ export default async function Home() {
       {/* CTA */}
       <section className="py-20 bg-navy">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl text-white mb-4">See this month’s forecasts.</h2>
+          <h2 className="text-3xl md:text-4xl text-white mb-4">Explore the latest available forecasts.</h2>
           <p className="text-slate-300 mb-8 text-lg">Tell us what you monitor and we will tell you what we can offer.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/contact" className="btn-primary !bg-white !text-navy hover:!bg-blue-50">Get in touch</Link>

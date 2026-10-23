@@ -1,0 +1,15 @@
+{
+  "reviewed_at": "2026-10-23",
+  "periods": {
+    "2026-08": {
+      "status": "under_review",
+      "message": "The source August file predicts 657,053 fatalities for Somalia in its first forecast month. This value is reproduced faithfully from the source but has not been validated. Comparisons involving this release are withheld pending review.",
+      "source": "https://raw.githubusercontent.com/conflictlab/Pace-map-risk/main/Historical_Predictions/2026-08_h6.csv"
+    },
+    "2026-09": {
+      "status": "under_review",
+      "message": "The source September file predicts 36,129 fatalities for Iran in its first forecast month. This unusually large estimate has not been validated. Values remain available for inspection; comparisons involving this release are withheld pending review.",
+      "source": "https://raw.githubusercontent.com/conflictlab/Pace-map-risk/main/forecasts_h6.csv"
+    }
+  }
+}

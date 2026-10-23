@@ -31,7 +31,7 @@ export default function AssetManagement() {
       delivery={[
         'Dashboard for analysts and risk committees',
         'CSV and JSON files you can load in Excel, Python or R',
-        'Point-in-time history for backtesting your own use cases',
+        'Historical forecast files for evaluation, with publication dates and data vintages requiring verification',
         'Mapping forecasts to your holdings or lists of locations, on request',
       ]}
       notClaimed="Luscint forecasts are not trading signals and we make no claims about returns. Their purpose is earlier, better-quantified awareness of conflict risk. How much that is worth depends on your portfolio, and we encourage you to test it on your own data — we will support that."

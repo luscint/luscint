@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { Send, CheckCircle, AlertCircle } from 'lucide-react'
 import companyData from '@/content/company.json'
@@ -145,7 +146,7 @@ export default function Contact() {
                 </button>
 
                 <p className="text-xs text-gray-500">
-                  We use your details only to reply to your enquiry. See our <a className="underline" href="/legal/privacy">privacy notice</a>.
+                  We use your details only to reply to your enquiry. See our <Link className="underline" href="/legal/privacy">privacy notice</Link>.
                 </p>
               </form>
             )}

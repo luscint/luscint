@@ -12,13 +12,13 @@ export const viewport: Viewport = { width: 'device-width', initialScale: 1 }
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://luscint.com'),
   title: { default: 'Luscint — Conflict risk forecasts, months ahead', template: '%s — Luscint' },
-  description: 'Monthly forecasts of political violence at country and sub-national level, 1–6 months ahead, with quantified uncertainty. For investors, insurers and public-sector decision-makers.',
+  description: 'Monthly forecasts of political violence at country and sub-national level, 1–6 months ahead, with historical scenarios and source documentation. For investors, insurers and public-sector decision-makers.',
   keywords: 'conflict forecasting, political violence, geopolitical risk, SRCC, country risk, early warning',
   authors: [{ name: 'Luscint' }],
   robots: 'index, follow',
   openGraph: {
     title: 'Luscint — Conflict risk forecasts, months ahead',
-    description: 'Monthly forecasts of political violence at country and sub-national level, with quantified uncertainty.',
+    description: 'Monthly forecasts of political violence at country and sub-national level, with historical scenarios and source documentation.',
     type: 'website',
     locale: 'en_GB',
   },

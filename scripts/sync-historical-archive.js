@@ -10,7 +10,8 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
+const { historicalMetadata } = require('./forecast-provenance');
 
 const GITHUB_BASE = 'https://raw.githubusercontent.com/conflictlab/Pace-map-risk/main';
 const ARCHIVE_BASE = path.join(process.cwd(), 'public', 'data', 'forecasts', 'archive');
@@ -123,6 +124,13 @@ async function main() {
 
     const archiveDir = path.join(ARCHIVE_BASE, period);
     fs.mkdirSync(archiveDir, { recursive: true });
+    const existingMeta = path.join(archiveDir, 'metadata.json');
+    if (fs.existsSync(existingMeta) && fs.existsSync(path.join(archiveDir, 'forecasts_h6.csv'))) {
+      console.log('  Preserving existing archive and its provenance');
+      const files = fs.readdirSync(archiveDir).filter(f => /\.(csv|json)$/.test(f));
+      execFileSync('zip', ['-q', `forecasts-${period}.zip`, ...files], { cwd: archiveDir });
+      continue;
+    }
 
     // Fetch h6 and h12 predictions
     let h6Data = urls.h6 ? await fetchText(urls.h6) : null;
@@ -161,76 +169,13 @@ async function main() {
 
     // Parse to get forecasts (we treat provided CSVs as mean forecasts)
 
-    if (h6Data) {
-      // Check if it has min/max columns or is just mean
-      const lines = h6Data.split('\n');
-      const header = lines[0];
-
-      // Simple format: just write as forecasts_h6.csv
-      fs.writeFileSync(path.join(archiveDir, 'forecasts_h6.csv'), h6Data);
-      console.log(`  ✓ forecasts_h6.csv`);
-
-      // Create placeholder min/max (these might not exist in old format)
-      // We'll generate them by assuming mean ± some factor
-      const dataLines = lines.slice(1).filter(l => l.trim());
-      const minCsv = [header, ...dataLines.map(line => {
-        const parts = line.split(',');
-        return parts.map((val, idx) => {
-          if (idx === 0) return val; // row index or date
-          const num = parseFloat(val);
-          return isNaN(num) ? val : (num * 0.7).toFixed(6);
-        }).join(',');
-      })].join('\n');
-
-      const maxCsv = [header, ...dataLines.map(line => {
-        const parts = line.split(',');
-        return parts.map((val, idx) => {
-          if (idx === 0) return val;
-          const num = parseFloat(val);
-          return isNaN(num) ? val : (num * 1.3).toFixed(6);
-        }).join(',');
-      })].join('\n');
-
-      fs.writeFileSync(path.join(archiveDir, 'forecasts_h6_min.csv'), minCsv);
-      fs.writeFileSync(path.join(archiveDir, 'forecasts_h6_max.csv'), maxCsv);
-      console.log(`  ✓ forecasts_h6_min/max.csv (estimated)`);
-    }
-
-    if (h12Data) {
-      fs.writeFileSync(path.join(archiveDir, 'forecasts_h12.csv'), h12Data);
-      console.log(`  ✓ forecasts_h12.csv`);
-
-      // Create min/max for h12 as well
-      const lines = h12Data.split('\n');
-      const header = lines[0];
-      const dataLines = lines.slice(1).filter(l => l.trim());
-
-      const minCsv = [header, ...dataLines.map(line => {
-        const parts = line.split(',');
-        return parts.map((val, idx) => {
-          if (idx === 0) return val;
-          const num = parseFloat(val);
-          return isNaN(num) ? val : (num * 0.7).toFixed(6);
-        }).join(',');
-      })].join('\n');
-
-      const maxCsv = [header, ...dataLines.map(line => {
-        const parts = line.split(',');
-        return parts.map((val, idx) => {
-          if (idx === 0) return val;
-          const num = parseFloat(val);
-          return isNaN(num) ? val : (num * 1.3).toFixed(6);
-        }).join(',');
-      })].join('\n');
-
-      fs.writeFileSync(path.join(archiveDir, 'forecasts_h12_min.csv'), minCsv);
-      fs.writeFileSync(path.join(archiveDir, 'forecasts_h12_max.csv'), maxCsv);
-      console.log(`  ✓ forecasts_h12_min/max.csv (estimated)`);
-    }
+    // Missing uncertainty stays missing. Never manufacture min/max files.
+    if (h6Data) fs.writeFileSync(path.join(archiveDir, 'forecasts_h6.csv'), h6Data);
+    if (h12Data) fs.writeFileSync(path.join(archiveDir, 'forecasts_h12.csv'), h12Data);
 
     // Write Hist.csv (truncated to period end)
     if (histCsv) {
-      const histForPeriod = truncateHistCsv(histCsv, period) || histCsv;
+      const histForPeriod = truncateHistCsv(histCsv, new Date(Date.UTC(Number(period.slice(0, 4)), Number(period.slice(5, 7)) - 1, 0)).toISOString().slice(0, 7)) || histCsv;
       fs.writeFileSync(path.join(archiveDir, 'Hist.csv'), histForPeriod);
       console.log(`  ✓ Hist.csv (through ${period})`);
     }
@@ -247,8 +192,7 @@ async function main() {
     const h12End = new Date(start); h12End.setUTCMonth(h12End.getUTCMonth() + 11);
 
     const ym = (d) => `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
-    const metadata = {
-      run_date: new Date().toISOString(),
+    const metadata = historicalMetadata({
       data_end_date: ym(dataEnd),
       forecast_start_date: ym(start),
       h6_end_date: ym(h6End),
@@ -256,9 +200,8 @@ async function main() {
       training_window_months: 10,
       historical_start_date: '1989-01',
       historical_end_date: ym(dataEnd),
-      source: urls.local ? 'content/forecasts/csv (local snapshot)' : 'Historical_Predictions (archived)',
-      note: 'Min/max values are estimated at ±30% where not explicitly available'
-    };
+      source: urls.h6 || urls.h12 || 'content/forecasts/csv (local snapshot)'
+    }, new Date().toISOString());
 
     fs.writeFileSync(
       path.join(archiveDir, 'metadata.json'),
@@ -275,7 +218,8 @@ async function main() {
         'Hist.csv', 'metadata.json'
       ].filter(f => fs.existsSync(path.join(archiveDir, f)));
 
-      execSync(`cd "${archiveDir}" && zip -q -9 "forecasts-${period}.zip" ${files.join(' ')}`, {
+      execFileSync('zip', ['-q', '-9', `forecasts-${period}.zip`, ...files], {
+        cwd: archiveDir,
         stdio: 'inherit'
       });
       console.log(`  ✓ forecasts-${period}.zip`);

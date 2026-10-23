@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const faqs: Array<{ q: string; a: React.ReactNode }> = [
   {
     q: 'What exactly do you forecast?',
-    a: 'Levels of political violence, measured as conflict fatalities, for each country and for each 0.5° grid cell (about 55 km), for each of the next six months. Forecasts are updated monthly.',
+    a: 'Levels of political violence, measured as conflict fatalities, for covered countries and available 0.5° grid cells (about 55 km north–south), for six monthly horizons from the data cutoff. Check the release metadata for the actual target months and source dates.',
   },
   {
     q: 'How are the forecasts made?',
@@ -25,7 +25,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
   },
   {
     q: 'How accurate are they?',
-    a: 'Conflict is inherently hard to forecast, and no model is right every time. The approach is described and evaluated in peer-reviewed research, and each forecast comes with uncertainty bounds so you can see how uncertain it is. We encourage prospective clients to test the forecasts against their own history and use case, and we will support that.',
+    a: 'Conflict is inherently hard to forecast, and no model is right every time. The approach is described and evaluated in peer-reviewed research, and uncertainty information varies by release. Latest source exports include lower and upper model outputs without documented calibrated coverage; some older archive ranges are heuristic ±30% estimates. See Data & API for provenance and limitations. We encourage prospective clients to test the forecasts against their own history and use case, and we will support that.',
   },
   {
     q: 'Can I use the forecasts for trading or investment decisions?',
@@ -49,7 +49,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
   },
   {
     q: 'How often is it updated, and how far ahead does it look?',
-    a: 'Monthly, with horizons of one to six months. Extended horizons and other schedules are available on request.',
+    a: 'The site checks for updates monthly, subject to source availability. Horizons are one to six months from the observation cutoff, not necessarily from today or the publication date. See the dashboard for the latest available target months.',
   },
   {
     q: 'Can you include satellite or market data?',

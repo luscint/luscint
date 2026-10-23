@@ -91,6 +91,11 @@ jobs:
           SKIP_PREBUILD: '1'
         run: npm run build
 
+      - name: Check exported internal links
+        env:
+          BASE_PATH: ${{ steps.base.outputs.base }}
+        run: node scripts/check-export-links.cjs
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

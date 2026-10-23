@@ -15,7 +15,7 @@ const rows: Array<{ item: string; open: boolean | string; luscint: boolean | str
   { item: 'Interactive dashboard', open: true, luscint: true },
   { item: 'CSV / JSON downloads and archive', open: true, luscint: true },
   { item: 'Use in commercial products and decisions', open: false, luscint: 'Commercial licence' },
-  { item: 'Point-in-time history for backtesting', open: 'Monthly archive', luscint: 'Documented, supported' },
+  { item: 'Historical forecasts for evaluation', open: 'Publication dates unverified', luscint: 'Provenance review required' },
   { item: 'Custom horizons, geographies, cadence', open: false, luscint: true },
   { item: 'Forecasts mapped to your holdings or locations', open: false, luscint: true },
   { item: 'Additional signals (satellite, market, shipping)', open: false, luscint: 'Scoped per client' },
@@ -78,7 +78,7 @@ export default function OpenData() {
           <div>
             <h2 className="text-2xl mb-3">Why license?</h2>
             <p className="text-slate-600">
-              Professional users need rights to use forecasts commercially, reliable delivery, history they can test against,
+              Professional users need rights to use forecasts commercially, reliable delivery, history with documented limitations they can evaluate,
               and outputs shaped to their portfolio. That is the work Luscint does beyond the open files.
             </p>
           </div>

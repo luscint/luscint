@@ -1,3 +1,5 @@
+import ForecastProvenance from '@/components/ForecastProvenance'
+import { readProvenance, qualityNotice } from '@/lib/forecast-provenance'
 import Link from 'next/link'
 import PageHero from '@/components/PageHero'
 import Breadcrumbs from '@/components/Breadcrumbs'
@@ -62,8 +64,10 @@ export default function DataApiPage() {
 
     return {
       period,
+      boundsKind: readProvenance(period).bounds_kind || 'unavailable',
+      underReview: !!qualityNotice(period),
       files: {
-        bundle: true,
+        bundle: hasFile(`forecasts-${period}.zip`),
         hist: hasFile('Hist.csv'),
         metadata: hasFile('metadata.json'),
         h6_mean: hasFile('forecasts_h6.csv'),
@@ -166,7 +170,7 @@ curl -O ${SITE_BASE}/data/forecasts/archive/2026-03/forecasts-2026-03.zip`
             <div className="mb-6 pb-6 border-b border-gray-200">
               <h3 className="text-lg font-medium text-gray-900 mb-3">Quick Start</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Fetch the latest forecasts in your preferred language. All endpoints are stable and updated monthly on the 1st.
+                Fetch the latest forecasts in your preferred language. Check the metadata for the observation cutoff, model run date and forecast start month. Monthly horizons do not imply delivery on a particular calendar day.
               </p>
               <TabbedCodeExamples examples={quickStartExamples} />
             </div>
@@ -184,7 +188,7 @@ curl -O ${SITE_BASE}/data/forecasts/archive/2026-03/forecasts-2026-03.zip`
                   <div className="mt-3 pt-3 border-t border-gray-200">
                     <h4 className="text-xs font-medium text-gray-900 mb-1">Historical Data</h4>
                     <p className="text-xs text-gray-600 mb-1">
-                      Download the historical training data used to generate the predictions:
+                      Download historical observations supplied with the export. The original training-data vintage is not verified:
                     </p>
                     <div className="text-xs space-y-1 font-mono text-gray-700">
                       <div>/data/forecasts/latest/Hist.csv</div>
@@ -209,10 +213,16 @@ curl -O ${SITE_BASE}/data/forecasts/archive/2026-03/forecasts-2026-03.zip`
                 </div>
               </div>
 
-              {/* Prediction Bounds */}
-              <p className="text-sm text-gray-700">
-                <span className="font-medium">Prediction Bounds:</span> Add <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">_min</code> or <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">_max</code> to forecast filenames: <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">forecasts_h12_min.csv</code>, <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">forecasts_h12_max.csv</code>. <span className="font-medium">What they represent:</span> Empirical bounds derived from historical analogues. The model identifies past conflict trajectories similar to the present situation, then uses the range of those outcomes to estimate lower and upper prediction bounds. Not statistical confidence intervals, but scenario-based uncertainty estimates.
-              </p>
+              <section id="provenance" className="scroll-mt-20 rounded border border-gray-200 p-5 space-y-4 text-sm text-gray-700">
+                <h3 className="text-lg font-medium text-gray-900">Dates, provenance and uncertainty</h3>
+                {latest && <ForecastProvenance period={latest} />}
+                <p><strong>Forecast period is not publication date.</strong> Archive folders identify the first target month. Model run dates are shown only when supplied by the source. Archive import dates record when files were copied to this site. Original publication dates are not verified for the current archive, so it must not be presented as a verified real-time track record.</p>
+                <p><strong>Backtesting.</strong> Before evaluating information that would have been available at a past date, verify the original issue timestamp, model version and observation vintage. Historical data may include later revisions; a cutoff date alone does not establish point-in-time availability.</p>
+                <p><strong>Source-provided bounds.</strong> The latest <code>_min.csv</code> and <code>_max.csv</code> files contain lower and upper outputs supplied by the model. They are not documented as 10th/90th percentiles or as intervals with a calibrated coverage probability.</p>
+                <p><strong>Legacy heuristic ranges.</strong> Archive rows labelled “Heuristic ±30%” contain ranges constructed as 0.7 and 1.3 times the point forecast. They are retained for compatibility and inspection; they are not model-derived uncertainty and should not be used to assess calibration. Missing bounds are left unavailable in new imports.</p>
+                <p><strong>Values and horizons.</strong> Point forecasts represent fatalities for individual target months, not cumulative totals or a documented median. A zero forecast does not mean an event is impossible. Missing or withheld comparisons appear as a dash.</p>
+                <p><Link href="/data/forecast-quality.json" className="text-link">Source data review notes (JSON)</Link></p>
+              </section>
 
               {/* Historical Archive Table */}
               <div className="mt-6 pt-6 border-t border-gray-200">
@@ -363,7 +373,7 @@ curl -O ${SITE_BASE}/data/grid/${gridPeriod}-m1.json`
               <div>
                 <h3 className="text-sm font-medium text-gray-900 mb-2">Update Schedule</h3>
                 <p className="text-sm text-gray-700">
-                  Forecasts generated on the 1st at 01:00 UTC. Data available by 03:00 UTC.
+                  The site checks for source updates monthly. Publication depends on source availability; no fixed release time is guaranteed. Forecast periods can precede their model run or import date. Check metadata before use.
                 </p>
               </div>
 

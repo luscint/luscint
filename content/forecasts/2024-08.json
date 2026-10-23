@@ -1,7 +1,9 @@
 {
-  "version": "1.0",
-  "generatedAt": "2024-08-01T00:00:00.000Z",
+  "version": "2.0",
+  "generatedAt": null,
   "period": "2024-08",
+  "statistic": "source_point_forecast",
+  "uncertainty": "See archive metadata; p50 is a legacy field name for the point forecast, not a documented median. No percentile bounds or confidence scores are inferred.",
   "entities": [
     {
       "id": "AFGHANISTAN",
@@ -9,27 +11,27 @@
       "entityType": "country",
       "index": 560.6,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 493.8,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 560.6,
-          "p10": 560.6,
+          "p10": null,
           "p50": 560.6,
-          "p90": 560.6
+          "p90": null
         },
         "3m": {
           "index": 28.3,
-          "p10": 28.3,
+          "p10": null,
           "p50": 28.3,
-          "p90": 28.3
+          "p90": null
         },
         "6m": {
           "index": 65.2,
-          "p10": 65.2,
+          "p10": null,
           "p50": 65.2,
-          "p90": 65.2
+          "p90": null
         }
       },
       "drivers": []
@@ -40,27 +42,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -71,27 +73,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         },
         "6m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         }
       },
       "drivers": []
@@ -102,27 +104,27 @@
       "entityType": "country",
       "index": 0.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1246.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "3m": {
           "index": 1246,
-          "p10": 1246,
+          "p10": null,
           "p50": 1246,
-          "p90": 1246
+          "p90": null
         },
         "6m": {
           "index": 13,
-          "p10": 13,
+          "p10": null,
           "p50": 13,
-          "p90": 13
+          "p90": null
         }
       },
       "drivers": []
@@ -133,27 +135,27 @@
       "entityType": "country",
       "index": 7.9,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 2.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 7.9,
-          "p10": 7.9,
+          "p10": null,
           "p50": 7.9,
-          "p90": 7.9
+          "p90": null
         },
         "3m": {
           "index": 2,
-          "p10": 2,
+          "p10": null,
           "p50": 2,
-          "p90": 2
+          "p90": null
         },
         "6m": {
           "index": 14.5,
-          "p10": 14.5,
+          "p10": null,
           "p50": 14.5,
-          "p90": 14.5
+          "p90": null
         }
       },
       "drivers": []
@@ -164,27 +166,27 @@
       "entityType": "country",
       "index": 13.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 13.5,
-          "p10": 13.5,
+          "p10": null,
           "p50": 13.5,
-          "p90": 13.5
+          "p90": null
         },
         "3m": {
           "index": 11.2,
-          "p10": 11.2,
+          "p10": null,
           "p50": 11.2,
-          "p90": 11.2
+          "p90": null
         },
         "6m": {
           "index": 4.6,
-          "p10": 4.6,
+          "p10": null,
           "p50": 4.6,
-          "p90": 4.6
+          "p90": null
         }
       },
       "drivers": []
@@ -195,27 +197,27 @@
       "entityType": "country",
       "index": 1.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.2,
-          "p10": 1.2,
+          "p10": null,
           "p50": 1.2,
-          "p90": 1.2
+          "p90": null
         },
         "3m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         },
         "6m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         }
       },
       "drivers": []
@@ -226,27 +228,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -257,27 +259,27 @@
       "entityType": "country",
       "index": 83.1,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 3.8,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 83.1,
-          "p10": 83.1,
+          "p10": null,
           "p50": 83.1,
-          "p90": 83.1
+          "p90": null
         },
         "3m": {
           "index": 10,
-          "p10": 10,
+          "p10": null,
           "p50": 10,
-          "p90": 10
+          "p90": null
         },
         "6m": {
           "index": 3.1,
-          "p10": 3.1,
+          "p10": null,
           "p50": 3.1,
-          "p90": 3.1
+          "p90": null
         }
       },
       "drivers": []
@@ -288,27 +290,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -319,27 +321,27 @@
       "entityType": "country",
       "index": 12.7,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 7.8,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 12.7,
-          "p10": 12.7,
+          "p10": null,
           "p50": 12.7,
-          "p90": 12.7
+          "p90": null
         },
         "3m": {
           "index": 17.5,
-          "p10": 17.5,
+          "p10": null,
           "p50": 17.5,
-          "p90": 17.5
+          "p90": null
         },
         "6m": {
           "index": 5.4,
-          "p10": 5.4,
+          "p10": null,
           "p50": 5.4,
-          "p90": 5.4
+          "p90": null
         }
       },
       "drivers": []
@@ -350,27 +352,27 @@
       "entityType": "country",
       "index": 3.1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -2.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 3.1,
-          "p10": 3.1,
+          "p10": null,
           "p50": 3.1,
-          "p90": 3.1
+          "p90": null
         },
         "3m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "6m": {
           "index": 4.4,
-          "p10": 4.4,
+          "p10": null,
           "p50": 4.4,
-          "p90": 4.4
+          "p90": null
         }
       },
       "drivers": []
@@ -381,27 +383,27 @@
       "entityType": "country",
       "index": 3.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -3.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 3.2,
-          "p10": 3.2,
+          "p10": null,
           "p50": 3.2,
-          "p90": 3.2
+          "p90": null
         },
         "3m": {
           "index": 3.8,
-          "p10": 3.8,
+          "p10": null,
           "p50": 3.8,
-          "p90": 3.8
+          "p90": null
         },
         "6m": {
           "index": 13.6,
-          "p10": 13.6,
+          "p10": null,
           "p50": 13.6,
-          "p90": 13.6
+          "p90": null
         }
       },
       "drivers": []
@@ -412,27 +414,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -443,27 +445,27 @@
       "entityType": "country",
       "index": 1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.7,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1,
-          "p10": 1,
+          "p10": null,
           "p50": 1,
-          "p90": 1
+          "p90": null
         },
         "3m": {
           "index": 1.1,
-          "p10": 1.1,
+          "p10": null,
           "p50": 1.1,
-          "p90": 1.1
+          "p90": null
         },
         "6m": {
           "index": 2,
-          "p10": 2,
+          "p10": null,
           "p50": 2,
-          "p90": 2
+          "p90": null
         }
       },
       "drivers": []
@@ -474,27 +476,27 @@
       "entityType": "country",
       "index": 0.8,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.8,
-          "p10": 0.8,
+          "p10": null,
           "p50": 0.8,
-          "p90": 0.8
+          "p90": null
         },
         "3m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         },
         "6m": {
           "index": 1.1,
-          "p10": 1.1,
+          "p10": null,
           "p50": 1.1,
-          "p90": 1.1
+          "p90": null
         }
       },
       "drivers": []
@@ -505,27 +507,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -536,27 +538,27 @@
       "entityType": "country",
       "index": 353.5,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -41.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 353.5,
-          "p10": 353.5,
+          "p10": null,
           "p50": 353.5,
-          "p90": 353.5
+          "p90": null
         },
         "3m": {
           "index": 435.9,
-          "p10": 435.9,
+          "p10": null,
           "p50": 435.9,
-          "p90": 435.9
+          "p90": null
         },
         "6m": {
           "index": 368.9,
-          "p10": 368.9,
+          "p10": null,
           "p50": 368.9,
-          "p90": 368.9
+          "p90": null
         }
       },
       "drivers": []
@@ -567,27 +569,27 @@
       "entityType": "country",
       "index": 1329.5,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 652,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1329.5,
-          "p10": 1329.5,
+          "p10": null,
           "p50": 1329.5,
-          "p90": 1329.5
+          "p90": null
         },
         "3m": {
           "index": 1363.9,
-          "p10": 1363.9,
+          "p10": null,
           "p50": 1363.9,
-          "p90": 1363.9
+          "p90": null
         },
         "6m": {
           "index": 944,
-          "p10": 944,
+          "p10": null,
           "p50": 944,
-          "p90": 944
+          "p90": null
         }
       },
       "drivers": []
@@ -598,27 +600,27 @@
       "entityType": "country",
       "index": 373.7,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 373.7,
-          "p10": 373.7,
+          "p10": null,
           "p50": 373.7,
-          "p90": 373.7
+          "p90": null
         },
         "3m": {
           "index": 33.6,
-          "p10": 33.6,
+          "p10": null,
           "p50": 33.6,
-          "p90": 33.6
+          "p90": null
         },
         "6m": {
           "index": 108.9,
-          "p10": 108.9,
+          "p10": null,
           "p50": 108.9,
-          "p90": 108.9
+          "p90": null
         }
       },
       "drivers": []
@@ -629,27 +631,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -660,27 +662,27 @@
       "entityType": "country",
       "index": 106.6,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 13,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 106.6,
-          "p10": 106.6,
+          "p10": null,
           "p50": 106.6,
-          "p90": 106.6
+          "p90": null
         },
         "3m": {
           "index": 81.6,
-          "p10": 81.6,
+          "p10": null,
           "p50": 81.6,
-          "p90": 81.6
+          "p90": null
         },
         "6m": {
           "index": 123.7,
-          "p10": 123.7,
+          "p10": null,
           "p50": 123.7,
-          "p90": 123.7
+          "p90": null
         }
       },
       "drivers": []
@@ -691,27 +693,27 @@
       "entityType": "country",
       "index": 1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.7,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1,
-          "p10": 1,
+          "p10": null,
           "p50": 1,
-          "p90": 1
+          "p90": null
         },
         "3m": {
           "index": 1.1,
-          "p10": 1.1,
+          "p10": null,
           "p50": 1.1,
-          "p90": 1.1
+          "p90": null
         },
         "6m": {
           "index": 2,
-          "p10": 2,
+          "p10": null,
           "p50": 2,
-          "p90": 2
+          "p90": null
         }
       },
       "drivers": []
@@ -722,27 +724,27 @@
       "entityType": "country",
       "index": 22.9,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -51.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 22.9,
-          "p10": 22.9,
+          "p10": null,
           "p50": 22.9,
-          "p90": 22.9
+          "p90": null
         },
         "3m": {
           "index": 13.7,
-          "p10": 13.7,
+          "p10": null,
           "p50": 13.7,
-          "p90": 13.7
+          "p90": null
         },
         "6m": {
           "index": 11.1,
-          "p10": 11.1,
+          "p10": null,
           "p50": 11.1,
-          "p90": 11.1
+          "p90": null
         }
       },
       "drivers": []
@@ -753,27 +755,27 @@
       "entityType": "country",
       "index": 1.8,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.8,
-          "p10": 1.8,
+          "p10": null,
           "p50": 1.8,
-          "p90": 1.8
+          "p90": null
         },
         "3m": {
           "index": 0.9,
-          "p10": 0.9,
+          "p10": null,
           "p50": 0.9,
-          "p90": 0.9
+          "p90": null
         },
         "6m": {
           "index": 6.1,
-          "p10": 6.1,
+          "p10": null,
           "p50": 6.1,
-          "p90": 6.1
+          "p90": null
         }
       },
       "drivers": []
@@ -784,27 +786,27 @@
       "entityType": "country",
       "index": 121.7,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 38.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 121.7,
-          "p10": 121.7,
+          "p10": null,
           "p50": 121.7,
-          "p90": 121.7
+          "p90": null
         },
         "3m": {
           "index": 169.2,
-          "p10": 169.2,
+          "p10": null,
           "p50": 169.2,
-          "p90": 169.2
+          "p90": null
         },
         "6m": {
           "index": 109.7,
-          "p10": 109.7,
+          "p10": null,
           "p50": 109.7,
-          "p90": 109.7
+          "p90": null
         }
       },
       "drivers": []
@@ -815,27 +817,27 @@
       "entityType": "country",
       "index": 1.8,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.8,
-          "p10": 1.8,
+          "p10": null,
           "p50": 1.8,
-          "p90": 1.8
+          "p90": null
         },
         "3m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         },
         "6m": {
           "index": 1,
-          "p10": 1,
+          "p10": null,
           "p50": 1,
-          "p90": 1
+          "p90": null
         }
       },
       "drivers": []
@@ -846,27 +848,27 @@
       "entityType": "country",
       "index": 28.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -24.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 28.5,
-          "p10": 28.5,
+          "p10": null,
           "p50": 28.5,
-          "p90": 28.5
+          "p90": null
         },
         "3m": {
           "index": 13.5,
-          "p10": 13.5,
+          "p10": null,
           "p50": 13.5,
-          "p90": 13.5
+          "p90": null
         },
         "6m": {
           "index": 94.8,
-          "p10": 94.8,
+          "p10": null,
           "p50": 94.8,
-          "p90": 94.8
+          "p90": null
         }
       },
       "drivers": []
@@ -877,27 +879,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -908,27 +910,27 @@
       "entityType": "country",
       "index": 1.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.6,
-          "p10": 1.6,
+          "p10": null,
           "p50": 1.6,
-          "p90": 1.6
+          "p90": null
         },
         "3m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         },
         "6m": {
           "index": 0.3,
-          "p10": 0.3,
+          "p10": null,
           "p50": 0.3,
-          "p90": 0.3
+          "p90": null
         }
       },
       "drivers": []
@@ -939,27 +941,27 @@
       "entityType": "country",
       "index": 19,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -4.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 19,
-          "p10": 19,
+          "p10": null,
           "p50": 19,
-          "p90": 19
+          "p90": null
         },
         "3m": {
           "index": 14.2,
-          "p10": 14.2,
+          "p10": null,
           "p50": 14.2,
-          "p90": 14.2
+          "p90": null
         },
         "6m": {
           "index": 12.2,
-          "p10": 12.2,
+          "p10": null,
           "p50": 12.2,
-          "p90": 12.2
+          "p90": null
         }
       },
       "drivers": []
@@ -970,27 +972,27 @@
       "entityType": "country",
       "index": 1.3,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         },
         "3m": {
           "index": 1.2,
-          "p10": 1.2,
+          "p10": null,
           "p50": 1.2,
-          "p90": 1.2
+          "p90": null
         },
         "6m": {
           "index": 3.2,
-          "p10": 3.2,
+          "p10": null,
           "p50": 3.2,
-          "p90": 3.2
+          "p90": null
         }
       },
       "drivers": []
@@ -1001,27 +1003,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1032,27 +1034,27 @@
       "entityType": "country",
       "index": 0.4,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         },
         "3m": {
           "index": 0.3,
-          "p10": 0.3,
+          "p10": null,
           "p50": 0.3,
-          "p90": 0.3
+          "p90": null
         },
         "6m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         }
       },
       "drivers": []
@@ -1063,27 +1065,27 @@
       "entityType": "country",
       "index": 331.2,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -584.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 331.2,
-          "p10": 331.2,
+          "p10": null,
           "p50": 331.2,
-          "p90": 331.2
+          "p90": null
         },
         "3m": {
           "index": 442.3,
-          "p10": 442.3,
+          "p10": null,
           "p50": 442.3,
-          "p90": 442.3
+          "p90": null
         },
         "6m": {
           "index": 391.4,
-          "p10": 391.4,
+          "p10": null,
           "p50": 391.4,
-          "p90": 391.4
+          "p90": null
         }
       },
       "drivers": []
@@ -1094,27 +1096,27 @@
       "entityType": "country",
       "index": 1.1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.8,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.1,
-          "p10": 1.1,
+          "p10": null,
           "p50": 1.1,
-          "p90": 1.1
+          "p90": null
         },
         "3m": {
           "index": 2.8,
-          "p10": 2.8,
+          "p10": null,
           "p50": 2.8,
-          "p90": 2.8
+          "p90": null
         },
         "6m": {
           "index": 2.3,
-          "p10": 2.3,
+          "p10": null,
           "p50": 2.3,
-          "p90": 2.3
+          "p90": null
         }
       },
       "drivers": []
@@ -1125,27 +1127,27 @@
       "entityType": "country",
       "index": 0.4,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         }
       },
       "drivers": []
@@ -1156,27 +1158,27 @@
       "entityType": "country",
       "index": 1.3,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         },
         "3m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         },
         "6m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         }
       },
       "drivers": []
@@ -1187,27 +1189,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1218,27 +1220,27 @@
       "entityType": "country",
       "index": 10.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 10.6,
-          "p10": 10.6,
+          "p10": null,
           "p50": 10.6,
-          "p90": 10.6
+          "p90": null
         },
         "3m": {
           "index": 2.9,
-          "p10": 2.9,
+          "p10": null,
           "p50": 2.9,
-          "p90": 2.9
+          "p90": null
         },
         "6m": {
           "index": 3.1,
-          "p10": 3.1,
+          "p10": null,
           "p50": 3.1,
-          "p90": 3.1
+          "p90": null
         }
       },
       "drivers": []
@@ -1249,27 +1251,27 @@
       "entityType": "country",
       "index": 3.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 1.8,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 3.6,
-          "p10": 3.6,
+          "p10": null,
           "p50": 3.6,
-          "p90": 3.6
+          "p90": null
         },
         "3m": {
           "index": 3.8,
-          "p10": 3.8,
+          "p10": null,
           "p50": 3.8,
-          "p90": 3.8
+          "p90": null
         },
         "6m": {
           "index": 3.3,
-          "p10": 3.3,
+          "p10": null,
           "p50": 3.3,
-          "p90": 3.3
+          "p90": null
         }
       },
       "drivers": []
@@ -1280,27 +1282,27 @@
       "entityType": "country",
       "index": 9.4,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 4.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 9.4,
-          "p10": 9.4,
+          "p10": null,
           "p50": 9.4,
-          "p90": 9.4
+          "p90": null
         },
         "3m": {
           "index": 20,
-          "p10": 20,
+          "p10": null,
           "p50": 20,
-          "p90": 20
+          "p90": null
         },
         "6m": {
           "index": 1.7,
-          "p10": 1.7,
+          "p10": null,
           "p50": 1.7,
-          "p90": 1.7
+          "p90": null
         }
       },
       "drivers": []
@@ -1311,27 +1313,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1342,27 +1344,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1373,27 +1375,27 @@
       "entityType": "country",
       "index": 39.8,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -26.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 39.8,
-          "p10": 39.8,
+          "p10": null,
           "p50": 39.8,
-          "p90": 39.8
+          "p90": null
         },
         "3m": {
           "index": 91.6,
-          "p10": 91.6,
+          "p10": null,
           "p50": 91.6,
-          "p90": 91.6
+          "p90": null
         },
         "6m": {
           "index": 117.8,
-          "p10": 117.8,
+          "p10": null,
           "p50": 117.8,
-          "p90": 117.8
+          "p90": null
         }
       },
       "drivers": []
@@ -1404,27 +1406,27 @@
       "entityType": "country",
       "index": 0.8,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.8,
-          "p10": 0.8,
+          "p10": null,
           "p50": 0.8,
-          "p90": 0.8
+          "p90": null
         },
         "3m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         },
         "6m": {
           "index": 42.1,
-          "p10": 42.1,
+          "p10": null,
           "p50": 42.1,
-          "p90": 42.1
+          "p90": null
         }
       },
       "drivers": []
@@ -1435,27 +1437,27 @@
       "entityType": "country",
       "index": 154.1,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 75.7,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 154.1,
-          "p10": 154.1,
+          "p10": null,
           "p50": 154.1,
-          "p90": 154.1
+          "p90": null
         },
         "3m": {
           "index": 157.4,
-          "p10": 157.4,
+          "p10": null,
           "p50": 157.4,
-          "p90": 157.4
+          "p90": null
         },
         "6m": {
           "index": 378.2,
-          "p10": 378.2,
+          "p10": null,
           "p50": 378.2,
-          "p90": 378.2
+          "p90": null
         }
       },
       "drivers": []
@@ -1466,27 +1468,27 @@
       "entityType": "country",
       "index": 15.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 3.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 15.2,
-          "p10": 15.2,
+          "p10": null,
           "p50": 15.2,
-          "p90": 15.2
+          "p90": null
         },
         "3m": {
           "index": 17.4,
-          "p10": 17.4,
+          "p10": null,
           "p50": 17.4,
-          "p90": 17.4
+          "p90": null
         },
         "6m": {
           "index": 13.1,
-          "p10": 13.1,
+          "p10": null,
           "p50": 13.1,
-          "p90": 13.1
+          "p90": null
         }
       },
       "drivers": []
@@ -1497,27 +1499,27 @@
       "entityType": "country",
       "index": 28.7,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 6.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 28.7,
-          "p10": 28.7,
+          "p10": null,
           "p50": 28.7,
-          "p90": 28.7
+          "p90": null
         },
         "3m": {
           "index": 23.9,
-          "p10": 23.9,
+          "p10": null,
           "p50": 23.9,
-          "p90": 23.9
+          "p90": null
         },
         "6m": {
           "index": 72.5,
-          "p10": 72.5,
+          "p10": null,
           "p50": 72.5,
-          "p90": 72.5
+          "p90": null
         }
       },
       "drivers": []
@@ -1528,27 +1530,27 @@
       "entityType": "country",
       "index": 88.8,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -12.2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 88.8,
-          "p10": 88.8,
+          "p10": null,
           "p50": 88.8,
-          "p90": 88.8
+          "p90": null
         },
         "3m": {
           "index": 97.2,
-          "p10": 97.2,
+          "p10": null,
           "p50": 97.2,
-          "p90": 97.2
+          "p90": null
         },
         "6m": {
           "index": 54.7,
-          "p10": 54.7,
+          "p10": null,
           "p50": 54.7,
-          "p90": 54.7
+          "p90": null
         }
       },
       "drivers": []
@@ -1559,27 +1561,27 @@
       "entityType": "country",
       "index": 1890.9,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 284.7,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1890.9,
-          "p10": 1890.9,
+          "p10": null,
           "p50": 1890.9,
-          "p90": 1890.9
+          "p90": null
         },
         "3m": {
           "index": 12384.1,
-          "p10": 12384.1,
+          "p10": null,
           "p50": 12384.1,
-          "p90": 12384.1
+          "p90": null
         },
         "6m": {
           "index": 9458.9,
-          "p10": 9458.9,
+          "p10": null,
           "p50": 9458.9,
-          "p90": 9458.9
+          "p90": null
         }
       },
       "drivers": []
@@ -1590,27 +1592,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1621,27 +1623,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 2.4,
-          "p10": 2.4,
+          "p10": null,
           "p50": 2.4,
-          "p90": 2.4
+          "p90": null
         }
       },
       "drivers": []
@@ -1652,27 +1654,27 @@
       "entityType": "country",
       "index": 1.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.2,
-          "p10": 1.2,
+          "p10": null,
           "p50": 1.2,
-          "p90": 1.2
+          "p90": null
         },
         "3m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         },
         "6m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         }
       },
       "drivers": []
@@ -1683,27 +1685,27 @@
       "entityType": "country",
       "index": 83.4,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 48.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 83.4,
-          "p10": 83.4,
+          "p10": null,
           "p50": 83.4,
-          "p90": 83.4
+          "p90": null
         },
         "3m": {
           "index": 36.7,
-          "p10": 36.7,
+          "p10": null,
           "p50": 36.7,
-          "p90": 36.7
+          "p90": null
         },
         "6m": {
           "index": 33,
-          "p10": 33,
+          "p10": null,
           "p50": 33,
-          "p90": 33
+          "p90": null
         }
       },
       "drivers": []
@@ -1714,27 +1716,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1745,27 +1747,27 @@
       "entityType": "country",
       "index": 26.3,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -33.2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 26.3,
-          "p10": 26.3,
+          "p10": null,
           "p50": 26.3,
-          "p90": 26.3
+          "p90": null
         },
         "3m": {
           "index": 16.1,
-          "p10": 16.1,
+          "p10": null,
           "p50": 16.1,
-          "p90": 16.1
+          "p90": null
         },
         "6m": {
           "index": 10.3,
-          "p10": 10.3,
+          "p10": null,
           "p50": 10.3,
-          "p90": 10.3
+          "p90": null
         }
       },
       "drivers": []
@@ -1776,27 +1778,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1807,27 +1809,27 @@
       "entityType": "country",
       "index": 98.1,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 98.1,
-          "p10": 98.1,
+          "p10": null,
           "p50": 98.1,
-          "p90": 98.1
+          "p90": null
         },
         "3m": {
           "index": 61.5,
-          "p10": 61.5,
+          "p10": null,
           "p50": 61.5,
-          "p90": 61.5
+          "p90": null
         },
         "6m": {
           "index": 51.3,
-          "p10": 51.3,
+          "p10": null,
           "p50": 51.3,
-          "p90": 51.3
+          "p90": null
         }
       },
       "drivers": []
@@ -1838,27 +1840,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -1869,27 +1871,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.9,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         }
       },
       "drivers": []
@@ -1900,27 +1902,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 1,
-          "p10": 1,
+          "p10": null,
           "p50": 1,
-          "p90": 1
+          "p90": null
         },
         "6m": {
           "index": 4,
-          "p10": 4,
+          "p10": null,
           "p50": 4,
-          "p90": 4
+          "p90": null
         }
       },
       "drivers": []
@@ -1931,27 +1933,27 @@
       "entityType": "country",
       "index": 0.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         }
       },
       "drivers": []
@@ -1962,27 +1964,27 @@
       "entityType": "country",
       "index": 374.2,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 13.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 374.2,
-          "p10": 374.2,
+          "p10": null,
           "p50": 374.2,
-          "p90": 374.2
+          "p90": null
         },
         "3m": {
           "index": 368.7,
-          "p10": 368.7,
+          "p10": null,
           "p50": 368.7,
-          "p90": 368.7
+          "p90": null
         },
         "6m": {
           "index": 343.8,
-          "p10": 343.8,
+          "p10": null,
           "p50": 343.8,
-          "p90": 343.8
+          "p90": null
         }
       },
       "drivers": []
@@ -1993,27 +1995,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2024,27 +2026,27 @@
       "entityType": "country",
       "index": 2.4,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 2.4,
-          "p10": 2.4,
+          "p10": null,
           "p50": 2.4,
-          "p90": 2.4
+          "p90": null
         },
         "3m": {
           "index": 2.1,
-          "p10": 2.1,
+          "p10": null,
           "p50": 2.1,
-          "p90": 2.1
+          "p90": null
         },
         "6m": {
           "index": 3.5,
-          "p10": 3.5,
+          "p10": null,
           "p50": 3.5,
-          "p90": 3.5
+          "p90": null
         }
       },
       "drivers": []
@@ -2055,27 +2057,27 @@
       "entityType": "country",
       "index": 953.8,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 332.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 953.8,
-          "p10": 953.8,
+          "p10": null,
           "p50": 953.8,
-          "p90": 953.8
+          "p90": null
         },
         "3m": {
           "index": 573,
-          "p10": 573,
+          "p10": null,
           "p50": 573,
-          "p90": 573
+          "p90": null
         },
         "6m": {
           "index": 428.9,
-          "p10": 428.9,
+          "p10": null,
           "p50": 428.9,
-          "p90": 428.9
+          "p90": null
         }
       },
       "drivers": []
@@ -2086,27 +2088,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2117,27 +2119,27 @@
       "entityType": "country",
       "index": 0.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         },
         "3m": {
           "index": 2.7,
-          "p10": 2.7,
+          "p10": null,
           "p50": 2.7,
-          "p90": 2.7
+          "p90": null
         },
         "6m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         }
       },
       "drivers": []
@@ -2148,27 +2150,27 @@
       "entityType": "country",
       "index": 59.6,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 19.5,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 59.6,
-          "p10": 59.6,
+          "p10": null,
           "p50": 59.6,
-          "p90": 59.6
+          "p90": null
         },
         "3m": {
           "index": 36.7,
-          "p10": 36.7,
+          "p10": null,
           "p50": 36.7,
-          "p90": 36.7
+          "p90": null
         },
         "6m": {
           "index": 77.1,
-          "p10": 77.1,
+          "p10": null,
           "p50": 77.1,
-          "p90": 77.1
+          "p90": null
         }
       },
       "drivers": []
@@ -2179,27 +2181,27 @@
       "entityType": "country",
       "index": 0.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         }
       },
       "drivers": []
@@ -2210,27 +2212,27 @@
       "entityType": "country",
       "index": 0.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         }
       },
       "drivers": []
@@ -2241,27 +2243,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2272,27 +2274,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2303,27 +2305,27 @@
       "entityType": "country",
       "index": 124.6,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -92.9,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 124.6,
-          "p10": 124.6,
+          "p10": null,
           "p50": 124.6,
-          "p90": 124.6
+          "p90": null
         },
         "3m": {
           "index": 209.9,
-          "p10": 209.9,
+          "p10": null,
           "p50": 209.9,
-          "p90": 209.9
+          "p90": null
         },
         "6m": {
           "index": 173.2,
-          "p10": 173.2,
+          "p10": null,
           "p50": 173.2,
-          "p90": 173.2
+          "p90": null
         }
       },
       "drivers": []
@@ -2334,27 +2336,27 @@
       "entityType": "country",
       "index": 898.6,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 188.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 898.6,
-          "p10": 898.6,
+          "p10": null,
           "p50": 898.6,
-          "p90": 898.6
+          "p90": null
         },
         "3m": {
           "index": 785.4,
-          "p10": 785.4,
+          "p10": null,
           "p50": 785.4,
-          "p90": 785.4
+          "p90": null
         },
         "6m": {
           "index": 1559.4,
-          "p10": 1559.4,
+          "p10": null,
           "p50": 1559.4,
-          "p90": 1559.4
+          "p90": null
         }
       },
       "drivers": []
@@ -2365,27 +2367,27 @@
       "entityType": "country",
       "index": 323.6,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 75.3,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 323.6,
-          "p10": 323.6,
+          "p10": null,
           "p50": 323.6,
-          "p90": 323.6
+          "p90": null
         },
         "3m": {
           "index": 313.2,
-          "p10": 313.2,
+          "p10": null,
           "p50": 313.2,
-          "p90": 313.2
+          "p90": null
         },
         "6m": {
           "index": 304,
-          "p10": 304,
+          "p10": null,
           "p50": 304,
-          "p90": 304
+          "p90": null
         }
       },
       "drivers": []
@@ -2396,27 +2398,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2427,27 +2429,27 @@
       "entityType": "country",
       "index": 20.3,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 8,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 20.3,
-          "p10": 20.3,
+          "p10": null,
           "p50": 20.3,
-          "p90": 20.3
+          "p90": null
         },
         "3m": {
           "index": 13.4,
-          "p10": 13.4,
+          "p10": null,
           "p50": 13.4,
-          "p90": 13.4
+          "p90": null
         },
         "6m": {
           "index": 3,
-          "p10": 3,
+          "p10": null,
           "p50": 3,
-          "p90": 3
+          "p90": null
         }
       },
       "drivers": []
@@ -2458,27 +2460,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2489,27 +2491,27 @@
       "entityType": "country",
       "index": 0.1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -1.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         },
         "3m": {
           "index": 8.7,
-          "p10": 8.7,
+          "p10": null,
           "p50": 8.7,
-          "p90": 8.7
+          "p90": null
         },
         "6m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         }
       },
       "drivers": []
@@ -2520,27 +2522,27 @@
       "entityType": "country",
       "index": 37.3,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -9,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 37.3,
-          "p10": 37.3,
+          "p10": null,
           "p50": 37.3,
-          "p90": 37.3
+          "p90": null
         },
         "3m": {
           "index": 71.8,
-          "p10": 71.8,
+          "p10": null,
           "p50": 71.8,
-          "p90": 71.8
+          "p90": null
         },
         "6m": {
           "index": 59.1,
-          "p10": 59.1,
+          "p10": null,
           "p50": 59.1,
-          "p90": 59.1
+          "p90": null
         }
       },
       "drivers": []
@@ -2551,27 +2553,27 @@
       "entityType": "country",
       "index": 1.1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.7,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.1,
-          "p10": 1.1,
+          "p10": null,
           "p50": 1.1,
-          "p90": 1.1
+          "p90": null
         },
         "3m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         },
         "6m": {
           "index": 2.6,
-          "p10": 2.6,
+          "p10": null,
           "p50": 2.6,
-          "p90": 2.6
+          "p90": null
         }
       },
       "drivers": []
@@ -2582,27 +2584,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2613,27 +2615,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2644,27 +2646,27 @@
       "entityType": "country",
       "index": 0.1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         },
         "3m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         },
         "6m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         }
       },
       "drivers": []
@@ -2675,27 +2677,27 @@
       "entityType": "country",
       "index": 2.1,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 2.1,
-          "p10": 2.1,
+          "p10": null,
           "p50": 2.1,
-          "p90": 2.1
+          "p90": null
         },
         "3m": {
           "index": 1.5,
-          "p10": 1.5,
+          "p10": null,
           "p50": 1.5,
-          "p90": 1.5
+          "p90": null
         },
         "6m": {
           "index": 0.9,
-          "p10": 0.9,
+          "p10": null,
           "p50": 0.9,
-          "p90": 0.9
+          "p90": null
         }
       },
       "drivers": []
@@ -2706,27 +2708,27 @@
       "entityType": "country",
       "index": 8.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 8.5,
-          "p10": 8.5,
+          "p10": null,
           "p50": 8.5,
-          "p90": 8.5
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 1.5,
-          "p10": 1.5,
+          "p10": null,
           "p50": 1.5,
-          "p90": 1.5
+          "p90": null
         }
       },
       "drivers": []
@@ -2737,27 +2739,27 @@
       "entityType": "country",
       "index": 14.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 14.2,
-          "p10": 14.2,
+          "p10": null,
           "p50": 14.2,
-          "p90": 14.2
+          "p90": null
         },
         "3m": {
           "index": 5.8,
-          "p10": 5.8,
+          "p10": null,
           "p50": 5.8,
-          "p90": 5.8
+          "p90": null
         },
         "6m": {
           "index": 4.5,
-          "p10": 4.5,
+          "p10": null,
           "p50": 4.5,
-          "p90": 4.5
+          "p90": null
         }
       },
       "drivers": []
@@ -2768,27 +2770,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -2799,27 +2801,27 @@
       "entityType": "country",
       "index": 288.5,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 186.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 288.5,
-          "p10": 288.5,
+          "p10": null,
           "p50": 288.5,
-          "p90": 288.5
+          "p90": null
         },
         "3m": {
           "index": 522.6,
-          "p10": 522.6,
+          "p10": null,
           "p50": 522.6,
-          "p90": 522.6
+          "p90": null
         },
         "6m": {
           "index": 848.4,
-          "p10": 848.4,
+          "p10": null,
           "p50": 848.4,
-          "p90": 848.4
+          "p90": null
         }
       },
       "drivers": []
@@ -2830,27 +2832,27 @@
       "entityType": "country",
       "index": 2.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -6.2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 2.6,
-          "p10": 2.6,
+          "p10": null,
           "p50": 2.6,
-          "p90": 2.6
+          "p90": null
         },
         "3m": {
           "index": 5,
-          "p10": 5,
+          "p10": null,
           "p50": 5,
-          "p90": 5
+          "p90": null
         },
         "6m": {
           "index": 3.2,
-          "p10": 3.2,
+          "p10": null,
           "p50": 3.2,
-          "p90": 3.2
+          "p90": null
         }
       },
       "drivers": []
@@ -2861,27 +2863,27 @@
       "entityType": "country",
       "index": 1.3,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.3,
-          "p10": 1.3,
+          "p10": null,
           "p50": 1.3,
-          "p90": 1.3
+          "p90": null
         },
         "3m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         },
         "6m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         }
       },
       "drivers": []
@@ -2892,27 +2894,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         }
       },
       "drivers": []
@@ -2923,27 +2925,27 @@
       "entityType": "country",
       "index": 1494.9,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 369.7,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1494.9,
-          "p10": 1494.9,
+          "p10": null,
           "p50": 1494.9,
-          "p90": 1494.9
+          "p90": null
         },
         "3m": {
           "index": 687.3,
-          "p10": 687.3,
+          "p10": null,
           "p50": 687.3,
-          "p90": 687.3
+          "p90": null
         },
         "6m": {
           "index": 432.4,
-          "p10": 432.4,
+          "p10": null,
           "p50": 432.4,
-          "p90": 432.4
+          "p90": null
         }
       },
       "drivers": []
@@ -2954,27 +2956,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         },
         "6m": {
           "index": 0.5,
-          "p10": 0.5,
+          "p10": null,
           "p50": 0.5,
-          "p90": 0.5
+          "p90": null
         }
       },
       "drivers": []
@@ -2985,27 +2987,27 @@
       "entityType": "country",
       "index": 320.8,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -196.9,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 320.8,
-          "p10": 320.8,
+          "p10": null,
           "p50": 320.8,
-          "p90": 320.8
+          "p90": null
         },
         "3m": {
           "index": 399.1,
-          "p10": 399.1,
+          "p10": null,
           "p50": 399.1,
-          "p90": 399.1
+          "p90": null
         },
         "6m": {
           "index": 210.2,
-          "p10": 210.2,
+          "p10": null,
           "p50": 210.2,
-          "p90": 210.2
+          "p90": null
         }
       },
       "drivers": []
@@ -3016,27 +3018,27 @@
       "entityType": "country",
       "index": 38.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -9.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 38.6,
-          "p10": 38.6,
+          "p10": null,
           "p50": 38.6,
-          "p90": 38.6
+          "p90": null
         },
         "3m": {
           "index": 15.5,
-          "p10": 15.5,
+          "p10": null,
           "p50": 15.5,
-          "p90": 15.5
+          "p90": null
         },
         "6m": {
           "index": 241.2,
-          "p10": 241.2,
+          "p10": null,
           "p50": 241.2,
-          "p90": 241.2
+          "p90": null
         }
       },
       "drivers": []
@@ -3047,27 +3049,27 @@
       "entityType": "country",
       "index": 6.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -5.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 6.5,
-          "p10": 6.5,
+          "p10": null,
           "p50": 6.5,
-          "p90": 6.5
+          "p90": null
         },
         "3m": {
           "index": 0.8,
-          "p10": 0.8,
+          "p10": null,
           "p50": 0.8,
-          "p90": 0.8
+          "p90": null
         },
         "6m": {
           "index": 0.4,
-          "p10": 0.4,
+          "p10": null,
           "p50": 0.4,
-          "p90": 0.4
+          "p90": null
         }
       },
       "drivers": []
@@ -3078,27 +3080,27 @@
       "entityType": "country",
       "index": 14.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -6.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 14.5,
-          "p10": 14.5,
+          "p10": null,
           "p50": 14.5,
-          "p90": 14.5
+          "p90": null
         },
         "3m": {
           "index": 10,
-          "p10": 10,
+          "p10": null,
           "p50": 10,
-          "p90": 10
+          "p90": null
         },
         "6m": {
           "index": 7.2,
-          "p10": 7.2,
+          "p10": null,
           "p50": 7.2,
-          "p90": 7.2
+          "p90": null
         }
       },
       "drivers": []
@@ -3109,27 +3111,27 @@
       "entityType": "country",
       "index": 9.7,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 5.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 9.7,
-          "p10": 9.7,
+          "p10": null,
           "p50": 9.7,
-          "p90": 9.7
+          "p90": null
         },
         "3m": {
           "index": 81.9,
-          "p10": 81.9,
+          "p10": null,
           "p50": 81.9,
-          "p90": 81.9
+          "p90": null
         },
         "6m": {
           "index": 14.2,
-          "p10": 14.2,
+          "p10": null,
           "p50": 14.2,
-          "p90": 14.2
+          "p90": null
         }
       },
       "drivers": []
@@ -3140,27 +3142,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -3171,27 +3173,27 @@
       "entityType": "country",
       "index": 0.2,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "3m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         },
         "6m": {
           "index": 0.1,
-          "p10": 0.1,
+          "p10": null,
           "p50": 0.1,
-          "p90": 0.1
+          "p90": null
         }
       },
       "drivers": []
@@ -3202,27 +3204,27 @@
       "entityType": "country",
       "index": 6.7,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -2.6,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 6.7,
-          "p10": 6.7,
+          "p10": null,
           "p50": 6.7,
-          "p90": 6.7
+          "p90": null
         },
         "3m": {
           "index": 5.3,
-          "p10": 5.3,
+          "p10": null,
           "p50": 5.3,
-          "p90": 5.3
+          "p90": null
         },
         "6m": {
           "index": 7.1,
-          "p10": 7.1,
+          "p10": null,
           "p50": 7.1,
-          "p90": 7.1
+          "p90": null
         }
       },
       "drivers": []
@@ -3233,27 +3235,27 @@
       "entityType": "country",
       "index": 14.7,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 14.7,
-          "p10": 14.7,
+          "p10": null,
           "p50": 14.7,
-          "p90": 14.7
+          "p90": null
         },
         "3m": {
           "index": 50,
-          "p10": 50,
+          "p10": null,
           "p50": 50,
-          "p90": 50
+          "p90": null
         },
         "6m": {
           "index": 15.1,
-          "p10": 15.1,
+          "p10": null,
           "p50": 15.1,
-          "p90": 15.1
+          "p90": null
         }
       },
       "drivers": []
@@ -3264,27 +3266,27 @@
       "entityType": "country",
       "index": 7553,
       "band": "high",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -241.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 7553,
-          "p10": 7553,
+          "p10": null,
           "p50": 7553,
-          "p90": 7553
+          "p90": null
         },
         "3m": {
           "index": 8060.4,
-          "p10": 8060.4,
+          "p10": null,
           "p50": 8060.4,
-          "p90": 8060.4
+          "p90": null
         },
         "6m": {
           "index": 10047.7,
-          "p10": 10047.7,
+          "p10": null,
           "p50": 10047.7,
-          "p90": 10047.7
+          "p90": null
         }
       },
       "drivers": []
@@ -3295,27 +3297,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -3326,27 +3328,27 @@
       "entityType": "country",
       "index": 1.9,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 1.9,
-          "p10": 1.9,
+          "p10": null,
           "p50": 1.9,
-          "p90": 1.9
+          "p90": null
         },
         "3m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         },
         "6m": {
           "index": 0.8,
-          "p10": 0.8,
+          "p10": null,
           "p50": 0.8,
-          "p90": 0.8
+          "p90": null
         }
       },
       "drivers": []
@@ -3357,27 +3359,27 @@
       "entityType": "country",
       "index": 59.8,
       "band": "medium",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 58.4,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 59.8,
-          "p10": 59.8,
+          "p10": null,
           "p50": 59.8,
-          "p90": 59.8
+          "p90": null
         },
         "3m": {
           "index": 2.6,
-          "p10": 2.6,
+          "p10": null,
           "p50": 2.6,
-          "p90": 2.6
+          "p90": null
         },
         "6m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         }
       },
       "drivers": []
@@ -3388,27 +3390,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -3419,27 +3421,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 1.6,
-          "p10": 1.6,
+          "p10": null,
           "p50": 1.6,
-          "p90": 1.6
+          "p90": null
         },
         "6m": {
           "index": 0.9,
-          "p10": 0.9,
+          "p10": null,
           "p50": 0.9,
-          "p90": 0.9
+          "p90": null
         }
       },
       "drivers": []
@@ -3450,27 +3452,27 @@
       "entityType": "country",
       "index": 0,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "3m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         },
         "6m": {
           "index": 0,
-          "p10": 0,
+          "p10": null,
           "p50": 0,
-          "p90": 0
+          "p90": null
         }
       },
       "drivers": []
@@ -3481,27 +3483,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": -0.2,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0.3,
-          "p10": 0.3,
+          "p10": null,
           "p50": 0.3,
-          "p90": 0.3
+          "p90": null
         },
         "6m": {
           "index": 0.3,
-          "p10": 0.3,
+          "p10": null,
           "p50": 0.3,
-          "p90": 0.3
+          "p90": null
         }
       },
       "drivers": []
@@ -3512,27 +3514,27 @@
       "entityType": "country",
       "index": 0.6,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 0.6,
-          "p10": 0.6,
+          "p10": null,
           "p50": 0.6,
-          "p90": 0.6
+          "p90": null
         },
         "3m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         },
         "6m": {
           "index": 0.2,
-          "p10": 0.2,
+          "p10": null,
           "p50": 0.2,
-          "p90": 0.2
+          "p90": null
         }
       },
       "drivers": []
@@ -3543,27 +3545,27 @@
       "entityType": "country",
       "index": 2.5,
       "band": "low",
-      "confidence": 0.75,
+      "confidence": null,
       "deltaMoM": 0.1,
       "deltaYoY": 0,
       "horizons": {
         "1m": {
           "index": 2.5,
-          "p10": 2.5,
+          "p10": null,
           "p50": 2.5,
-          "p90": 2.5
+          "p90": null
         },
         "3m": {
           "index": 1,
-          "p10": 1,
+          "p10": null,
           "p50": 1,
-          "p90": 1
+          "p90": null
         },
         "6m": {
           "index": 0.7,
-          "p10": 0.7,
+          "p10": null,
           "p50": 0.7,
-          "p90": 0.7
+          "p90": null
         }
       },
       "drivers": []

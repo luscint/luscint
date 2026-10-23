@@ -1,5 +1,6 @@
 'use client'
 
+import { forecastUrl } from '@/lib/forecast-url'
 import React, { useMemo, useState } from 'react'
 import Sparkline from '@/components/Sparkline'
 import { useRouter } from 'next/navigation'
@@ -11,7 +12,7 @@ interface Row {
   pred1m: number
   pred3m: number
   pred6m: number
-  deltaMoM: number
+  deltaMoM: number | null
   trend?: number[]
 }
 
@@ -97,14 +98,14 @@ export default function RiskIndexTable({ rows }: Props) {
             <tr
               key={r.id}
               className="hover:bg-gray-50 cursor-pointer"
-              onClick={() => router.push(`/forecasts/${r.id}`)}
+              onClick={() => router.push(forecastUrl(r.id))}
               role="link"
               tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); router.push(`/forecasts/${r.id}`) } }}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); router.push(forecastUrl(r.id)) } }}
             >
               <td className="px-4 py-2 text-sm text-gray-900">{r.name}</td>
               <td className="px-4 py-2 text-sm text-right font-medium text-gray-900">{r.pred1m}</td>
-              <td className={`px-4 py-2 text-sm text-right font-medium ${r.deltaMoM >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{r.deltaMoM >= 0 ? '+' : ''}{r.deltaMoM}</td>
+              <td className={`px-4 py-2 text-sm text-right font-medium ${r.deltaMoM === null ? 'text-gray-500' : r.deltaMoM > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{r.deltaMoM === null ? '—' : `${r.deltaMoM > 0 ? '+' : ''}${r.deltaMoM}`}</td>
               <td className="px-4 py-2 text-sm text-right text-gray-700">{r.pred3m}</td>
               <td className="px-4 py-2 text-sm text-right text-gray-700">{r.pred6m}</td>
               <td className="px-4 py-2 text-sm">

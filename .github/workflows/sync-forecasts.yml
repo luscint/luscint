@@ -48,17 +48,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install "numpy>=2.0.0" "pandas>=2.0.0"
 
-      - name: Sync forecasts from GitHub CSVs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm run csv:sync:github -- \
-            --repo conflictlab/Pace-map-risk \
-            --dir '' \
-            --branch main \
-            --latestOnly \
-            --saveCsv \
-            --token $GITHUB_TOKEN
       - name: Mirror latest forecasts and archive for downloads
         run: |
           node scripts/mirror-forecasts-with-dates.js

@@ -5,6 +5,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { sourceMetadata } = require('./forecast-provenance');
 
 const BASE = 'https://raw.githubusercontent.com/conflictlab/Pace-map-risk/main';
 const LATEST_DIR = path.join(process.cwd(), 'public', 'data', 'forecasts', 'latest');
@@ -42,41 +43,32 @@ function ensureDateColumn(csv, startYM) {
 
 async function main() {
   const metaText = await fetchText(`${BASE}/forecast_metadata.json`);
-  const meta = JSON.parse(metaText);
+  const meta = sourceMetadata(JSON.parse(metaText), new Date().toISOString());
+  const annotatedMeta = JSON.stringify(meta, null, 2);
   const startYM = meta.forecast_start_date || meta.h6_start_date || meta.data_end_date;
   if (!startYM) throw new Error('Missing forecast_start_date in metadata');
   const files = [
     'forecasts_h6.csv','forecasts_h6_min.csv','forecasts_h6_max.csv',
     'forecasts_h12.csv','forecasts_h12_min.csv','forecasts_h12_max.csv'
   ];
-  fs.mkdirSync(LATEST_DIR, { recursive: true });
-  // Mirror metadata as well
-  fs.writeFileSync(path.join(LATEST_DIR, 'metadata.json'), metaText);
-  // Also write an archive snapshot for this period
-  const period = meta.forecast_start_date || meta.data_end_date;
-  const ARCH_DIR = path.join(process.cwd(), 'public', 'data', 'forecasts', 'archive', period);
-  fs.mkdirSync(ARCH_DIR, { recursive: true });
-  fs.writeFileSync(path.join(ARCH_DIR, 'metadata.json'), metaText);
-  // Mirror Hist.csv (historical series) as well
-  try {
-    const histText = await fetchText(`${BASE}/Hist.csv`)
-    fs.writeFileSync(path.join(LATEST_DIR, 'Hist.csv'), histText)
-    fs.writeFileSync(path.join(ARCH_DIR, 'Hist.csv'), histText)
-    console.log('Wrote latest and archive for Hist.csv')
-  } catch (e) {
-    console.warn('Skipping Hist.csv mirror:', e?.message || e)
+  // Fetch a complete release before replacing any files. Partial downloads must
+  // not leave a new metadata record alongside stale bounds or observations.
+  const downloaded = await Promise.all([...files, 'Hist.csv'].map(async file => {
+    const text = await fetchText(`${BASE}/${file}`);
+    return [file, file === 'Hist.csv' ? text : ensureDateColumn(text, startYM)];
+  }));
+  const confirmation = JSON.parse(await fetchText(`${BASE}/forecast_metadata.json`));
+  if (confirmation.run_date !== meta.run_date || confirmation.forecast_start_date !== meta.forecast_start_date) {
+    throw new Error('Source release changed during download; retry rather than mixing releases');
   }
-  for (const f of files) {
-    try {
-      const text = await fetchText(`${BASE}/${f}`);
-      const out = ensureDateColumn(text, startYM);
-      fs.writeFileSync(path.join(LATEST_DIR, f), out);
-      fs.writeFileSync(path.join(ARCH_DIR, f), out);
-      console.log(`Wrote latest and archive for ${f}`);
-    } catch (e) {
-      console.warn(`Skipping ${f}: ${e.message}`);
-    }
+  const ARCH_DIR = path.join(process.cwd(), 'public', 'data', 'forecasts', 'archive', startYM);
+  for (const dir of [LATEST_DIR, ARCH_DIR]) {
+    fs.mkdirSync(dir, { recursive: true });
+    for (const [file, text] of downloaded) fs.writeFileSync(path.join(dir, file), text);
+    fs.writeFileSync(path.join(dir, 'metadata.json'), annotatedMeta);
   }
+  console.log(`Mirrored complete source release for ${startYM}`);
+
 }
 
 if (require.main === module) {

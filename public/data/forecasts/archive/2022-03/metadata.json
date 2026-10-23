@@ -1,5 +1,4 @@
 {
-  "run_date": "2026-10-23T07:31:22.913Z",
   "data_end_date": "2022-02",
   "forecast_start_date": "2022-03",
   "h6_end_date": "2022-08",
@@ -8,5 +7,13 @@
   "historical_start_date": "1989-01",
   "historical_end_date": "2022-02",
   "source": "Historical_Predictions (archived)",
-  "note": "Min/max values are estimated at ±30% where not explicitly available"
+  "note": "Min/max values are estimated at ±30% where not explicitly available",
+  "provenance_kind": "historical_archive_unverified",
+  "model_run_at": null,
+  "archive_imported_at": "2026-10-23T07:31:22.913Z",
+  "published_at": null,
+  "publication_status": "unverified",
+  "bounds_kind": "heuristic_30_percent",
+  "bounds_note": "Legacy min/max files are the point forecast multiplied by 0.7 and 1.3. These are heuristic ranges, not model-derived intervals or calibrated uncertainty.",
+  "history_vintage": "Historical observations may have been revised after the forecast period. This is not a verified point-in-time training dataset."
 }

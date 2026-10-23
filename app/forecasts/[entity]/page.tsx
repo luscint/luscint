@@ -1,3 +1,4 @@
+import ForecastProvenance from '@/components/ForecastProvenance'
 import {
   getForecastsPageData,
   getOrCalculateMonths,
@@ -22,7 +23,7 @@ import Link from 'next/link'
 
 export async function generateMetadata({ params }: { params: { entity: string } }): Promise<Metadata> {
   const snapshot = readSnapshot('latest')
-  const e = snapshot.entities.find((x) => x.id === params.entity)
+  const e = snapshot.entities.find((x) => x.id.toLowerCase() === params.entity.toLowerCase())
   const name = e?.name || 'Country'
   return {
     title: `${name} — conflict forecast`,
@@ -32,14 +33,12 @@ export async function generateMetadata({ params }: { params: { entity: string } 
 
 export async function generateStaticParams() {
   const snapshot = readSnapshot('latest')
-  return snapshot.entities.map(entity => ({
-    entity: entity.id,
-  }))
+  return Array.from(new Set(snapshot.entities.flatMap(e => [e.id, e.id.toLowerCase(), ...(e.iso3 ? [e.iso3, e.iso3.toLowerCase()] : [])]))).map(entity => ({ entity }))
 }
 
 async function getEntityData(entityId: string) {
-  const { snapshot } = await getForecastsPageData()
-  const entity = snapshot.entities.find(e => e.id === entityId)
+  const { snapshot, rows, comparisonWarning } = await getForecastsPageData()
+  const entity = snapshot.entities.find(e => e.id.toLowerCase() === entityId.toLowerCase() || e.iso3?.toLowerCase() === entityId.toLowerCase())
   if (!entity) return null
 
   const months = getOrCalculateMonths(snapshot.period, entity)
@@ -49,25 +48,9 @@ async function getEntityData(entityId: string) {
   const comparativeStats = getEntityComparativeStats(entity, snapshot)
   const scenarios = getCountryScenarios(entity.name)
 
-  // Compute MoM change exactly as the dashboard table does: current 1m index minus previous snapshot's 1m index
-  let computedDeltaMoM = entity.deltaMoM
-  try {
-    const periods = getAvailablePeriods()
-    const currentIdx = periods.indexOf(snapshot.period)
-    const prevPeriod = currentIdx > 0 ? periods[currentIdx - 1] : undefined
-    if (prevPeriod) {
-      const prevSnap = readSnapshot(prevPeriod)
-      const prevMatch = prevSnap.entities.find(
-        (e) => e.id === entity.id || (entity.iso3 && e.iso3 === entity.iso3) || (e.name || '').toUpperCase() === (entity.name || '').toUpperCase()
-      )
-      const prevVal = prevMatch ? (prevMatch.horizons?.['1m']?.index ?? prevMatch.index) : undefined
-      if (prevVal !== undefined) {
-        computedDeltaMoM = Number((entity.horizons['1m'].index - prevVal).toFixed(1))
-      }
-    }
-  } catch {}
+  const computedDeltaMoM = rows.find(r => r.id === entity.id)?.deltaMoM ?? null
 
-  return { entity, months, historicalSeries, narrative, snapshot, comparativeStats, computedDeltaMoM, scenarios }
+  return { entity, months, historicalSeries, narrative, snapshot, comparativeStats, computedDeltaMoM, comparisonWarning, scenarios }
 }
 
 export default async function EntityForecastPage({ params }: { params: { entity: string } }) {
@@ -77,7 +60,7 @@ export default async function EntityForecastPage({ params }: { params: { entity:
     notFound()
   }
 
-  const { entity, months, historicalSeries, narrative, comparativeStats, computedDeltaMoM, scenarios, snapshot } = data as any
+  const { entity, months, historicalSeries, narrative, comparativeStats, computedDeltaMoM, comparisonWarning, scenarios, snapshot } = data as any
 
   function formatMonthLabel(period: string) {
     const [y, m] = period.split('-').map(Number)
@@ -124,8 +107,9 @@ export default async function EntityForecastPage({ params }: { params: { entity:
             </div>
             <div>
               <div className="text-xs text-slate-400 mb-1 h-5">Month-on-month change</div>
-              <div className={`text-xl md:text-2xl font-semibold ${computedDeltaMoM > 0 ? 'text-red-300' : computedDeltaMoM < 0 ? 'text-green-300' : 'text-slate-300'}`}>
-                {computedDeltaMoM > 0 ? '+' : ''}{computedDeltaMoM.toFixed(1)} {getTrendIcon(computedDeltaMoM)}
+              <div className={`text-xl md:text-2xl font-semibold ${computedDeltaMoM === null ? 'text-slate-300' : computedDeltaMoM > 0 ? 'text-red-300' : computedDeltaMoM < 0 ? 'text-green-300' : 'text-slate-300'}`}>
+                {computedDeltaMoM === null ? '—' : `${computedDeltaMoM > 0 ? '+' : ''}${computedDeltaMoM.toFixed(1)} ${getTrendIcon(computedDeltaMoM)}`}
+                {computedDeltaMoM === null && <span className="block text-xs mt-1">Comparison withheld or unavailable</span>}
               </div>
             </div>
             <div>
@@ -143,6 +127,8 @@ export default async function EntityForecastPage({ params }: { params: { entity:
           </div>
         </div>
       </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><ForecastProvenance period={snapshot.period} />{comparisonWarning && <p className="text-sm text-slate-600 mb-5">{comparisonWarning}</p>}</div>
 
       {/* Unified Key Metrics + Situation Overview */}
       <section className="py-8 -mt-4">
@@ -177,10 +163,10 @@ export default async function EntityForecastPage({ params }: { params: { entity:
               Scenarios are generated by identifying historical conflict patterns that most closely resemble the current situation in {entity.name}. Our model analyzes thousands of past conflict trajectories worldwide and clusters them based on similarity in dynamics, intensity, and contextual factors.
             </p>
             <p className="mt-2">
-              Each line represents a distinct scenario — a cluster of similar historical cases whose trajectories inform potential futures. The percentage shown for each scenario indicates its probability: how likely the model considers this trajectory given current conditions. Higher probability scenarios are shown with more opaque lines. The dashed red portions show projected paths over the next six months, while the solid gray segments show the observed historical pattern leading up to the present.
+              Each line represents a distinct scenario — a cluster of similar historical cases whose trajectories inform potential futures. The percentage shown for each scenario is its relative weight among the matched historical cases; it is not a calibrated probability of that outcome. Higher-weight scenarios are shown with more opaque lines. The dashed red portions show projected paths over the next six months, while the solid gray segments show the observed historical pattern leading up to the present.
             </p>
             <p className="mt-2">
-              This approach captures the inherent uncertainty in conflict forecasting: rather than a single prediction, we present multiple plausible outcomes weighted by their likelihood based on historical precedent.
+              This approach captures the inherent uncertainty in conflict forecasting: rather than a single prediction, we present multiple analogue-based trajectories. Their weights do not establish a probability of future events.
             </p>
           </div>
         </div>

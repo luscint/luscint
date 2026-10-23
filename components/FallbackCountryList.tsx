@@ -1,5 +1,6 @@
 'use client'
 
+import { forecastUrl } from '@/lib/forecast-url'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
@@ -12,7 +13,7 @@ export default function FallbackCountryList({ movers, rows }: { movers: Mover[];
     return [...rows].sort((a, b) => b.pred1m - a.pred1m).slice(0, 10)
   }, [rows])
   // Ensure both lists show the same count (match available movers)
-  const COUNT = Math.min(10, movers?.length || 0, highest.length)
+  const COUNT = 6
   const filtered = useMemo(() => {
     const n = q.trim().toLowerCase()
     if (!n) return [] as Row[]
@@ -41,8 +42,8 @@ export default function FallbackCountryList({ movers, rows }: { movers: Mover[];
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {filtered.map((r) => (
                 <li key={r.id} className="flex items-center justify-between border border-gray-200 rounded p-2 hover:bg-gray-50">
-                  <Link href={`/forecasts/${r.id}`} className="text-gray-800 hover:text-brand-blue hover:underline flex-1">{r.name}</Link>
-                  <Link href={`/forecasts/${r.id}`} className="text-brand-blue text-sm">→</Link>
+                  <Link href={forecastUrl(r.id)} className="text-gray-800 hover:text-brand-blue hover:underline flex-1">{r.name}</Link>
+                  <Link href={forecastUrl(r.id)} className="text-brand-blue text-sm">→</Link>
                 </li>
               ))}
             </ul>
@@ -54,12 +55,14 @@ export default function FallbackCountryList({ movers, rows }: { movers: Mover[];
           {/* Top risers card */}
           <div className="border border-gray-200 rounded-lg p-4 bg-white">
             <h4 className="text-sm font-medium text-gray-700 mb-3">Top risers (MoM)</h4>
+            <p className="text-xs text-gray-500 mb-2">Positive changes between consecutive first-month forecasts.</p>
+            {!movers.length && <p className="text-sm text-gray-600">No verified increases available. See the comparison note above.</p>}
             <ul className="space-y-1">
               {movers.slice(0, COUNT).map((m) => (
                 <li key={m.id} className="flex items-center gap-2 text-sm hover:bg-gray-50 rounded px-2 py-1 -mx-2">
-                  <Link href={`/forecasts/${m.id}`} className="text-gray-800 hover:text-brand-blue hover:underline flex-1 min-w-0 truncate">{m.name}</Link>
-                  <span className={`font-medium ${m.deltaMoM >= 0 ? 'text-emerald-600' : 'text-rose-600'} font-mono tabular-nums w-20 text-left`}>{m.deltaMoM >= 0 ? '+' : ''}{m.deltaMoM.toFixed(1)}</span>
-                  <Link href={`/forecasts/${m.id}`} className="text-brand-blue">→</Link>
+                  <Link href={forecastUrl(m.id)} className="text-gray-800 hover:text-brand-blue hover:underline flex-1 min-w-0 truncate">{m.name}</Link>
+                  <span className={`font-medium ${m.deltaMoM > 0 ? 'text-rose-600' : 'text-emerald-600'} font-mono tabular-nums w-20 text-left`}>{m.deltaMoM >= 0 ? '+' : ''}{m.deltaMoM.toFixed(1)}</span>
+                  <Link href={forecastUrl(m.id)} className="text-brand-blue">→</Link>
                 </li>
               ))}
             </ul>
@@ -67,13 +70,13 @@ export default function FallbackCountryList({ movers, rows }: { movers: Mover[];
 
           {/* Highest risk card */}
           <div className="border border-gray-200 rounded-lg p-4 bg-white">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">Highest risk (next month)</h4>
+            <h4 className="text-sm font-medium text-gray-700 mb-3">Highest predicted fatalities (first forecast month)</h4>
             <ul className="space-y-1">
               {highest.slice(0, COUNT).map((r) => (
                 <li key={r.id} className="flex items-center gap-2 text-sm hover:bg-gray-50 rounded px-2 py-1 -mx-2">
-                  <Link href={`/forecasts/${r.id}`} className="text-gray-800 hover:text-brand-blue hover:underline flex-1 min-w-0 truncate">{r.name}</Link>
+                  <Link href={forecastUrl(r.id)} className="text-gray-800 hover:text-brand-blue hover:underline flex-1 min-w-0 truncate">{r.name}</Link>
                   <span className="text-gray-700 font-mono tabular-nums w-20 text-left">{r.pred1m.toFixed(1)}</span>
-                  <Link href={`/forecasts/${r.id}`} className="text-brand-blue">→</Link>
+                  <Link href={forecastUrl(r.id)} className="text-brand-blue">→</Link>
                 </li>
               ))}
             </ul>

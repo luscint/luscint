@@ -8,7 +8,7 @@ export default function CtaBand({ title = 'Talk to us about your use case.', tex
         <p className="text-lg text-slate-600 mb-8">{text}</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/contact" className="btn-primary">Get in touch</Link>
-          <Link href="/forecasts" className="btn-secondary">Explore live forecasts</Link>
+          <Link href="/forecasts" className="btn-secondary">Explore forecasts</Link>
         </div>
       </div>
     </section>

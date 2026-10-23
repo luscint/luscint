@@ -69,18 +69,20 @@ for (const period of periods) {
       entityType: 'country',
       index: v1,
       band: band(v1),
-      confidence: 0.75,
+      confidence: null,
       deltaMoM: p !== undefined ? round1(v1 - p) : 0,
       deltaYoY: 0,
       horizons: {
-        '1m': { index: v1, p10: v1, p50: v1, p90: v1 },
-        '3m': { index: v3, p10: v3, p50: v3, p90: v3 },
-        '6m': { index: v6, p10: v6, p50: v6, p90: v6 },
+        '1m': { index: v1, p10: null, p50: v1, p90: null },
+        '3m': { index: v3, p10: null, p50: v3, p90: null },
+        '6m': { index: v6, p10: null, p50: v6, p90: null },
       },
       drivers: [],
     }
   })
-  const snapshot = { version: '1.0', generatedAt: `${period}-01T00:00:00.000Z`, period, entities }
+  const metaFile = path.join(archiveDir, period, 'metadata.json')
+  const meta = fs.existsSync(metaFile) ? JSON.parse(fs.readFileSync(metaFile, 'utf8')) : {}
+  const snapshot = { version: '2.0', generatedAt: meta.model_run_at || null, period, statistic: 'source_point_forecast', uncertainty: 'See archive metadata; p50 is a legacy field name for the point forecast, not a documented median. No percentile bounds or confidence scores are inferred.', entities }
   fs.writeFileSync(path.join(outDir, `${period}.json`), JSON.stringify(snapshot, null, 2))
   prev = new Map(entities.map((e) => [e.id, e.index]))
   last = snapshot

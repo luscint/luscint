@@ -1,3 +1,4 @@
+import { forecastUrl } from '@/lib/forecast-url'
 import React from 'react'
 import Link from 'next/link'
 
@@ -18,7 +19,7 @@ export default function TopMovers({ movers, height = 240 }: Props) {
       <ul className="space-y-2 flex-1 overflow-auto">
         {movers.map((m) => (
           <li key={m.id} className="flex items-center justify-between text-sm hover:bg-brand-blue-light rounded px-2 py-1 -mx-2 -my-1 transition-colors">
-            <Link href={`/forecasts/${m.id}`} className="flex items-center gap-2 flex-1">
+            <Link href={forecastUrl(m.id)} className="flex items-center gap-2 flex-1">
               {m.entityType !== 'country' && (
                 <span className="text-gray-400 capitalize">{m.entityType}</span>
               )}

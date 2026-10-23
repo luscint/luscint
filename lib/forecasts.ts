@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { comparisonNotice } from './forecast-provenance'
 import { RISK_THRESHOLDS } from './config'
 
 export type DriverCategory = 'election' | 'unrest' | 'macro' | 'security' | 'policy'
@@ -8,9 +9,9 @@ export type HorizonKey = '1m' | '3m' | '6m'
 
 export interface HorizonForecast {
   index: number
-  p10: number
+  p10: number | null
   p50: number
-  p90: number
+  p90: number | null
 }
 
 export interface Driver {
@@ -26,7 +27,7 @@ export interface ForecastEntity {
   iso3?: string
   index: number
   band: 'low' | 'medium' | 'high'
-  confidence: number
+  confidence: number | null
   deltaMoM: number
   deltaYoY: number
   horizons: Record<HorizonKey, HorizonForecast>
@@ -36,7 +37,7 @@ export interface ForecastEntity {
 
 export interface ForecastSnapshot {
   version: string
-  generatedAt: string
+  generatedAt: string | null
   period: string // YYYY-MM
   releaseNotes?: string[]
   entities: ForecastEntity[]
@@ -99,9 +100,9 @@ export function readAllSnapshots(): ForecastSnapshot[] {
   return periods.map((p) => readSnapshot(p))
 }
 
-export function getEntitySeries(entityId: string): Array<{ period: string; index: number; confidence: number; p50?: number }> {
+export function getEntitySeries(entityId: string): Array<{ period: string; index: number; confidence: number | null; p50?: number }> {
   const snaps = readAllSnapshots()
-  const series: Array<{ period: string; index: number; confidence: number; p50?: number }> = []
+  const series: Array<{ period: string; index: number; confidence: number | null; p50?: number }> = []
   for (const s of snaps) {
     const e = s.entities.find((x) => x.id === entityId || x.iso3 === entityId)
     if (e) {
@@ -113,7 +114,7 @@ export function getEntitySeries(entityId: string): Array<{ period: string; index
   return series
 }
 
-function analyzeHistoricalTrend(series: Array<{ period: string; index: number; confidence: number }>): string {
+function analyzeHistoricalTrend(series: Array<{ period: string; index: number; confidence: number | null }>): string {
   if (series.length < 3) return ''
 
   const recent = series.slice(-6) // Last 6 months
@@ -162,7 +163,7 @@ function analyzeHistoricalTrend(series: Array<{ period: string; index: number; c
 
 export function generateEntityNarrative(
   entity: ForecastEntity,
-  historicalSeries: Array<{ period: string; index: number; confidence: number }>,
+  historicalSeries: Array<{ period: string; index: number; confidence: number | null }>,
   snapshot: ForecastSnapshot
 ): string {
   const paragraphs: string[] = []
@@ -266,13 +267,6 @@ export function generateEntityNarrative(
     paragraphs.push(`Predicted fatalities are forecast to **remain relatively stable** over the next six months.`)
   }
 
-  // 6. Confidence note
-  if (entity.confidence < 0.5) {
-    paragraphs.push(`⚠️ Note: Forecast confidence is relatively low (${(entity.confidence * 100).toFixed(0)}%), suggesting higher uncertainty.`)
-  } else if (entity.confidence > 0.8) {
-    paragraphs.push(`Forecast confidence is high (${(entity.confidence * 100).toFixed(0)}%).`)
-  }
-
   return paragraphs.join(' ')
 }
 
@@ -324,14 +318,15 @@ export function getMeta() {
 export function computeGlobalSummary(snapshot: ForecastSnapshot) {
   if (!snapshot.entities.length) return { avgIndex: 0, avgConfidence: 0 }
   const avgIndex = snapshot.entities.reduce((s, e) => s + e.index, 0) / snapshot.entities.length
-  const avgConfidence = snapshot.entities.reduce((s, e) => s + e.confidence, 0) / snapshot.entities.length
-  return { avgIndex: Number(avgIndex.toFixed(1)), avgConfidence: Number(avgConfidence.toFixed(2)) }
+  const confidences = snapshot.entities.map(e => e.confidence).filter((v): v is number => v !== null)
+  const avgConfidence = confidences.length ? confidences.reduce((a, b) => a + b, 0) / confidences.length : null
+  return { avgIndex: Number(avgIndex.toFixed(1)), avgConfidence: avgConfidence === null ? null : Number(avgConfidence.toFixed(2)) }
 }
 
 // Read six-month horizon values (p50) from saved raw CSV for a given period
 export function getEntityHorizonMonths(period: string, entityName: string): number[] | null {
   try {
-    const csvPath = path.join(process.cwd(), 'content', 'forecasts', 'csv', `${period}.csv`)
+    const csvPath = path.join(process.cwd(), 'public', 'data', 'forecasts', 'archive', period, 'forecasts_h6.csv')
     if (!fs.existsSync(csvPath)) return null
     const text = fs.readFileSync(csvPath, 'utf-8')
     const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0)
@@ -401,7 +396,8 @@ export async function getForecastsPageData() {
   const periods = getAvailablePeriods()
   const currentIdx = periods.indexOf(snapshot.period)
   const prevPeriod = currentIdx > 0 ? periods[currentIdx - 1] : undefined
-  const prevSnap = prevPeriod ? readSnapshot(prevPeriod) : undefined
+  const comparisonWarning = comparisonNotice(snapshot.period, prevPeriod)
+  const prevSnap = prevPeriod && !comparisonWarning ? readSnapshot(prevPeriod) : undefined
 
   const prevIndexMap = new Map<string, number>()
   if (prevSnap) {
@@ -420,7 +416,7 @@ export async function getForecastsPageData() {
 
   const rows = snapshot.entities.map((e) => {
     const prev = prevIndexMap.get(e.id) ?? prevIndexMap.get(e.iso3 || '') ?? prevIndexMap.get((e.name || '').toUpperCase())
-    const deltaMoM = prev !== undefined ? Number((e.horizons['1m'].index - prev).toFixed(1)) : 0
+    const deltaMoM = prev !== undefined ? Number((e.horizons['1m'].index - prev).toFixed(1)) : null
     const months = getOrCalculateMonths(snapshot.period, e)
     return {
       id: e.id,
@@ -457,7 +453,8 @@ export async function getForecastsPageData() {
       const deltaMoM = prev !== undefined ? Number((e.horizons['1m'].index - prev).toFixed(1)) : 0
       return { id: e.id, name: e.name, entityType: e.entityType, deltaMoM, band: e.band }
     })
-    .sort((a, b) => Math.abs(b.deltaMoM) - Math.abs(a.deltaMoM))
+    .filter(m => !comparisonWarning && m.deltaMoM > 0)
+    .sort((a, b) => b.deltaMoM - a.deltaMoM)
     .slice(0, 6)
 
   const HIGH_THRESHOLD = RISK_THRESHOLDS.HIGH_RISK
@@ -488,6 +485,7 @@ export async function getForecastsPageData() {
 
   return {
     snapshot,
+    comparisonWarning,
     summaryStats: {
       total1mCurrent,
       deltaTotal,
@@ -515,7 +513,7 @@ export function buildCSV(snapshot: ForecastSnapshot): string {
   ]
   const rows = snapshot.entities.map((e) => {
     const drivers = (e.drivers || []).map(d => `${d.category}:${d.impact}`).join('|')
-    const vals: (string | number)[] = [
+    const vals: (string | number | null)[] = [
       e.id,
       e.name,
       e.entityType,
@@ -546,8 +544,8 @@ export function buildCSV(snapshot: ForecastSnapshot): string {
   return [meta, header.join(','), ...rows].join('\n') + '\n'
 }
 
-function csvEscape(v: string | number): string {
-  const s = String(v)
+function csvEscape(v: string | number | null): string {
+  const s = v === null ? '' : String(v)
   if (/[",\n]/.test(s)) {
     return '"' + s.replace(/"/g, '""') + '"'
   }

@@ -1,5 +1,6 @@
 'use client'
 
+import { forecastUrl } from '@/lib/forecast-url'
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -345,7 +346,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
 
   function goToEntity(n: string) {
     const info = nameToEntity.get(normalizeName(n))
-    if (info?.id) router.push(`/forecasts/${info.id}`)
+    if (info?.id) router.push(forecastUrl(info.id))
     else fitToFeature(n)
   }
 
@@ -613,7 +614,7 @@ export default function CountryChoropleth({ items, onSelect, hideDownloadButton 
                   layer.on('click', () => {
                     const info = nameToEntity.get(normalizeName(name))
                     if (info?.id) {
-                      router.push(`/forecasts/${info.id}`)
+                      router.push(forecastUrl(info.id))
                     } else if (onSelect) {
                       onSelect(String(name))
                     }

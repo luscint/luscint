@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: 'Disclaimer — Luscint' }
 
 export default function Disclaimer() {
   return (
-    <LegalPage title="Disclaimer" updated="22 October 2026">
+    <LegalPage title="Disclaimer" updated="23 October 2026">
       <h2>Not advice</h2>
       <p>
         Luscint forecasts and related content are statistical estimates of future conflict and political-violence levels.
@@ -18,7 +18,7 @@ export default function Disclaimer() {
       <p>
         Forecasting conflict is inherently uncertain. Forecasts can be wrong, may be revised in later releases, and depend on
         the quality and timeliness of underlying event data. Past performance of any model is not a guide to future results.
-        Prediction intervals describe uncertainty but do not bound it.
+        Source-provided lower and upper outputs do not have documented calibrated coverage. Some historical archive ranges are heuristic ±30% estimates, not model-derived uncertainty. Consult each release’s metadata.
       </p>
 
       <h2>Not for safety-critical use</h2>

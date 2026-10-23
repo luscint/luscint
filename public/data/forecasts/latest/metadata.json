@@ -8,5 +8,13 @@
   "historical_start_date": "1989-01",
   "historical_end_date": "2026-08",
   "total_historical_months": 452,
-  "parallelization": "Matrix strategy with 4 chunks per horizon"
+  "parallelization": "Matrix strategy with 4 chunks per horizon",
+  "provenance_kind": "source_export",
+  "model_run_at": "2026-10-20T10:30:57.641828",
+  "archive_imported_at": "2026-10-23T07:31:36.822Z",
+  "published_at": null,
+  "publication_status": "unverified",
+  "bounds_kind": "source_provided",
+  "bounds_note": "Lower and upper outputs supplied by the source model. No calibrated coverage probability is documented.",
+  "history_vintage": "Source history supplied with this export; availability of each observation at the forecast issue date is not verified."
 }
